@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, query, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import your Firebase configuration
+import { Map } from "./Map"; // Ensure this import is correct
 
 export const MyRides = () => {
 
@@ -139,6 +140,8 @@ export const MyRides = () => {
     width: 1106.9px;
     height: 60.1px;
   }
+  .name,
+  .ViewMap,
   .terminal,
   .destination,
   .departure,
@@ -154,37 +157,59 @@ export const MyRides = () => {
     width: 128px;
     height: 52px;
   }
-
+  .name,
+  .ViewMap,
   .destination,
   .departure,
   .seats,
   .time {
     top: 7px;
-    left: 325px;
+    left: 455px;
     width: 128px;
     height: 52px;
-  }
+    }
+  
+  .ViewMap,
   .departure,
   .seats,
   .time {
     top: 7px;
-    left: 575px;
+    left: 665px;
     width: 128px;
     height: 52px;
   }
+
   .seats,
   .time {
     top: 7px;
-    left: 825px;
+    left: 955px;
     width: 128px;
     height: 52px;
   }
-  .time {
+
+  .ViewMap {
     top: 7px;
     left: 1075px;
+    width: 108px;
+    height: 52px 
+  }
+
+  .name {
+    position: absolute;
+    top: 7px;
+    left: 55px;
     width: 128px;
     height: 52px;
   }
+
+  .terminal {
+    position: absolute;
+    top: 7px;
+    left: 205px;
+    width: 128px;
+    height: 52px;
+  }
+  
   .rectangle-parent {
     position: absolute;
     top: 95px;
@@ -303,6 +328,7 @@ export const MyRides = () => {
   `;
   
   const [rideRequests, setRideRequests] = useState([]);
+  const [selectedRide, setSelectedRide] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -328,6 +354,9 @@ export const MyRides = () => {
       return (
         <div className="data-box" key={request.id}>
           <div className="data-set">
+          <div className="data-item">
+              <div className="value">{request.name}</div>
+            </div>
             <div className="data-item">
               <div className="value">{request.terminal}</div>
             </div>
@@ -340,17 +369,21 @@ export const MyRides = () => {
             <div className="data-item">
               <div className="value">{request.availableSeats}</div>
             </div>
-            <div className="data-item">
-              <div className="value">{request.time}</div>
-            </div>
+            <div className="data-item" key={request.id}>
+        {/* ... [ride data display code] */}
+        <button onClick={() => setSelectedRide(request)}>View Map</button>
+      </div>
           </div>
-          {/* Add other properties as needed */}
-        </div>
+          {selectedRide && (
+  <Map 
+    terminal={selectedRide.terminal} 
+    destination={selectedRide.destination} 
+  />
+)}        </div>
       );
     });
   };
-  
-  
+
 
   const generateRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -393,11 +426,12 @@ export const MyRides = () => {
             </div>
             <div className="rectangle-parent">
               <div className="group-child"></div>
-              <b className="time">Time</b>
+              <b className="ViewMap">View Map</b>
               <b className="seats">Seats</b>
-              <b className="departure">Departure</b>
+              <b className="departure">Departure Time</b>
               <b className="destination">Destination</b>
-              <b className="terminal">Terminal</b>
+              <b className="terminal">Terminal</b> 
+              <b className="name">Name</b>
             </div>
             <div className="myrides-box">
               <div className="scroll-frame">
