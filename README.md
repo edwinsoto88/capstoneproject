@@ -52,7 +52,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-# Getting Started with Create React App
+
+### Getting Started with Create React App
 
 To get a local copy up and running follow these simple steps.
 
@@ -85,13 +86,18 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-4. If you recieve errors regarding the google map api please 
+4. If you recieve errors regarding the google map api please do the following:
    
-   -add a file to the same directory where package-lock.json file is. New file
-   ```sh ".env.local"```
-   -copy and paste this API key to the created file:
-    ``` REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30```
-   -repeat steps 1 through 3
+   1. add a file to the same directory where package-lock.json file is. New file
+   ```sh
+   ".env.local"
+   ```
+  
+   2. copy and paste this API key to the created file:
+    ```sh
+   REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30
+    ```
+   3. repeat initial steps 1 through 3
    
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
