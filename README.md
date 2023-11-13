@@ -148,8 +148,6 @@ Janie Reyna - [@janiereyna](https://www.linkedin.com/in/jreyna-csengineer/) - Ja
 
 Project Link: [https://github.com/edwinsoto88/color-vision](https://github.com/edwinsoto88/color-vision)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
