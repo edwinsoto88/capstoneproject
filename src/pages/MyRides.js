@@ -182,7 +182,7 @@ export const MyRides = () => {
   .seats,
   .time {
     top: 7px;
-    left: 955px;
+    left: 890px;
     width: 128px;
     height: 52px;
   }
@@ -205,7 +205,7 @@ export const MyRides = () => {
   .terminal {
     position: absolute;
     top: 7px;
-    left: 205px;
+    left: 255px;
     width: 128px;
     height: 52px;
   }
