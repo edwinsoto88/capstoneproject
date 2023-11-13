@@ -57,36 +57,35 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 To get a local copy up and running follow these simple steps.
 
-### Prerequisites
+### Prerequisites & Installation
 
 This project uses npm as package manager
 
-### Installation
 1. Install NPM packages
 
    ```sh
    npm install
    ```
    
-3. Install @react-google-maps/api
+2. Install @react-google-maps/api
    
    ```sh
    npm i -S @react-google-maps/api
    ```
    
-5. Start react web application
+3. Start react web application
    
   ```sh
   npm start
   ```
 
-Runs the app in the development mode.\
+***Runs the app in the development mode.\***
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-4. If you recieve errors regarding the google map api please do the following:
+***4. If you recieve errors regarding the google map api please do the following:***
    
    1. add a file to the same directory where package-lock.json file is. New file
    ```sh
