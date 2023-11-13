@@ -41,40 +41,82 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
-For many students, owning a car is an expense they can't afford, making it difficult for them to get to school or work. Uber or other ride-sharing services can be a pricey alternative, especially for longer distances. However, a new carpooling platform for students attending the University of North Texas could provide a cost-effective solution. By connecting with other students traveling to the same destination, users can split the cost of the trip and save money. The platform also allows students to post ride requests or offer to carpool with others, giving them more flexibility and control over their transportation needs. In addition, the app offers the option to schedule rides ahead of time, which guarantees a ride for passengers and allows drivers to plan their trip accordingly. Overall, the carpooling website serves as a win-win solution for UNT students by offering a ride-sharing option and an opportunity for drivers to offset some of their expenses.
+[Project Description]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
-- ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
-- ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-- ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-- [![Bootstrap][bootstrap.com]][bootstrap-url]
-- ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
-- ![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
+- [Technologies and frameworks used]
+
+# Getting Started with Create React App
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
 
+## Getting Started
+
+To get a local copy up and running follow these simple steps.
+
+### Prerequisites
+
+This project uses npm as package manager
+### Installation
+1. Install NPM packages
+   ```sh
+   npm install
+   ```
+2. Install @react-google-maps/api
+   ```sh
+   npm i -S @react-google-maps/api
+   ```
+3. Start react web application
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+4. If you recieve errors regarding the google map api please 
+   ```sh
+   -add a file to the same directory where package-lock.json file is. New file
+   ### ".env.local"
+
+   -copy and paste this API key to the created file:
+     REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30
+   -repeat steps 1 through 3
+   ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- ROADMAP -->
 
 ## Roadmap
 
-- [ ] **Register as a Driver:** Users can create a driver account by providing their personal information, vehicle information, and driver's license information.
-- [X] **Register as a Passenger:** Users can create a passenger account by providing their personal information and contact details.
-- [ ] **Login as a Driver:** Registered drivers can log in to their account using their email/username and password.
-- [X] **Login as a Passenger:** Registered passengers can log in to their account using their email/username and password.
-- [ ] **Post a Ride Request:** Passengers can post a ride request by providing their pick-up and drop-off locations, date and time, and any additional notes.
-- [ ] **Accept/Validate Ride Request:** When a driver accepts a ride request, they will be taken to a validation page where they can confirm the pick-up and drop-off locations and the date and time of the ride. They can also chat with the passenger to confirm any additional details.
-- [ ] **Accepting an Available Ride:** Drivers can browse available rides in their area and accept them if they are available.
-- [ ] **Payments:** Once the ride is completed, passengers will be charged and drivers will receive payment. Payment information will be stored in the passenger's dashboard.
-- [ ] **Chat Feature:** Passengers and drivers can communicate with each other through the chat feature on the website. This will be useful for confirming ride details and making any necessary changes.
-- [ ] **Ride History:** Passengers can view their ride history, including the pick-up and drop-off locations, date and time, and the driver's information.
-- [ ] **Cancellation of Ride:** Passengers can cancel a ride request before it is accepted by a driver. Once a ride is accepted by a driver, the passenger will be charged a cancellation fee. If a driver cancels a ride, they will not receive payment for that ride and their acceptance rate will be affected.
+[Project Roadmap]
 
-See the [open issues](https://github.com/beion2000/capstoneproject) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/beion2000/capstoneproject/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+Project Link: [https://github.com/beion2000/capstoneproject](https://github.com/beion2000/capstoneproject)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[contributors-shield]: https://img.shields.io/github/contributors/beion2000/capstoneproject.svg?style=for-the-badge
+[contributors-url]: https://github.com/beion2000/capstoneproject/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/beion2000/capstoneproject.svg?style=for-the-badge
+[forks-url]: https://github.com/beion2000/capstoneproject/network/members
+[issues-shield]: https://img.shields.io/github/issues/beion2000/capstoneproject.svg?style=for-the-badge
+[issues-url]: https://github.com/beion2000/capstoneproject/issues
+[product-screenshot]: /assets/images/ReadMe.PNG
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -115,44 +157,3 @@ Project Link: [https://github.com/edwinsoto88/color-vision](https://github.com/e
 [bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
 [bootstrap-url]: https://getbootstrap.com
 
-
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
