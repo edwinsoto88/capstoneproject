@@ -264,9 +264,9 @@ export const AvailableRides = () => {
   
   .accept-ride {
     position: absolute;
-    top: 40px;
-    left: 77.96px;
-    font-size: 18px;
+    top: 5px; /* Align with the top position of other data items */
+    left: 1050px; /* Adjust the left position to align with the last column */
+    font-size: 12px;
     color: #fff;
   }
   
@@ -315,108 +315,128 @@ export const AvailableRides = () => {
 
 const [rideRequests, setRideRequests] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const uid = user.uid;
-        const rideRequestsRef = collection(db, 'users', uid, 'rideRequests');
+useEffect(() => {
+  console.log("Fetched Ride Requests:", rideRequests);
+
+  const fetchData = async () => {
+    try {
+      const usersRef = collection(db, 'users');
+      const usersQuery = query(usersRef);
+      const userSnapshots = await getDocs(usersQuery);
+
+      const promises = [];
+
+      userSnapshots.forEach((userDoc) => {
+        const rideRequestsRef = collection(userDoc.ref, 'rideRequests');
         const rideRequestsQuery = query(rideRequestsRef);
-        const snapshot = await getDocs(rideRequestsQuery);
-        const requestsData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setRideRequests(requestsData);
-      }
-    };
+        const promise = getDocs(rideRequestsQuery).then((rideRequestsSnapshot) => {
+          const rideRequestsData = rideRequestsSnapshot.docs.map((rideRequestDoc) => ({
+            id: rideRequestDoc.id,
+            ...rideRequestDoc.data(),
+          }));
+          return rideRequestsData;
+        });
 
-    fetchData();
-  }, []);
+        promises.push(promise);
+      });
 
-  const createRectangles = () => {
-    return rideRequests.map((request) => {
-      return (
-        <div className="data-box" key={request.id}>
-          <div className="data-set">
-            <div className="data-item">
-              <div className="value">{request.terminal}</div>
-            </div>
-            <div className="data-item">
-              <div className="value">{request.destination}</div>
-            </div>
-            <div className="data-item">
-              <div className="value">{request.date}</div>
-            </div>
-            <div className="data-item">
-              <div className="value">{request.availableSeats}</div>
-            </div>
-            <div className="data-item">
-              <div className="value">{request.time}</div>
-            </div>
+      const allRideRequests = await Promise.all(promises);
+      const flattenedRideRequests = allRideRequests.flat();
+
+      console.log('Fetched Ride Requests:', flattenedRideRequests);
+      setRideRequests(flattenedRideRequests);
+    } catch (error) {
+      console.error("Error fetching ride requests:", error);
+    }
+  };
+
+  fetchData(); // Call the fetchData function
+
+}, []); // Make sure to provide the dependencies array
+
+const createRectangles = () => {
+  return rideRequests.map((request) => {
+    return (
+      <div className="data-box" key={request.id}>
+        <div className="data-set">
+          <div className="data-item name">
+            <div className="label"></div>
+            <div className="value">{request.name}</div>
           </div>
-          <div className="data-item">
-            <button className="accept-ride" onClick={() => acceptRide(request.id)}>
+          <div className="data-item terminal">
+            <div className="label"></div>
+            <div className="value">{request.terminal}</div>
+          </div>
+          <div className="data-item destination">
+            <div className="label"></div>
+            <div className="value">{request.destination}</div>
+          </div>
+          <div className="data-item departure-time">
+            <div className="label"></div>
+            <div className="value">{request.date}</div>
+          </div>
+          <div className="data-item available-seats">
+            <div className="label"></div>
+            <div className="value">{request.availableSeats}</div>
+          </div>
+          <div className="data-item accept-ride">
+            <button onClick={() => acceptRide(request.id)}>
               Accept Ride
             </button>
           </div>
         </div>
-      );
-    });
-  };
-
+      </div>
+    );
+  });
+};
  const acceptRide = (offerId) => {
     console.log(`Accepting Ride: ${offerId}`);
   };
 
-return (
-  <div className="mask-group">
-  <style>{css}</style>
-  <img className="background-image-icon" alt="" />
-  <div className="dashboard-create-ride-offer">
-    <div className="footer-section">
-      <div className="footer-section-child"></div>
-      <b className="unt-rides">© 2023 UNT Rides</b>
-    </div>
-    <div className="dashboard-box">
-      <div className="dashboard-border">
-        <div className="dashboard-user-interaction"></div>
-        <div className="mini-nav-border"></div>
-        <Link to="/AvailableRides">
-          <button className="available-rides">Available Rides</button>
-        </Link>
-        <Link to="/RequestRide">
-          <button className="create-ride-offer">Create Ride Offer</button>
-        </Link>
-        <Link to="/MyRides">
-          <button className="my-rides">My Rides</button>
-        </Link>
-        <div className="search-bar">
-          <div className="search-bar-child"></div>
-          <input type="text" className="search-rides" placeholder="Search Rides" />
+  return (
+    <div className="mask-group">
+      <style>{css}</style>
+      <img className="background-image-icon" alt="" />
+      <div className="dashboard-create-ride-offer">
+        <div className="footer-section">
+          <div className="footer-section-child"></div>
+          <b className="unt-rides">© 2023 UNT Rides</b>
         </div>
-      </div>
-      <div className="rectangle-parent">
-        <div className="group-child" />
-        <b className="available-seats">Available Seats</b>
-        <b className="departure-time">Departure Time</b>
-        <b className="destination">Destination</b>
-        <b className="terminal">Origin</b>
-        <b className="name">Name</b>
-      </div>
-      <div className="myrides-box">
-        <div className="scroll-frame">
-          <div className="data-container" id="data-container">
-            {createRectangles(50)} {/* Adjust the count as needed */}
+        <div className="dashboard-box">
+          <div className="dashboard-border">
+            <div className="dashboard-user-interaction"></div>
+            <div className="mini-nav-border"></div>
+            <Link to="/AvailableRides">
+              <button className="available-rides">Available Rides</button>
+            </Link>
+            <Link to="/RequestRide">
+              <button className="create-ride-offer">Create Ride Offer</button>
+            </Link>
+            <Link to="/MyRides">
+              <button className="my-rides">My Rides</button>
+            </Link>
+            <div className="search-bar">
+              <div className="search-bar-child"></div>
+              <input type="text" className="search-rides" placeholder="Search Rides" />
+            </div>
+          </div>
+          <div className="rectangle-parent">
+            <div className="name">Name</div>
+            <div className="terminal">Terminal</div>
+            <div className="destination">Destination</div>
+            <div className="departure-time">Departure Time</div>
+            <div className="available-seats">Available Seats</div>
+          </div>
+          <div className="myrides-box">
+            <div className="scroll-frame">
+              <div className="data-container" id="data-container">
+                {createRectangles(1000)} {/* Adjust the count as needed */}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-);
+  );
 };
-      
-
 export default AvailableRides;
