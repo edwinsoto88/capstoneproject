@@ -78,14 +78,12 @@ This project uses npm as package manager
   ```sh
   npm start
   ```
-
-\\Runs the app in the development mode.\
+Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Trouble-shooting
 
-***4. If you recieve errors regarding the google map api please do the following:***
+***If you recieve errors regarding the google map api please do the following:***
    
    1. add a file to the same directory where package-lock.json file is. New file
    ```sh
@@ -97,7 +95,9 @@ You may also see any lint errors in the console.
    REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30
     ```
    3. repeat initial steps 1 through 3
-   
+
+   See the [open issues](https://github.com/beion2000/capstoneproject/issues) for a full list of proposed features (and known issues).
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
@@ -116,7 +116,6 @@ You may also see any lint errors in the console.
  - [X] **Ride History:** Passengers can view their ride history, including the pick-up and drop-off locations, date and time, and the driver's information.
  - [ ] **Cancellation of Ride:** Passengers can cancel a ride request before it is accepted by a driver. Once a ride is accepted by a driver, the passenger will be charged a cancellation fee. If a driver cancels a ride, they will not receive payment for that ride and their acceptance rate will be affected.
 
-See the [open issues](https://github.com/beion2000/capstoneproject/issues) for a full list of proposed features (and known issues).
 
 Project Link: [https://github.com/beion2000/capstoneproject](https://github.com/beion2000/capstoneproject)
 
