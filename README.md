@@ -84,14 +84,13 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 4. If you recieve errors regarding the google map api please 
-   ```sh
+   
    -add a file to the same directory where package-lock.json file is. New file
-   ### ".env.local"
-
+   ```sh ".env.local"```
    -copy and paste this API key to the created file:
-     REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30
+    ``` REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30```
    -repeat steps 1 through 3
-   ```
+   
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
