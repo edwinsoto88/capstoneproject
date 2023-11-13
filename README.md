@@ -50,27 +50,34 @@ For many students, owning a car is an expense they can't afford, making it diffi
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 <!-- GETTING STARTED -->
 
-# Getting Started with Create React App
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+# Getting Started with Create React App
 
 To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
 This project uses npm as package manager
+
 ### Installation
 1. Install NPM packages
+
    ```sh
    npm install
    ```
-2. Install @react-google-maps/api
+   
+3. Install @react-google-maps/api
+   
    ```sh
    npm i -S @react-google-maps/api
    ```
-3. Start react web application
-
-### `npm start`
+   
+5. Start react web application
+   
+  ```sh
+  npm start
+  ```
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
