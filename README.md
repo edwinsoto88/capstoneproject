@@ -104,17 +104,17 @@ You may also see any lint errors in the console.
 
 ## Roadmap
 
- - [ ] **Register as a Driver:** Users can create a driver account by providing their personal information, vehicle information, and driver's license information.
- - [ ] **Register as a Passenger:** Users can create a passenger account by providing their personal information and contact details.
- - [ ] **Login as a Driver:** Registered drivers can log in to their account using their email/username and password.
- - [ ] **Login as a Passenger:** Registered passengers can log in to their account using their email/username and password.
- - [ ] **Post a Ride Request:** Passengers can post a ride request by providing their pick-up and drop-off locations, date and time, and any additional notes.
- - [ ] **Accept/Validate Ride Request:** When a driver accepts a ride request, they will be taken to a validation page where they can confirm the pick-up and drop-off locations and the date and time of the ride. They can also chat with the passenger to confirm any additional details.
- - [ ] **Accepting an Available Ride:** Drivers can browse available rides in their area and accept them if they are available.
- - [ ] **Payments:** Once the ride is completed, passengers will be charged and drivers will receive payment. Payment information will be stored in the passenger's dashboard.
- - [ ] **Chat Feature:** Passengers and drivers can communicate with each other through the chat feature on the website. This will be useful for confirming ride details and making any necessary changes.
- - [ ] **Ride History:** Passengers can view their ride history, including the pick-up and drop-off locations, date and time, and the driver's information.
- - [ ] **Cancellation of Ride:** Passengers can cancel a ride request before it is accepted by a driver. Once a ride is accepted by a driver, the passenger will be charged a cancellation fee. If a driver cancels a ride, they will not receive payment for that ride and their acceptance rate will be affected.
+ - [X] **Register as a Driver:** Users can create a driver account by providing their personal information, vehicle information, and driver's license information.
+ - [X] **Register as a Passenger:** Users can create a passenger account by providing their personal information and contact details.
+ - [X] **Login as a Driver:** Registered drivers can log in to their account using their email/username and password.
+ - [X] **Login as a Passenger:** Registered passengers can log in to their account using their email/username and password.
+ - [X] **Post a Ride Request:** Passengers can post a ride request by providing their pick-up and drop-off locations, date and time, and any additional notes.
+ - [X] **Accept/Validate Ride Request:** When a driver accepts a ride request, they will be taken to a validation page where they can confirm the pick-up and drop-off locations and the date and time of the ride. They can also chat with the passenger to confirm any additional details.
+ - [X] **Accepting an Available Ride:** Drivers can browse available rides in their area and accept them if they are available.
+ - [X] **Payments:** Once the ride is completed, passengers will be charged and drivers will receive payment. Payment information will be stored in the passenger's dashboard.
+ - [X] **Chat Feature:** Passengers and drivers can communicate with each other through the chat feature on the website. This will be useful for confirming ride details and making any necessary changes.
+ - [X] **Ride History:** Passengers can view their ride history, including the pick-up and drop-off locations, date and time, and the driver's information.
+ - [] **Cancellation of Ride:** Passengers can cancel a ride request before it is accepted by a driver. Once a ride is accepted by a driver, the passenger will be charged a cancellation fee. If a driver cancels a ride, they will not receive payment for that ride and their acceptance rate will be affected.
 
 See the [open issues](https://github.com/beion2000/capstoneproject/issues) for a full list of proposed features (and known issues).
 
