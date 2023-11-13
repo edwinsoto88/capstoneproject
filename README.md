@@ -41,17 +41,17 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
-[Project Description]
+For many students, owning a car is an expense they can't afford, making it difficult for them to get to school or work. Uber or other ride-sharing services can be a pricey alternative, especially for longer distances. However, a new carpooling platform for students attending the University of North Texas could provide a cost-effective solution. By connecting with other students traveling to the same destination, users can split the cost of the trip and save money. The platform also allows students to post ride requests or offer to carpool with others, giving them more flexibility and control over their transportation needs. In addition, the app offers the option to schedule rides ahead of time, which guarantees a ride for passengers and allows drivers to plan their trip accordingly. Overall, the carpooling website serves as a win-win solution for UNT students by offering a ride-sharing option and an opportunity for drivers to offset some of their expenses.
+
+ <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
-- [Technologies and frameworks used]
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 # Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
