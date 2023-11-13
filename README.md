@@ -50,12 +50,13 @@ For many students, owning a car is an expense they can't afford, making it diffi
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 <!-- GETTING STARTED -->
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Getting Started with Create React App
 
 To get a local copy up and running follow these simple steps.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Prerequisites & Installation
 
@@ -78,6 +79,7 @@ This project uses npm as package manager
   ```sh
   npm start
   ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Trouble-shooting
 
