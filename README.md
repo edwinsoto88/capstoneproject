@@ -78,23 +78,24 @@ This project uses npm as package manager
   ```sh
   npm start
   ```
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 ## Trouble-shooting
 
 ***If you recieve errors regarding the google map api please do the following:***
    
    1. add a file to the same directory where package-lock.json file is. New file
+   
    ```sh
    ".env.local"
    ```
   
    2. copy and paste this API key to the created file:
-    ```sh
+      
+  ```sh
    REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30
-    ```
-   3. repeat initial steps 1 through 3
+  ```
+
+   3. repeat Installation steps 1 through 3
 
    See the [open issues](https://github.com/beion2000/capstoneproject/issues) for a full list of proposed features (and known issues).
 
