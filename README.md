@@ -79,7 +79,7 @@ This project uses npm as package manager
   ```sh
   npm start
   ```
-
+<br />
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Trouble-shooting
@@ -93,7 +93,7 @@ This project uses npm as package manager
    ```
   
    2. copy and paste this API key to the created file:
-</br>
+      
   ```sh
    REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30
   ```
