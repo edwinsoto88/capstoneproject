@@ -45,19 +45,14 @@ For many students, owning a car is an expense they can't afford, making it diffi
 
  <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Built With
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- GETTING STARTED -->
 
 # Getting Started with Create React App
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- GETTING STARTED -->
-
-## Getting Started
 
 To get a local copy up and running follow these simple steps.
 
