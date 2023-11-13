@@ -115,7 +115,6 @@ Project Link: [https://github.com/beion2000/capstoneproject](https://github.com/
 [issues-shield]: https://img.shields.io/github/issues/beion2000/capstoneproject.svg?style=for-the-badge
 [issues-url]: https://github.com/beion2000/capstoneproject/issues
 [product-screenshot]: /assets/images/ReadMe.PNG
-```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
