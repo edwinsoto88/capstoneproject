@@ -142,35 +142,45 @@ export const RideHistory = () => {
     width: 1256px;
     height: 63.1px;
   }
-  .name,
-.terminal,
-.destination,
-.departure,
-.seats,
-.time {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 7px;
-  width: 128px;
-  height: 52px;
-}
+  .terminal, .destination, .available-seats, .requestType, .date, .time, .ViewMap {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    z-index: 2;
+    top: 5px;
+  }
 
-/* Adjust the 'left' property for each class */
-.name { left: 0; } /* Starting from the very left */
-
-.terminal { left: calc(0px + 1 * (128px + 98px)); } /* One element width plus space */
-
-.destination { left: calc(0px + 2 * (128px + 98px)); } /* Two elements width plus space */
-
-.seats { left: calc(0px + 3 * (128px + 98px)); } /* Four elements width plus space */
-
-.departure { left: calc(0px + 4 * (128px + 98px)); } /* Three elements width plus space */
-
-.time { left: calc(0px + 5 * (128px + 98px)); } /* Five elements width plus space */
-
+  .requestType { 
+    left: 100px; 
+    width: 100px; 
+  }
   
+  .terminal { 
+    left: 300px; 
+    width: 150px; /* More space for terminal */
+  }
+  
+  .destination { 
+    left: 500px; 
+    width: 150px; /* More space for destination */
+  }
+  
+  .available-seats { 
+    left: 700px; 
+    width: 100px; 
+  }
+  
+  .date { 
+    left: 900px; 
+    width: 100px; 
+  }
+  
+  .time { 
+    left: 1100px; 
+    width: 100px; 
+  }
   
   .rectangles {
     top: 147px;
@@ -209,32 +219,48 @@ export const RideHistory = () => {
 }
 
 .data-box {
-    width: 100%;
-    height: 50px;
-    border: 1px solid #000;
-    margin-bottom: 10px;
-    background-color: #333; /* Background color for better contrast */
-    color: white; /* Text color */
-    position: relative;
-    display: flex;
-    padding: 0 10px; /* Adding padding for some space around edges */
-  }
-  
-  .data-set {
-    display: flex;
-    flex-direction: row; /* Arrange data items horizontally */
-    align-items: center;
-    justify-content: space-between;
-    width: 100%; /* Expand to fill the available width */
-  }
-  
-  .data-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin: 0 5px; /* Adjust margin for spacing */
-  }
+  width: 100%;
+  height: 50px;
+  border: 1px solid #000;
+  margin-bottom: 3px;
+  background-color: #333; /* Background color for better contrast */
+  color: white; /* Text color */
+  position: relative;
+  align-items: flex-start; /* Center vertically */
+  justify-content: center;
+}
+
+.data-set {
+  display: flex;
+  flex-direction: row; /* Arrange data items horizontally */
+  flex-wrap: nowrap; /* Prevent wrapping to the next line */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Expand to fill the available width */
+}
+
+.data-item {
+  margin: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  transform: translateY(-10px); 
+}
+
+.label {
+  font-weight: bold;
+}
+
+.value {
+  margin-top: 5px;
+}
+
+.data-box:hover {
+  background-color: none;
+  box-shadow: 0px 10px 20px 5px rgba(156, 100, 89, 0.8);
+}
   
   /* Assigning specific flex-grow values */
   .data-item.name { flex-grow: 2; } /* More space for name */
@@ -243,18 +269,6 @@ export const RideHistory = () => {
   .data-item.available-seats { flex-grow: 1; }
   .data-item.departure-time { left: calc(0px + 5 * (128px + 98px)); } /* More space for date and time */
   
-  .label {
-    font-weight: bold;
-  }
-  
-  .value {
-    margin-top: 5px;
-  }
-  
-  /* Optional: Add hover effect to the rectangles */
-  .data-box:hover {
-    background-color: #555; /* Darker background color on hover */
-  }
   `;
   
   const [rideRequests, setRideRequests] = useState([]);
@@ -283,26 +297,30 @@ export const RideHistory = () => {
       return (
         <div className="data-box" key={request.id}>
           <div className="data-set">
-            <div className="data-item name">
-              <div className="label"></div>
-              <div className="value">{request.name}</div>
-            </div>
-            <div className="data-item terminal">
-              <div className="label"></div>
-              <div className="value">{request.terminal}</div>
-            </div>
-            <div className="data-item destination">
-              <div className="label"></div>
-              <div className="value">{request.destination}</div>
-            </div>
-            <div className="data-item departure-time">
-              <div className="label"></div>
-              <div className="value">{request.date}</div>
-            </div>
-            <div className="data-item available-seats">
-              <div className="label"></div>
-              <div className="value">{request.availableSeats}</div>
-            </div>
+          <div className="data-item requestType">
+            <div className="label"></div>
+            <div className="value">{request.requestType}</div>
+          </div>
+          <div className="data-item terminal">
+            <div className="label"></div>
+            <div className="value">{request.terminal}</div>
+          </div>
+          <div className="data-item destination">
+            <div className="label"></div>
+            <div className="value">{request.destination}</div>
+          </div>
+          <div className="data-item available-seats">
+            <div className="label"></div>
+            <div className="value">{request.availableSeats}</div>
+          </div>
+          <div className="data-item date">
+            <div className="label"></div>
+            <div className="value">{request.date}</div>
+          </div>
+          <div className="data-item time">
+            <div className="label"></div>
+            <div className="value">{request.time}</div>
+          </div>
           </div>
         </div>
       );
@@ -329,12 +347,12 @@ export const RideHistory = () => {
             </div>
             <div className="rectangle-parent">
               <div className="group-child"></div>
-              <b className="name">Name</b>
-              <b className="terminal">Terminal</b>
-              <b className="destination">Destination</b>
-              <b className="seats">Seats</b>
-              <b className="departure">Date</b>
-              <b className="time">Time</b>
+              <div className="requestType">Request Type</div>
+              <div className="terminal">Terminal</div>
+              <div className="destination">Destination</div>
+              <div className="available-seats">Seats</div>
+              <div className="date">Date</div>
+              <div className="time">Time</div>
             </div>
             <div className="myrides-box">
               <div className="scroll-frame">
