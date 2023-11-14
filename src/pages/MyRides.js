@@ -315,6 +315,14 @@ export const MyRides = () => {
   
   const [rideRequests, setRideRequests] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+{/* Search functionality started*/}
+const handleSearchChange = (event) => {
+  setSearchQuery(event.target.value);
+};
+
+{/* Search functionality ended*/}
 
   useEffect(() => {
     const fetchData = async () => {
@@ -336,7 +344,14 @@ export const MyRides = () => {
   }, []);
 
   const createRectangles = () => {
-    return rideRequests.map((request) => {
+    return rideRequests
+    .filter((request) => {
+      // Filter logic: return true for items that match the search query
+      return Object.values(request).some(value =>
+        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    })
+    .map((request) => {
       return (
         <div className="data-box" key={request.id}>
           <div className="data-set">
@@ -421,7 +436,13 @@ export const MyRides = () => {
             </Link>
             <div className="search-bar">
               <div className="search-bar-child"></div>
-              <input type="text" className="search-rides" placeholder="Search Rides" />
+              <input 
+                type="text" 
+                className="search-rides" 
+                placeholder="Search Rides"
+                value={searchQuery}
+                onChange={handleSearchChange} // Handle input changes
+              />
             </div>
             <div className="rectangle-parent">
               <div className="group-child"></div>

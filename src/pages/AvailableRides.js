@@ -339,6 +339,14 @@ export const AvailableRides = () => {
 `;
 
 const [rideRequests, setRideRequests] = useState([]);
+const [searchQuery, setSearchQuery] = useState("");
+
+{/* Search functionality started*/}
+const handleSearchChange = (event) => {
+  setSearchQuery(event.target.value);
+};
+
+{/* Search functionality ended*/}
 
 useEffect(() => {
   console.log("Fetched Ride Requests:", rideRequests);
@@ -380,7 +388,14 @@ useEffect(() => {
 }, []); // Make sure to provide the dependencies array
 
 const createRectangles = () => {
-  return rideRequests.map((request) => {
+  return rideRequests
+  .filter((request) => {
+    // Filter logic: return true for items that match the search query
+    return Object.values(request).some(value =>
+      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  })
+  .map((request) => {
     return (
       <div className="data-box" key={request.id}>
         <div className="data-set">
@@ -450,7 +465,13 @@ const createRectangles = () => {
             </Link>
             <div className="search-bar">
               <div className="search-bar-child"></div>
-              <input type="text" className="search-rides" placeholder="Search Rides" />
+              <input 
+                type="text" 
+                className="search-rides" 
+                placeholder="Search Rides"
+                value={searchQuery}
+                onChange={handleSearchChange} // Handle input changes
+              />
             </div>
           </div>
           <div className="rectangle-parent">
