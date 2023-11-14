@@ -169,40 +169,66 @@ export const AvailableRides = () => {
     z-index: 1; /* Set a z-index value for the .rectangle-parent */
   }
   
-  .name,
-  .terminal,
-  .destination,
-  .departure-time,
-  .available-seats {
+  /* ... other CSS ... */
+
+  .name, .terminal, .destination, .available-seats, .requestType, .date, .time {
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 130px; /* Adjust the width as needed */
     height: 52px;
-    z-index: 2; /* Set a higher z-index value for the child elements to make them appear over .rectangle-parent */
+    z-index: 2;
     top: 5px;
   }
   
-  .name {
-    left: 50px; /* Adjust the left property as needed */
+  .name { 
+    left: 50px; 
+    width: 100px; 
   }
   
-  .terminal {
-    left: 250px; /* Adjust the left property as needed */
+  .requestType { 
+    left: 198px; 
+    width: 100px; 
   }
   
-  .destination {
-    left: 450px; /* Adjust the left property as needed */
+  .terminal { 
+    left: 323px; 
+    width: 150px; /* More space for terminal */
   }
   
-  .departure-time {
-    left: 650px; /* Adjust the left property as needed */
+  .destination { 
+    left: 526px; 
+    width: 150px; /* More space for destination */
   }
   
-  .available-seats {
-    left: 850px; /* Adjust the left property as needed */
+  .available-seats { 
+    left: 695px; 
+    width: 100px; 
   }
+  
+  .date { 
+    left: 810px; 
+    width: 100px; 
+  }
+  
+  .time { 
+    left: 915px; 
+    width: 100px; 
+  }
+  
+  .accept-ride {
+    left: 864px; 
+    width: 120px; 
+  }
+  
+  /* Adjust the width of .rectangle-parent if necessary */
+  .rectangle-parent {
+    width: 1257px;
+  }
+  
+  /* ... other CSS ... */
+  
+
   
   
   .myrides-box {
@@ -229,11 +255,12 @@ export const AvailableRides = () => {
     width: 100%;
     height: 50px;
     border: 1px solid #000;
-    margin-bottom: 10px;
+    margin-bottom: 3px;
   }
   
   .data-box:hover {
-    background-color: #f0f0f0;
+    background-color: none;
+    box-shadow: 0px 10px 20px 5px rgba(156, 100, 89, 0.8);
   }
   
   .rectangles {
@@ -264,7 +291,7 @@ export const AvailableRides = () => {
   
   .accept-ride {
     position: absolute;
-    top: 5px; /* Align with the top position of other data items */
+    top: 17px; /* Align with the top position of other data items */
     left: 1050px; /* Adjust the left position to align with the last column */
     font-size: 12px;
     color: #fff;
@@ -279,10 +306,12 @@ export const AvailableRides = () => {
   width: 100%;
   height: 50px;
   border: 1px solid #000;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
   background-color: #333; /* Background color for better contrast */
   color: white; /* Text color */
   position: relative;
+  align-items: flex-start; /* Center vertically */
+  justify-content: center;
 }
 
 .data-set {
@@ -295,12 +324,13 @@ export const AvailableRides = () => {
 }
 
 .data-item {
-  flex: 1; /* Distribute available space equally among data items */
-  margin: 7px;
+  margin: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: center;
+  transform: translateY(-10px); 
 }
 
 .label {
@@ -363,6 +393,10 @@ const createRectangles = () => {
             <div className="label"></div>
             <div className="value">{request.name}</div>
           </div>
+          <div className="data-item requestType">
+            <div className="label"></div>
+            <div className="value">{request.requestType}</div>
+          </div>
           <div className="data-item terminal">
             <div className="label"></div>
             <div className="value">{request.terminal}</div>
@@ -371,13 +405,17 @@ const createRectangles = () => {
             <div className="label"></div>
             <div className="value">{request.destination}</div>
           </div>
-          <div className="data-item departure-time">
-            <div className="label"></div>
-            <div className="value">{request.date}</div>
-          </div>
           <div className="data-item available-seats">
             <div className="label"></div>
             <div className="value">{request.availableSeats}</div>
+          </div>
+          <div className="data-item date">
+            <div className="label"></div>
+            <div className="value">{request.date}</div>
+          </div>
+          <div className="data-item time">
+            <div className="label"></div>
+            <div className="value">{request.time}</div>
           </div>
           <div className="data-item accept-ride">
             <button onClick={() => acceptRide(request.id)}>
@@ -422,10 +460,12 @@ const createRectangles = () => {
           </div>
           <div className="rectangle-parent">
             <div className="name">Name</div>
+            <div className="requestType">Request Type</div>
             <div className="terminal">Terminal</div>
             <div className="destination">Destination</div>
-            <div className="departure-time">Departure Time</div>
-            <div className="available-seats">Available Seats</div>
+            <div className="available-seats">Seats</div>
+            <div className="date">Date</div>
+            <div className="time">Time</div>
           </div>
           <div className="myrides-box">
             <div className="scroll-frame">
