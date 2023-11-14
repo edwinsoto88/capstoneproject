@@ -192,51 +192,68 @@ const css = `
     width: 186.44px;
   }
   .available-seats,
-  .date,
-  .destination,
-  .name,
-  .terminal {
-    position: absolute;
-    top: 338px;
-    left: 2px;
-    display: flex;
-    align-items: center;
-    width: 524px;
-    height: 54.7px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  .date,
-  .destination,
-  .name,
-  .terminal {
-    top: 253px;
-    width: 522px;
-    height: 54.7px;
-  }
-  .destination,
-  .name,
-  .terminal {
-    top: 167.43px;
-    left: 1.08px;
-    width: 523.77px;
-    height: 54.5px;
-  }
-  .name,
-  .terminal {
-    top: 82px;
-    left: 2px;
-    width: 522.8px;
-    height: 53.8px;
-  }
-  .name {
-    top: -5px; /* Adjust the value to move it up or down */
-    left: 2.36px;
-    width: 522.77px;
-    height: 54.64px;
-  }
+.date,
+.destination,
+.name,
+.terminal,
+.time {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.available-seats {
+  top: 253px; /* New position */
+  left: 2px;
+  width: 523px;
+  height: 54.7px;
+}
+
+.date {
+  top: 338px; /* New position */
+  left: 2px;
+  width: 261.5px;
+  height: 54.7px;
+}
+
+.time{
+  top: 338px; /* New position */
+  left: 264.7px;
+  width: 261.5px;
+  height: 54.7px;
+}
+
+.destination,
+.name,
+.terminal {
+  top: 167.43px;
+  left: 1.08px;
+  width: 523px;
+  height: 54.5px;
+}
+
+.name,
+.terminal {
+  top: 82px;
+  left: 2px;
+  width: 523px;
+  height: 53.8px;
+}
+
+.name {
+  top: -5px; /* Adjust the value to move it up or down */
+  left: 2.36px;
+  width: 523px;
+  height: 54.64px;
+}
+
+.terminal {
+  /* Add specific styles for .terminal if needed */
+}
+
+
   
   /* Styles for the request type dropdown */
 
@@ -321,14 +338,15 @@ const css = `
   
   `;
   const [rideRequestData, setRideRequestData] = useState({
+    name: "",
+    terminal: "",
+    destination: "",
     availableSeats: "",
     date: "",
-    destination: "",
-    terminal: "",
-    name: "",
+    time: "",         // Added time field
+    requestType: "Ride Offer",
   });
 
-  const [requestType, setRequestType] = useState('');
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -359,10 +377,23 @@ const css = `
     };
   }, []);
   
+  const handleRequestTypeChange = (event) => {
+    const selectedOption = event.target.value;
+    const type = selectedOption === "driver" ? "Ride Offer" : "Ride Request";
+    setRideRequestData({ ...rideRequestData, requestType: type });
+  };
+  
 
   const handleSubmit = async (e) => {
   e.preventDefault();
+  console.log("Submitting:", rideRequestData); // Debugging line
 
+  const inputDate = new Date(rideRequestData.date);
+
+  if (!isDateWithinRange(inputDate)) {
+    alert('Date must be within the next 3 days.');
+    return;
+  }
   // Check if the user is authenticated
   const user = auth.currentUser;
 
@@ -387,12 +418,13 @@ const css = `
       const rideRequestsRef = collection(userDocRef, "rideRequests");
 
       await addDoc(rideRequestsRef, {
+        name: rideRequestData.name,
+        terminal: rideRequestData.terminal,
+        destination: rideRequestData.destination,
         availableSeats: rideRequestData.availableSeats,
         date: rideRequestData.date,
-        destination: rideRequestData.destination,
-        terminal: rideRequestData.terminal,
-        name: rideRequestData.name,
-        requestType: requestType, // Add the request type here
+        time: rideRequestData.time,
+        requestType: rideRequestData.requestType,
       });
 
       console.log("Ride request saved successfully!");
@@ -402,11 +434,13 @@ const css = `
 
       // Reset the ride request form or perform any other desired actions
       setRideRequestData({
+        name: "",
+        terminal: "",
+        destination: "",
         availableSeats: "",
         date: "",
-        destination: "",
-        terminal: "",
-        name: "",
+        time: "",         // Added time field
+        requestType: "",
       });
     } else {
       console.error("User document does not exist.");
@@ -425,19 +459,39 @@ const css = `
     setRideRequestData({ ...rideRequestData, [name]: value });
   };
 
-  
 
-const handleRequestTypeChange = (event) => {
-  setRequestType(event.target.value);
-};
+  const formatDate = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
   
-const handleBothChanges = (selectedOption) => {
-  // First, call handleRequestTypeChange
-  handleRequestTypeChange(selectedOption);
+  const isDateWithinRange = (inputDate) => {
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setDate(today.getDate() + 3);
+  
+    return inputDate >= today && inputDate <= maxDate;
+  };
+  
+  const formatInputDate = (value) => {
+    const numbers = value.replace(/[^\d]/g, '');
+    const chars = numbers.split('');
+    return chars.reduce((acc, curr, idx) => {
+      if (idx === 2 || idx === 4) {
+        return `${acc}/${curr}`;
+      }
+      return acc + curr;
+    }, '');
+  };
+  
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    const formattedDate = formatInputDate(value);
+    setRideRequestData({ ...rideRequestData, [name]: formattedDate });
+  };
 
-  // Then, call handleInputChange with the selected value
-  handleInputChange()
-};
 
   return (
     <div className="mask-group">
@@ -509,17 +563,6 @@ const handleBothChanges = (selectedOption) => {
             pattern="[A-Za-z0-9\s\W]+" // Allow letters, numbers, spaces, and symbols
           />
           <input
-            type="text"
-            className="date"
-            name="date"
-            value={rideRequestData.date}
-            onChange={handleInputChange}
-            placeholder="MM/DD/YY"
-            required // Make the field compulsory
-            pattern="\d{2}/\d{2}/\d{2}" // Match the format (MM/DD/YY)
-            maxLength="8" // Limit to 8 characters (MM/DD/YY)
-          />
-          <input
             type="number" // Use type="number" to enforce numbers
             className="available-seats"
             name="availableSeats"
@@ -530,12 +573,37 @@ const handleBothChanges = (selectedOption) => {
             min="0" // Set a minimum value (0)
             max="7" // Set a maximum value (7)
           />
+          <input
+            type="text"
+            className="date"
+            name="date"
+            value={rideRequestData.date}
+            onChange={handleDateChange}
+            placeholder="MM/DD/YYYY"
+            required
+            pattern="\d{2}/\d{2}/\d{4}"
+            maxLength="10"
+          />
+          <input
+            type="time" // Specify the type as 'time'
+            className="time"
+            name="time"
+            value={rideRequestData.time} // Bind the value to your state
+            placeholder="Time for Ride"
+            onChange={handleInputChange} // Use the same change handler
+            required // Make the field compulsory
+          />
           <li className="request-type">
           <div className="dropdown-container">
-              <select className="dropdown-content" onChange={handleBothChanges}>
-                  <option value="driver">Post as a Driver</option>
-                  <option value="passenger">Post as a Passenger</option>
-              </select>
+          <select
+            className="dropdown-content"
+            name="requestType"
+            value={rideRequestData.requestType} // Directly use requestType for the value
+            onChange={handleInputChange}
+          >
+            <option value="Ride Offer">Post as a Driver</option>
+            <option value="Ride Request">Post as a Passenger</option>
+          </select>
           </div>
           </li>
           <button className="submit-ride-offer" type="submit"> Submit Ride Offer </button>
