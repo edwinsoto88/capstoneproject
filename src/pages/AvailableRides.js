@@ -256,6 +256,38 @@ export const AvailableRides = () => {
     height: 50px;
     border: 1px solid #000;
     margin-bottom: 3px;
+    background-color: #333; /* Background color for better contrast */
+    color: white; /* Text color */
+    position: relative;
+    align-items: flex-start; /* Center vertically */
+    justify-content: center;
+  }
+  
+  .data-set {
+    display: flex;
+    flex-direction: row; /* Arrange data items horizontally */
+    flex-wrap: nowrap; /* Prevent wrapping to the next line */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Expand to fill the available width */
+  }
+  
+  .data-item {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    transform: translateY(-10px); 
+  }
+  
+  .label {
+    font-weight: bold;
+  }
+  
+  .value {
+    margin-top: 5px;
   }
   
   .data-box:hover {
@@ -302,44 +334,7 @@ export const AvailableRides = () => {
     top: 120px;
   }
 
-  .data-box {
-  width: 100%;
-  height: 50px;
-  border: 1px solid #000;
-  margin-bottom: 3px;
-  background-color: #333; /* Background color for better contrast */
-  color: white; /* Text color */
-  position: relative;
-  align-items: flex-start; /* Center vertically */
-  justify-content: center;
-}
-
-.data-set {
-  display: flex;
-  flex-direction: row; /* Arrange data items horizontally */
-  flex-wrap: nowrap; /* Prevent wrapping to the next line */
-  align-items: center;
-  justify-content: space-between;
-  width: 100%; /* Expand to fill the available width */
-}
-
-.data-item {
-  margin: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  transform: translateY(-10px); 
-}
-
-.label {
-  font-weight: bold;
-}
-
-.value {
-  margin-top: 5px;
-}
+  
   
 `;
 
