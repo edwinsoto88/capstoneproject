@@ -344,7 +344,7 @@ const css = `
     availableSeats: "",
     date: "",
     time: "",         // Added time field
-    requestType: "Ride Offer",
+    requestType: "Offered",
   });
 
   const [message, setMessage] = useState('');
@@ -377,11 +377,6 @@ const css = `
     };
   }, []);
   
-  const handleRequestTypeChange = (event) => {
-    const selectedOption = event.target.value;
-    const type = selectedOption === "driver" ? "Ride Offer" : "Ride Request";
-    setRideRequestData({ ...rideRequestData, requestType: type });
-  };
   
 
   const handleSubmit = async (e) => {
@@ -440,7 +435,7 @@ const css = `
         availableSeats: "",
         date: "",
         time: "",         // Added time field
-        requestType: "",
+        requestType: "Offered",
       });
     } else {
       console.error("User document does not exist.");
@@ -459,7 +454,7 @@ const css = `
     setRideRequestData({ ...rideRequestData, [name]: value });
   };
 
-
+{/*Date Section started*/}
   const formatDate = (date) => {
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -491,7 +486,7 @@ const css = `
     const formattedDate = formatInputDate(value);
     setRideRequestData({ ...rideRequestData, [name]: formattedDate });
   };
-
+{/*Date Section ended*/}
 
   return (
     <div className="mask-group">
@@ -601,8 +596,8 @@ const css = `
             value={rideRequestData.requestType} // Directly use requestType for the value
             onChange={handleInputChange}
           >
-            <option value="Ride Offer">Post as a Driver</option>
-            <option value="Ride Request">Post as a Passenger</option>
+            <option value="Offered">Post as a Driver</option>
+            <option value="Requested">Post as a Passenger</option>
           </select>
           </div>
           </li>
