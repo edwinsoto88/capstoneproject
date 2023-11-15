@@ -420,6 +420,7 @@ const css = `
         date: rideRequestData.date,
         time: rideRequestData.time,
         requestType: rideRequestData.requestType,
+        status: null,
       });
 
       console.log("Ride request saved successfully!");

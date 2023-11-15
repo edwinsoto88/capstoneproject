@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { collection, query, onSnapshot, addDoc, doc, getDocs} from "firebase/firestore";
+import { Link, useNavigate } from "react-router-dom";
+import { collection, query, onSnapshot, addDoc, getDoc, doc, getDocs, updateDoc} from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
 
 
@@ -339,7 +339,10 @@ export const AvailableRides = () => {
 `;
 
 const [rideRequests, setRideRequests] = useState([]);
-const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [acceptedRides, setAcceptedRides] = useState([]); // State for accepted rides
+  const navigate = useNavigate();
+
 
 {/* Search functionality started*/}
 const handleSearchChange = (event) => {
@@ -428,18 +431,56 @@ const createRectangles = () => {
             <div className="value">{request.time}</div>
           </div>
           <div className="data-item accept-ride">
-            <button onClick={() => acceptRide(request.id)}>
-              Accept Ride
-            </button>
-          </div>
+  <button onClick={() => acceptRide(request.id)}>
+    Accept Ride
+  </button>
+</div>
         </div>
       </div>
     );
   });
 };
- const acceptRide = (offerId) => {
+const acceptRide = async (offerId) => {
+  try {
     console.log(`Accepting Ride: ${offerId}`);
-  };
+    console.log("rideRequestSnapshot:", rideRequestSnapshot);
+
+    const user = auth.currentUser;
+    if (!user) {
+      console.log('User not logged in');
+      return;
+    }
+
+    const uid = user.uid;
+
+    const userRideRequestsRef = collection(db, 'users', uid, 'rideRequests');
+    const rideRequestDoc = doc(userRideRequestsRef, offerId);
+    const rideRequestSnapshot = await getDoc(rideRequestDoc);
+
+    if (rideRequestSnapshot.exists()) {
+      const rideRequestData = rideRequestSnapshot.data();
+      if (rideRequestData.status !== 'Accepted') {
+        // Update the status to 'Accepted' in the user's rideRequests
+        await updateDoc(rideRequestDoc, { status: 'Accepted' });
+
+        // Store accepted ride details in the user's AcceptedRides sub-collection
+        const userRef = doc(db, 'users', uid);
+        const acceptedRidesRef = collection(userRef, 'AcceptedRides');
+        await addDoc(acceptedRidesRef, rideRequestData);
+
+        console.log('Ride status updated and added to AcceptedRides!');
+        navigate('/MyRides'); // Redirect to MyRides page after accepting the ride
+      } else {
+        console.log('Ride already accepted.');
+      }
+    } else {
+      console.log('Ride not found.');
+    }
+  } catch (error) {
+    console.error('Error accepting ride:', error);
+  }
+};
+
 
   return (
     <div className="mask-group">

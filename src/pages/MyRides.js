@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { collection, query, getDocs } from "firebase/firestore";
+import { collection, query, getDocs, where } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import your Firebase configuration
 import { Map } from "./Map"; // Ensure this import is correct
 
@@ -324,24 +324,50 @@ const handleSearchChange = (event) => {
 
 {/* Search functionality ended*/}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const uid = user.uid;
-        const rideRequestsRef = collection(db, 'users', uid, 'rideRequests');
-        const rideRequestsQuery = query(rideRequestsRef);
-        const snapshot = await getDocs(rideRequestsQuery);
-        const requestsData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setRideRequests(requestsData);
-      }
-    };
 
-    fetchData();
-  }, []);
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      const uid = user.uid;
+
+      const userRideRequestsRef = collection(db, 'users', uid, 'rideRequests');
+
+      // Query to fetch rides posted by the logged-in user
+      const userPostedRidesQuery = query(userRideRequestsRef);
+      const userPostedRidesSnapshot = await getDocs(userPostedRidesQuery);
+      const userPostedRidesData = userPostedRidesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const allUsersRideRequestsRef = collection(db, 'users');
+      const allUsersSnapshot = await getDocs(allUsersRideRequestsRef);
+
+      const acceptedRides = [];
+
+      allUsersSnapshot.forEach((doc) => {
+        const userData = doc.data();
+        if (userData.uid !== uid && userData.rideRequests) {
+          const otherUserRideRequests = userData.rideRequests;
+          otherUserRideRequests.forEach((ride) => {
+            if (ride.status === 'Accepted') {
+              acceptedRides.push(ride);
+            }
+          });
+        }
+      });
+
+      // Combine rides posted by the user and rides accepted by the user
+      const combinedRides = [...userPostedRidesData, ...acceptedRides];
+      setRideRequests(combinedRides);
+    }
+  };
+
+  fetchData();
+}, []);
 
   const createRectangles = () => {
     return rideRequests
@@ -385,7 +411,7 @@ const handleSearchChange = (event) => {
           </div>
             <div className="data-item" key={request.id}>
         {/* ... [ride data display code] */}
-        <button className="viewmap" onClick={() => setSelectedRide(request)}>View Map</button>
+        {/*<button className="viewmap" onClick={() => setSelectedRide(request)}>View Map</button>*/}
       </div>
           </div>
           {selectedRide && (
