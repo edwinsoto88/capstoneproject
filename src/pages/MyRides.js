@@ -333,9 +333,8 @@ useEffect(() => {
     if (user) {
       const uid = user.uid;
 
+      // Fetch ride requests for the current user
       const userRideRequestsRef = collection(db, 'users', uid, 'rideRequests');
-
-      // Query to fetch rides posted by the logged-in user
       const userPostedRidesQuery = query(userRideRequestsRef);
       const userPostedRidesSnapshot = await getDocs(userPostedRidesQuery);
       const userPostedRidesData = userPostedRidesSnapshot.docs.map((doc) => ({
@@ -343,25 +342,16 @@ useEffect(() => {
         ...doc.data(),
       }));
 
-      const allUsersRideRequestsRef = collection(db, 'users');
-      const allUsersSnapshot = await getDocs(allUsersRideRequestsRef);
+      // Fetch accepted rides for the current user
+      const userAcceptedRidesRef = collection(db, 'users', uid, 'AcceptedRides');
+      const userAcceptedRidesSnapshot = await getDocs(userAcceptedRidesRef);
+      const userAcceptedRidesData = userAcceptedRidesSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-      const acceptedRides = [];
-
-      allUsersSnapshot.forEach((doc) => {
-        const userData = doc.data();
-        if (userData.uid !== uid && userData.rideRequests) {
-          const otherUserRideRequests = userData.rideRequests;
-          otherUserRideRequests.forEach((ride) => {
-            if (ride.status === 'Accepted') {
-              acceptedRides.push(ride);
-            }
-          });
-        }
-      });
-
-      // Combine rides posted by the user and rides accepted by the user
-      const combinedRides = [...userPostedRidesData, ...acceptedRides];
+      // Combine both ride requests and accepted rides
+      const combinedRides = [...userPostedRidesData, ...userAcceptedRidesData];
       setRideRequests(combinedRides);
     }
   };
