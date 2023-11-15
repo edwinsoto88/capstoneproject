@@ -352,8 +352,6 @@ const handleSearchChange = (event) => {
 {/* Search functionality ended*/}
 
 useEffect(() => {
-  console.log("Fetched Ride Requests:", rideRequests);
-
   const fetchData = async () => {
     try {
       const usersRef = collection(db, 'users');
@@ -367,6 +365,7 @@ useEffect(() => {
         const rideRequestsQuery = query(rideRequestsRef);
         const promise = getDocs(rideRequestsQuery).then((rideRequestsSnapshot) => {
           const rideRequestsData = rideRequestsSnapshot.docs.map((rideRequestDoc) => ({
+            userId: userDoc.id, // Include the userId associated with this ride request
             id: rideRequestDoc.id,
             ...rideRequestDoc.data(),
           }));
@@ -386,19 +385,21 @@ useEffect(() => {
     }
   };
 
-  fetchData(); // Call the fetchData function
-
-}, []); // Make sure to provide the dependencies array
+  fetchData();
+}, []);
 
 const createRectangles = () => {
   return rideRequests
-  .filter((request) => {
-    // Filter logic: return true for items that match the search query
-    return Object.values(request).some(value =>
-      value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  })
-  .map((request) => {
+    .filter((request) => {
+      // Filter logic: return true for items that match the search query
+      return Object.values(request).some((value) => {
+        if (typeof value === 'string' || value instanceof String) {
+          return value.toLowerCase().includes(searchQuery.toLowerCase());
+        }
+        return false;
+      });
+    })
+    .map((request) => {
     return (
       <div className="data-box" key={request.id}>
         <div className="data-set">
@@ -442,44 +443,48 @@ const createRectangles = () => {
 };
 const acceptRide = async (offerId) => {
   try {
-    console.log(`Accepting Ride: ${offerId}`);
-    console.log("rideRequestSnapshot:", rideRequestSnapshot);
+    console.log('Received offerId:', offerId); // Log the received offerId
 
+    // Fetch the current user
     const user = auth.currentUser;
     if (!user) {
       console.log('User not logged in');
       return;
     }
 
-    const uid = user.uid;
+    const usersRef = collection(db, 'users');
+    const usersSnapshot = await getDocs(usersRef);
 
-    const userRideRequestsRef = collection(db, 'users', uid, 'rideRequests');
-    const rideRequestDoc = doc(userRideRequestsRef, offerId);
-    const rideRequestSnapshot = await getDoc(rideRequestDoc);
+    for (const userDoc of usersSnapshot.docs) {
+      const rideRequestsRef = collection(userDoc.ref, 'rideRequests');
+      const rideRequestDoc = doc(rideRequestsRef, offerId);
+      const rideRequestSnapshot = await getDoc(rideRequestDoc);
 
-    if (rideRequestSnapshot.exists()) {
-      const rideRequestData = rideRequestSnapshot.data();
-      if (rideRequestData.status !== 'Accepted') {
-        // Update the status to 'Accepted' in the user's rideRequests
+      if (rideRequestSnapshot.exists()) {
+        // If the ride request exists, proceed to accept it
+        const rideRequestData = rideRequestSnapshot.data();
+
+        // Update the status to 'Accepted' in the ride request
         await updateDoc(rideRequestDoc, { status: 'Accepted' });
 
-        // Store accepted ride details in the user's AcceptedRides sub-collection
-        const userRef = doc(db, 'users', uid);
-        const acceptedRidesRef = collection(userRef, 'AcceptedRides');
+        // Store accepted ride details in the current user's AcceptedRides sub-collection
+        const acceptedRidesRef = collection(doc(db, 'users', user.uid), 'AcceptedRides');
         await addDoc(acceptedRidesRef, rideRequestData);
 
-        console.log('Ride status updated and added to AcceptedRides!');
+        console.log('Ride accepted and added to AcceptedRides of the current user:', user.uid);
         navigate('/MyRides'); // Redirect to MyRides page after accepting the ride
-      } else {
-        console.log('Ride already accepted.');
+        return; // Exit the loop once the ride is accepted
       }
-    } else {
-      console.log('Ride not found.');
     }
+
+    console.log('Ride not found.');
   } catch (error) {
     console.error('Error accepting ride:', error);
   }
 };
+
+
+
 
 
   return (
