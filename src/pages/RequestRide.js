@@ -8,14 +8,14 @@ import { db, auth } from "../firebase"; // Import Firebase authentication and da
 
 export const RequestRide = () => {
 const css = `
-  .footer-section-child {
-    position: relative;
-    top: 0;
-    width: 1612px;
-    left: -100px;
-    background-color: #333;
-    height: 64px;
-  }
+.footer-section-child {
+  position: absolute;
+  top: 0;
+  left: -126px;
+  background-color: #333;
+  width: 1512px;
+  height: 64px;
+}
   .unt-rides {
     position: absolute;
     top: 20px;
@@ -27,7 +27,13 @@ const css = `
     height: 24px;
     color: white;
   }
-  .background-image-icon,
+  .background-image-icon {
+    position: absolute;
+    top: -100;
+    left:  250px;
+    width: 1512px;
+    height: 64px;
+  }
   .footer-section {
     position: absolute;
     top: 1016px;
@@ -37,8 +43,8 @@ const css = `
   }
   .dashboard-box {
     position: absolute;
-    top: 149px;
-    left: 127px;
+    top: 165px;
+    left: 378px;
     width: 1257px;
     height: 717px;
     text-align: left;
@@ -54,10 +60,11 @@ const css = `
     object-fit: cover;
     opacity: 0.9;
   }
+  
   .dashboard-user-interaction {
     position: absolute;
     top: 1.09px;
-    left: 0;
+    left: 230;
     border-radius: 10px;
     background-color: #e2e2e2;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -508,8 +515,10 @@ const css = `
         />
       <div className="dashboard-create-ride-offer">
         <div className="footer-section">
-          <div className="footer-section-child" />
+        <div className="footer-section">
+          <div className="footer-section-child"></div>
           <b className="unt-rides">© 2023 UNT Rides</b>
+        </div>
         </div>
         <div className="dashboard-box">
           <div className="dashboard-border">

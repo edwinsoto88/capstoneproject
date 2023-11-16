@@ -7,6 +7,14 @@ import { useJsApiLoader, GoogleMap, Marker, Polyline } from '@react-google-maps/
 
 export const AvailableRides = () => {
   const css = `
+  .footer-section-child {
+    position: absolute;
+    top: 0;
+    left: -126px;
+    background-color: #333;
+    width: 1512px;
+    height: 64px;
+  }
   .mask-group {
     position: relative;
     width: 100%;
@@ -22,16 +30,16 @@ export const AvailableRides = () => {
     font-size: 16px;
     color: #fff;
     font-family: Inter;
-    left: 125px;
+    left: 400px;
     top: 120px;
   }
   
   .background-image-icon {
     position: absolute;
-    top: 0;
+    top: -43px;
     width: 1512px;
     height: 100%;
-    left: 0px;
+    left: 250px;
     object-fit: cover;
     background-image: url("/Images/backgroundImage.png");
     background-size: cover;
@@ -39,14 +47,7 @@ export const AvailableRides = () => {
     opacity: 0.9;
   }
   
-  .footer-section-child {
-    position: absolute;
-    top: 0;
-    left: 0px;
-    background-color: #333;
-    width: 1512px;
-    height: 64px;
-  }
+
   
   .unt-rides {
     position: absolute;
@@ -110,7 +111,7 @@ export const AvailableRides = () => {
   
   .create-ride-offer {
     position: absolute;
-    top: 45px;
+    top: px;
     left: 945px;
     width: 162px;
     height: 47px;
