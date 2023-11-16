@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { collection, query, onSnapshot, addDoc, getDoc, doc, getDocs, updateDoc} from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
+import { useJsApiLoader, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 
 
 export const AvailableRides = () => {

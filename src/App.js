@@ -13,6 +13,7 @@ import { MyRides } from "./pages/MyRides";
 import { Map } from "./pages/Map"; // Import the Map component
 import { ViewMap } from "./pages/ViewMap"; // Import the Map component
 import { Route, Routes } from "react-router-dom"
+import Modal from './pages/Modal';
 
 function App() {
   return (
@@ -28,8 +29,9 @@ function App() {
           <Route path="/RideHistory" element={<RideHistory />} />
           <Route path="/AvailableRides" element={<AvailableRides />} />
           <Route path="/MyRides" element={<MyRides />} />
-          <Route path="/map" element={<Map />} /> {/* Add route for Map */}
-          <Route path="/Viewmap" element={<ViewMap />} /> {/* Add route for Map */}
+          <Route path="/map" element={<Map />} />
+          <Route path="/Viewmap" element={<ViewMap />} /> 
+          <Route path="/Modal" element={<Modal />} />
         </Routes>
       </div>
     </>

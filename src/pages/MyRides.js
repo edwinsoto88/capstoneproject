@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { collection, query, getDocs, where } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import your Firebase configuration
 import { Map } from "./Map"; // Ensure this import is correct
+import { useJsApiLoader } from '@react-google-maps/api';
+import Modal from './Modal'; // Adjust the path as per your folder structure
 
 export const MyRides = () => {
 
@@ -312,20 +314,40 @@ export const MyRides = () => {
 }
 
   `;
-  
+  const [mapData, setMapData] = useState({ terminal: '', destination: '' });
+
   const [rideRequests, setRideRequests] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-{/* Search functionality started*/}
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRideForMap, setSelectedRideForMap] = useState(null);
+
 const handleSearchChange = (event) => {
   setSearchQuery(event.target.value);
 };
 
-{/* Search functionality ended*/}
+const handleViewMap = (ride) => {
+  setSelectedRideForMap(ride);
+  setIsModalOpen(true);
+};
 
+const handleCloseModal = () => {
+  setIsModalOpen(false);
+  setSelectedRideForMap(null);
+};
 
-
+const createRideElements = () => {
+  // Assuming rides is an array of ride objects
+  return rideRequests.map((ride, index) => (
+    <Modal show={isModalOpen} handleClose={handleCloseModal}>
+        <Map 
+          terminal={selectedRideForMap?.terminal} 
+          destination={selectedRideForMap?.destination} 
+        />
+      </Modal>
+  ));
+};
 
 useEffect(() => {
   const fetchData = async () => {
@@ -383,6 +405,9 @@ useEffect(() => {
             <div className="label"></div>
             <div className="value">{request.terminal}</div>
           </div>
+          <div className="map-container">
+        {/* Pass terminal and destination to Map component */}
+      </div>
           <div className="data-item destination">
             <div className="label"></div>
             <div className="value">{request.destination}</div>
@@ -400,14 +425,13 @@ useEffect(() => {
             <div className="value">{request.time}</div>
           </div>
             <div className="data-item" key={request.id}>
-        {/* ... [ride data display code] */}
-        {/*<button className="viewmap" onClick={() => setSelectedRide(request)}>View Map</button>*/}
+       <button className="viewmap" onClick={() => setSelectedRide(request)}>View Map</button>
       </div>
           </div>
           {selectedRide && (
   <Map 
-    terminal={selectedRide.terminal} 
-    destination={selectedRide.destination} 
+    terminal={request.terminal} 
+    destination={request.destination} 
   />
 )}        </div>
       );

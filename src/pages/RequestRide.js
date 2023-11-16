@@ -335,8 +335,9 @@ const css = `
   .input-field:focus {
     border-color: #007bff;
   }
-  
+ 
   `;
+  
   const [rideRequestData, setRideRequestData] = useState({
     name: "",
     terminal: "",
@@ -348,7 +349,14 @@ const css = `
   });
 
   const [message, setMessage] = useState('');
-
+  useEffect(() => {
+    // Only initialize Autocomplete when Google Maps script has loaded
+    if (window.google) {
+      new window.google.maps.places.Autocomplete(terminalRef.current);
+      new window.google.maps.places.Autocomplete(destinationRef.current);
+    }
+  }, []);
+  
   useEffect(() => {
     // Check if the user is authenticated
     const user = auth.currentUser;
@@ -377,7 +385,9 @@ const css = `
     };
   }, []);
   
-  
+  const terminalRef = useRef(null);
+  const destinationRef = useRef(null);
+
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -539,25 +549,27 @@ const css = `
             pattern="[A-Za-z\s]+" // Allow alphabets and spaces
           />
           <input
-            type="text"
-            className="terminal"
-            name="terminal"
-            placeholder="Terminal"
-            value={rideRequestData.terminal}
-            onChange={handleInputChange}
-            required // Make the field compulsory
-            pattern="[A-Za-z0-9\s\W]+" // Allow letters, numbers, spaces, and symbols
-          />
-          <input
-            type="text"
-            className="destination"
-            name="destination"
-            placeholder="Destination"
-            value={rideRequestData.destination}
-            onChange={handleInputChange}
-            required // Make the field compulsory
-            pattern="[A-Za-z0-9\s\W]+" // Allow letters, numbers, spaces, and symbols
-          />
+  type="text"
+  className="terminal"
+  name="terminal"
+  placeholder="Terminal"
+  value={rideRequestData.terminal}
+  onChange={handleInputChange}
+  ref={terminalRef} // Add this line
+  required
+/>
+
+<input
+  type="text"
+  className="destination"
+  name="destination"
+  placeholder="Destination"
+  value={rideRequestData.destination}
+  onChange={handleInputChange}
+  ref={destinationRef} // Add this line
+  required
+/>
+
           <input
             type="number" // Use type="number" to enforce numbers
             className="available-seats"

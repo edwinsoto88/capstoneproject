@@ -5,7 +5,7 @@ import { db, auth } from "../firebase"; // Import your Firebase configuration
 
 const center = { lat: 33.2148, lng: -97.1331 };
 
-export const Map = () => {
+export const Map = ({ terminal, destination }) => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries: ['places'],
@@ -53,27 +53,23 @@ export const Map = () => {
       });
     }
   };
-
-  /*useEffect(() => {
-    if (isLoaded && terminal && destination) {
+  useEffect(() => { 
+  if (isLoaded) {
+    // If terminal and destination props are provided, auto-populate or calculate route
+    if (terminal && destination) {
+      originRef.current.value = terminal;
+      destinationRef.current.value = destination;
       calculateRoute();
     }
-  }, [isLoaded, terminal, destination]); 
-    autoFillAddress(originRef);
-    autoFillAddress(destinationRef);
-  }, [isLoaded]);
+  }
+}, [isLoaded, terminal, destination]);
 
-  async function calculateRoute() {
-    if (originRef.current.value === '' || destinationRef.current.value === '') {
-      return;
-    }
-    */  
-    useEffect(() => {
-      if (isLoaded) {
-          autoFillAddress(originRef);
-          autoFillAddress(destinationRef);
-      }
-    }, [isLoaded]);
+useEffect(() => {
+  if (isLoaded) {
+      autoFillAddress(originRef);
+      autoFillAddress(destinationRef);
+  }
+}, [isLoaded]);
     
     async function calculateRoute() {
       if (originRef.current.value === '' || destinationRef.current.value === '') {
@@ -202,7 +198,7 @@ export const Map = () => {
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <h2>Where to Next?</h2>
+        <h2>Route Details</h2>
         <input
           type="text"
           ref={originRef}
