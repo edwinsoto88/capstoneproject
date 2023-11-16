@@ -167,7 +167,7 @@ export const MyRides = () => {
     width: 1106.9px;
     height: 60.1px;
   }
-  .name, .terminal, .destination, .available-seats, .requestType, .date, .time, .ViewMap {
+  .name, .terminal, .destination, .available-seats, .requestType, .date, .time, .ViewMap, button ViewMap {
     position: absolute;
     display: flex;
     align-items: center;
@@ -176,7 +176,7 @@ export const MyRides = () => {
     z-index: 2;
     top: 5px;
   }
-  
+
   .name { 
     left: 50px; 
     width: 100px; 
@@ -208,20 +208,27 @@ export const MyRides = () => {
   }
   
   .time { 
-    left: 915px; 
+    left: 950px; 
     width: 100px; 
   }
 
-  .ViewMap {
-    left: 1075px;
-    width: 108px;
-  }
-
-  .viewmap{
-    left: 1075px;
-    width: 109px;
-  }
+  .ViewMap 
+  {
+    position: absolute;
+    top: 8px; /* Align with the top position of other data items */
+    left: 1094px; /* Adjust the left position to align with the last column */
+    font-size: 12px;
+    color: #fff;
+  } 
   
+  .viewMap {
+    position: absolute;
+    top: 17px; /* Align with the top position of other data items */
+    left: 1090px; /* Adjust the left position to align with the last column */
+    font-size: 12px;
+    color: #fff;
+  }
+ 
   .rectangle-parent {
     position: absolute;
     top: 95px;
@@ -424,9 +431,14 @@ useEffect(() => {
             <div className="label"></div>
             <div className="value">{request.time}</div>
           </div>
-            <div className="data-item" key={request.id}>
-       <button className="viewmap" onClick={() => setSelectedRide(request)}>View Map</button>
+            <div className="data-item">
+            <div className="label"></div>
+            <div>
+            </div>
       </div>
+      <div className="data-item viewMap">
+      <button onClick={() => setSelectedRide(request)}>View Map</button>
+</div>
           </div>
           {selectedRide && (
   <Map 
