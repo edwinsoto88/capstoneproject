@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useJsApiLoader } from '@react-google-maps/api';
 import { collection, query, onSnapshot, addDoc, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
+import ReactDatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 
@@ -209,6 +211,7 @@ const css = `
   align-items: center;
   justify-content: center;
   text-align: center;
+  font-size: 14px;
 }
 
 .available-seats {
@@ -219,17 +222,36 @@ const css = `
 }
 
 .date {
-  top: 338px; /* New position */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  outline: none;
+  transition: border-color 0.3s;
+  top: 323px; /* New position */
   left: 2px;
   width: 261.5px;
   height: 54.7px;
 }
 
+.date:hover,
+.date:focus {
+  border-color: #007bff;
+}
+
 .time{
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  outline: none;
+  transition: border-color 0.3s;
   top: 338px; /* New position */
-  left: 264.7px;
-  width: 261.5px;
-  height: 54.7px;
+  left: 263.5px;
+  width: 262px;
+  height: 55px;
+}
+.time:hover,
+.time:focus {
+  border-color: #007bff;
 }
 
 .destination,
@@ -238,7 +260,7 @@ const css = `
   top: 167.43px;
   left: 1.08px;
   width: 523px;
-  height: 54.5px;
+  height: 54.7px;
 }
 
 .name,
@@ -246,23 +268,33 @@ const css = `
   top: 82px;
   left: 2px;
   width: 523px;
-  height: 53.8px;
+  height: 54.7px;
 }
 
 .name {
   top: -5px; /* Adjust the value to move it up or down */
   left: 2.36px;
   width: 523px;
-  height: 54.64px;
+  height: 54.7px;
 }
 
 .terminal {
   /* Add specific styles for .terminal if needed */
+  top: 82px;
 }
 
+.react-datepicker {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: white;
+  top: 373px;
+}
 
-  
-  /* Styles for the request type dropdown */
+.react-datepicker__triangle {
+  display: none; /* Hide the triangle indicator */
+}
 
 
   .request-type {
@@ -276,7 +308,7 @@ const css = `
   .dropdown-container {
     position: relative;
     display: inline-block;
-    top: 432px;
+    top: 412px;
     left: 0px;
   }
   
@@ -318,7 +350,7 @@ const css = `
   }
   
   .submit-ride-offer {
-    z-index: 1;
+
     position: absolute;
     top: 532px;
     left: 173px;
@@ -397,15 +429,16 @@ const css = `
 
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("Submitting:", rideRequestData); // Debugging line
-
-  const inputDate = new Date(rideRequestData.date);
-
-  if (!isDateWithinRange(inputDate)) {
-    alert('Date must be within the next 3 days.');
-    return;
-  }
+    e.preventDefault();
+    console.log("Submitting:", rideRequestData); // Debugging line
+  
+    const inputDate = rideRequestData.date;
+    const inputTime = rideRequestData.time;
+  
+    if (!isDateWithinRange(inputDate, inputTime)) {
+      alert('Date and time must be within the next 72 hours.');
+      return;
+    }
   // Check if the user is authenticated
   const user = auth.currentUser;
 
@@ -413,6 +446,12 @@ const css = `
     // User is not authenticated, handle accordingly (e.g., redirect to login page)
     setMessage("User is not authenticated. Please log in."); // Set the error message
     return; // Return early to prevent further execution
+  }
+
+  let ridePrice = null;
+  if (rideRequestData.requestType === "Offered") {
+    ridePrice = prompt("Please enter the price for the ride:");
+    // Optional: Add additional validation for ridePrice here
   }
 
   // Get the UID of the authenticated user
@@ -438,6 +477,7 @@ const css = `
         time: rideRequestData.time,
         requestType: rideRequestData.requestType,
         status: null,
+        price: ridePrice,
       });
 
       console.log("Ride request saved successfully!");
@@ -480,12 +520,14 @@ const css = `
     return `${month}/${day}/${year}`;
   };
   
-  const isDateWithinRange = (inputDate) => {
-    const today = new Date();
-    const maxDate = new Date();
-    maxDate.setDate(today.getDate() + 3);
+  const isDateWithinRange = (inputDate, inputTime) => {
+    const now = new Date();
+    const maxDateTime = new Date(now.getTime() + 72 * 60 * 60 * 1000); // Current time + 72 hours
   
-    return inputDate >= today && inputDate <= maxDate;
+    const dateTimeString = `${inputDate} ${inputTime}`;
+    const selectedDateTime = new Date(dateTimeString);
+  
+    return selectedDateTime >= now && selectedDateTime <= maxDateTime;
   };
   
   const formatInputDate = (value) => {
@@ -558,26 +600,26 @@ const css = `
             pattern="[A-Za-z\s]+" // Allow alphabets and spaces
           />
           <input
-  type="text"
-  className="terminal"
-  name="terminal"
-  placeholder="Terminal"
-  value={rideRequestData.terminal}
-  onChange={handleInputChange}
-  ref={terminalRef} // Add this line
-  required
-/>
+            type="text"
+            className="terminal"
+            name="terminal"
+            placeholder="Terminal"
+            value={rideRequestData.terminal}
+            onChange={handleInputChange}
+            ref={terminalRef} // Add this line
+            required
+          />
 
-<input
-  type="text"
-  className="destination"
-  name="destination"
-  placeholder="Destination"
-  value={rideRequestData.destination}
-  onChange={handleInputChange}
-  ref={destinationRef} // Add this line
-  required
-/>
+          <input
+            type="text"
+            className="destination"
+            name="destination"
+            placeholder="Destination"
+            value={rideRequestData.destination}
+            onChange={handleInputChange}
+            ref={destinationRef} // Add this line
+            required
+          />
 
           <input
             type="number" // Use type="number" to enforce numbers
@@ -590,7 +632,7 @@ const css = `
             min="0" // Set a minimum value (0)
             max="7" // Set a maximum value (7)
           />
-          <input
+      {/*}    <input
             type="text"
             className="date"
             name="date"
@@ -600,6 +642,17 @@ const css = `
             required
             pattern="\d{2}/\d{2}/\d{4}"
             maxLength="10"
+  />*/}
+          <ReactDatePicker
+            type="text"
+            selected={rideRequestData.date ? new Date(rideRequestData.date) : null}
+            onChange={(date) => setRideRequestData({ ...rideRequestData, date: formatDate(date) })}
+            className="date"
+            name="date"
+            value={rideRequestData.date}
+            placeholderText="MM/DD/YYYY"
+            dateFormat="MM/dd/yyyy"
+            required
           />
           <input
             type="time" // Specify the type as 'time'
