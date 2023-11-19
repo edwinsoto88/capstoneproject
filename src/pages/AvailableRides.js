@@ -378,7 +378,12 @@ useEffect(() => {
       });
 
       const allRideRequests = await Promise.all(promises);
-      const flattenedRideRequests = allRideRequests.flat();
+      const flattenedRideRequests = allRideRequests.flat().map(request => {
+        const requestDateTime = new Date(`${request.date} ${request.time}`);
+        const expiryDateTime = new Date(requestDateTime.getTime() + 2 * 60 * 60 * 1000); // Adds 2 hours
+        return { ...request, expiryDateTime };
+      });
+
 
       console.log('Fetched Ride Requests:', flattenedRideRequests);
       setRideRequests(flattenedRideRequests);
@@ -391,7 +396,9 @@ useEffect(() => {
 }, []);
 
 const createRectangles = () => {
+  const now = new Date();
   return rideRequests
+    .filter(request => now < request.expiryDateTime)
     .filter((request) => {
       // Filter logic: return true for items that match the search query
       return Object.values(request).some((value) => {
