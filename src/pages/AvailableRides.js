@@ -169,12 +169,13 @@ export const AvailableRides = () => {
     justify-content: space-around;
     background-color: grey; /* Set the background color to grey */
     z-index: 1; /* Set a z-index value for the .rectangle-parent */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
   }
   
   /* ... other CSS ... */
 
-  .name, .terminal, .destination, .available-seats, .requestType, .date, .time {
-    position: absolute;
+  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .accept-ride {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -183,46 +184,14 @@ export const AvailableRides = () => {
     top: 5px;
   }
   
-  .name { 
-    left: 50px; 
-    width: 100px; 
-  }
-  
-  .requestType { 
-    left: 198px; 
-    width: 100px; 
-  }
-  
-  .terminal { 
-    left: 323px; 
-    width: 150px; /* More space for terminal */
-  }
-  
-  .destination { 
-    left: 526px; 
-    width: 150px; /* More space for destination */
-  }
-  
-  .available-seats { 
-    left: 695px; 
-    width: 100px; 
-  }
-  
-  .date { 
-    left: 810px; 
-    width: 100px; 
-  }
-  
-  .time { 
-    left: 915px; 
-    width: 100px; 
-  }
-  
-  .accept-ride {
-    left: 864px; 
-    width: 120px; 
-  }
-  
+  .name { width: 100%; } /* Adjusted for grid layout */
+  .requestType { width: 100%; }
+  .terminal { width: 100%; } /* More space for terminal */
+  .destination { width: 100%; } /* More space for destination */
+  .available-seats { width: 100%; }
+  .date { width: 100%; }
+  .time { width: 100%; }
+  .price { width: 100%; }
   /* Adjust the width of .rectangle-parent if necessary */
   .rectangle-parent {
     width: 1257px;
@@ -259,6 +228,8 @@ export const AvailableRides = () => {
     border: 1px solid #000;
     margin-bottom: 3px;
     background-color: #333; /* Background color for better contrast */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
     color: white; /* Text color */
     position: relative;
     align-items: flex-start; /* Center vertically */
@@ -266,7 +237,7 @@ export const AvailableRides = () => {
   }
   
   .data-set {
-    display: flex;
+    display: contents;
     flex-direction: row; /* Arrange data items horizontally */
     flex-wrap: nowrap; /* Prevent wrapping to the next line */
     align-items: center;
@@ -281,7 +252,7 @@ export const AvailableRides = () => {
     align-items: center;
     text-align: center;
     justify-content: center;
-    transform: translateY(-10px); 
+    transform: translateY(-6px); 
   }
   
   .label {
@@ -325,8 +296,8 @@ export const AvailableRides = () => {
   
   .accept-ride {
     position: absolute;
-    top: 17px; /* Align with the top position of other data items */
-    left: 1050px; /* Adjust the left position to align with the last column */
+    top: 3px; /* Align with the top position of other data items */
+    left: 1120px; /* Adjust the left position to align with the last column */
     font-size: 12px;
     color: #fff;
   }
@@ -440,6 +411,10 @@ const createRectangles = () => {
             <div className="label"></div>
             <div className="value">{request.time}</div>
           </div>
+          <div className="data-item price">
+              <div className="label"></div>
+              <div className="value">{request.price ? `$${request.price}` : 'N/A'}</div>
+          </div>
           <div className="data-item accept-ride">
   <button onClick={() => acceptRide(request.id)}>
     Accept Ride
@@ -537,6 +512,7 @@ const acceptRide = async (offerId) => {
             <div className="available-seats">Seats</div>
             <div className="date">Date</div>
             <div className="time">Time</div>
+            <div className="price">Price</div>
           </div>
           <div className="myrides-box">
             <div className="scroll-frame">
