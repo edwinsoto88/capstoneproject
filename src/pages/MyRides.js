@@ -376,6 +376,7 @@ export const MyRides = () => {
           (doc) => ({
             id: doc.id,
             ...doc.data(),
+            requestType: "Accepted",
           })
         );
 
