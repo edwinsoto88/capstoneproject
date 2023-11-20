@@ -21,14 +21,31 @@ export const RequestRide = () => {
     z-index: -1;
   }
 
+ .dashboard-create-ride-offer {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   min-height: 100vh;
+  }
+
   .dashboard-box {
     position: absolute;
-    top: 165px;
-    left: 378px;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 1257px;
     height: 717px;
     text-align: left;
     font-size: 18px;
+    padding-bottom: 20px;
+  }
+
+  .dashboard-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1257px;
+    height: 717px;
   }
   
   .dashboard-user-interaction {
@@ -119,14 +136,6 @@ export const RequestRide = () => {
     text-align: center;
     font-size: 16px;
     color: #7e7e7e;
-  }
-
-  .dashboard-border {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1257px;
-    height: 717px;
   }
 
   .form-fields-create-ride-offe-child,
@@ -351,16 +360,6 @@ export const RequestRide = () => {
   .input-field:hover,
   .input-field:focus {
     border-color: #007bff;
-  }
-
-  .dashboard-create-ride-offer {
-   display: flex;
-   flex-direction: column;
-   min-height: 100vh;
-  }
-
-  .dashboard-box {
-    padding-bottom: 20px;
   }
 
   .footer-section {
