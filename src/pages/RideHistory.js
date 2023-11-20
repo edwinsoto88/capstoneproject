@@ -142,7 +142,7 @@ export const RideHistory = () => {
     width: 1256px;
     height: 63.1px;
   }
-  .terminal, .destination, .available-seats, .requestType, .date, .time, .ViewMap {
+  .terminal, .destination, .available-seats, .requestType, .date, .time, .price {
     position: absolute;
     display: flex;
     align-items: center;
@@ -153,33 +153,37 @@ export const RideHistory = () => {
   }
 
   .requestType { 
-    left: 100px; 
+    left: 90px; 
     width: 100px; 
   }
   
   .terminal { 
-    left: 300px; 
+    left: 275px; 
     width: 150px; /* More space for terminal */
   }
   
   .destination { 
-    left: 500px; 
+    left: 470px; 
     width: 150px; /* More space for destination */
   }
   
   .available-seats { 
-    left: 700px; 
+    left: 655px; 
     width: 100px; 
   }
   
   .date { 
-    left: 900px; 
+    left: 790px; 
     width: 100px; 
   }
   
   .time { 
-    left: 1100px; 
+    left: 960px; 
     width: 100px; 
+  }
+  .price{
+    left : 1100px;
+    width: 100px;
   }
   
   .rectangles {
@@ -272,26 +276,57 @@ export const RideHistory = () => {
   `;
   
   const [rideRequests, setRideRequests] = useState([]);
+  const [selectedRide, setSelectedRide] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
-{/* Search functionality started*/}
-const handleSearchChange = (event) => {
-  setSearchQuery(event.target.value);
-};
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRideForMap, setSelectedRideForMap] = useState(null);
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleViewMap = (ride) => {
+    setSelectedRideForMap(ride);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRideForMap(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       const user = auth.currentUser;
       if (user) {
         const uid = user.uid;
-        const rideRequestsRef = collection(db, 'users', uid, 'rideRequests');
-        const rideRequestsQuery = query(rideRequestsRef);
-        const snapshot = await getDocs(rideRequestsQuery);
-        const requestsData = snapshot.docs.map((doc) => ({
+
+        // Fetch ride requests for the current user
+        const userRideRequestsRef = collection(db, "users", uid, "rideRequests");
+        const userPostedRidesQuery = query(userRideRequestsRef);
+        const userPostedRidesSnapshot = await getDocs(userPostedRidesQuery);
+        const userPostedRidesData = userPostedRidesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        setRideRequests(requestsData);
+
+        // Fetch accepted rides for the current user
+        const userAcceptedRidesRef = collection(db, "users", uid, "AcceptedRides");
+        const userAcceptedRidesSnapshot = await getDocs(userAcceptedRidesRef);
+        const userAcceptedRidesData = userAcceptedRidesSnapshot.docs.map(
+          (doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })
+        );
+
+        // Combine both ride requests and accepted rides
+        const combinedRides = [
+          ...userPostedRidesData,
+          ...userAcceptedRidesData,
+        ];
+        setRideRequests(combinedRides);
       }
     };
 
@@ -334,6 +369,12 @@ const handleSearchChange = (event) => {
             <div className="label"></div>
             <div className="value">{request.time}</div>
           </div>
+          <div className="data-item price">
+              <div className="label"></div>
+              <div className="value">
+                {request.price ? `$${request.price}` : "N/A"}
+              </div>
+          </div>
           </div>
         </div>
       );
@@ -372,6 +413,7 @@ const handleSearchChange = (event) => {
               <div className="available-seats">Seats</div>
               <div className="date">Date</div>
               <div className="time">Time</div>
+              <div className="price">Price</div>
             </div>
             <div className="myrides-box">
               <div className="scroll-frame">
