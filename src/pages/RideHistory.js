@@ -301,7 +301,7 @@ export const RideHistory = () => {
       const user = auth.currentUser;
       if (user) {
         const uid = user.uid;
-
+  
         // Fetch ride requests for the current user
         const userRideRequestsRef = collection(db, "users", uid, "rideRequests");
         const userPostedRidesQuery = query(userRideRequestsRef);
@@ -310,7 +310,7 @@ export const RideHistory = () => {
           id: doc.id,
           ...doc.data(),
         }));
-
+  
         // Fetch accepted rides for the current user
         const userAcceptedRidesRef = collection(db, "users", uid, "AcceptedRides");
         const userAcceptedRidesSnapshot = await getDocs(userAcceptedRidesRef);
@@ -318,9 +318,10 @@ export const RideHistory = () => {
           (doc) => ({
             id: doc.id,
             ...doc.data(),
+            requestType: "Accepted" // Set requestType to "Accepted" for accepted rides
           })
         );
-
+  
         // Combine both ride requests and accepted rides
         const combinedRides = [
           ...userPostedRidesData,
@@ -329,7 +330,7 @@ export const RideHistory = () => {
         setRideRequests(combinedRides);
       }
     };
-
+  
     fetchData();
   }, []);
 
