@@ -655,12 +655,7 @@ export const RequestRide = () => {
                         ? new Date(rideRequestData.date)
                         : null
                     }
-                    onChange={(date) =>
-                      setRideRequestData({
-                        ...rideRequestData,
-                        date: formatDate(date),
-                      })
-                    }
+                    onChange={(date) => setRideRequestData({ ...rideRequestData, date: formatDate(date) })}
                     className="date"
                     name="date"
                     value={rideRequestData.date}
