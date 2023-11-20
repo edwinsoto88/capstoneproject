@@ -354,8 +354,11 @@ export const MyRides = () => {
   };
 
   const handleViewMap = (ride) => {
-    setSelectedRideForMap(ride);
-    setIsModalOpen(true);
+    localStorage.setItem('mapData', JSON.stringify({ 
+      terminal: ride.terminal,
+      destination: ride.destination
+    }));
+    window.open('/map-view', '_blank', 'width=600,height=400');
   };
 
   const handleCloseModal = () => {
@@ -467,7 +470,7 @@ export const MyRides = () => {
  
               </div>
               <div className="data-item viewMap">
-                <button onClick={() => setSelectedRide(request)}>
+                <button onClick={() => handleViewMap(request)}>
                 Map
                  </button>
                </div>
@@ -477,12 +480,6 @@ export const MyRides = () => {
                  </button>
               </div>
             </div>
-            {selectedRide && (
-              <Map
-                terminal={request.terminal}
-                destination={request.destination}
-              />
-            )}{" "}
           </div>
         );
       });

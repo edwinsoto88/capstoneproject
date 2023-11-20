@@ -30,7 +30,7 @@ function App() {
           <Route path="/AvailableRides" element={<AvailableRides />} />
           <Route path="/MyRides" element={<MyRides />} />
           <Route path="/map" element={<Map />} />
-          <Route path="/Viewmap" element={<ViewMap />} /> 
+          <Route path="/ViewMap" element={<ViewMap />} />
           <Route path="/Modal" element={<Modal />} />
         </Routes>
       </div>
