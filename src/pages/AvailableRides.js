@@ -358,11 +358,12 @@ export const AvailableRides = () => {
   }, []);
 
   const createRectangles = () => {
+    const currentUser = auth.currentUser;
     const now = new Date();
+  
     return rideRequests
       .filter((request) => now < request.expiryDateTime)
       .filter((request) => {
-        // Filter logic: return true for items that match the search query
         return Object.values(request).some((value) => {
           if (typeof value === "string" || value instanceof String) {
             return value.toLowerCase().includes(searchQuery.toLowerCase());
@@ -371,6 +372,7 @@ export const AvailableRides = () => {
         });
       })
       .map((request) => {
+        const isOwnRide = currentUser && request.userId === currentUser.uid;
         return (
           <div className="data-box" key={request.id}>
             <div className="data-set">
@@ -409,10 +411,14 @@ export const AvailableRides = () => {
                 </div>
               </div>
               <div className="data-item accept-ride">
+              {isOwnRide ? (
+                <button disabled>Your Ride</button>
+              ) : (
                 <button onClick={() => acceptRide(request.id)}>
                   Accept Ride
                 </button>
-              </div>
+              )}
+            </div>
             </div>
           </div>
         );
