@@ -508,11 +508,11 @@ export const RequestRide = () => {
         });
       } else {
         console.error("User document does not exist.");
-        setMessage("Error creating ride. Please try again."); // Set the error message
+        alert("Error creating ride. Please try again."); // Set the error message
       }
     } catch (error) {
       console.error("Error adding ride request: ", error);
-      setMessage(
+      alert(
         "An error occurred while creating the ride. Please try again later."
       ); // Set the error message
     }
