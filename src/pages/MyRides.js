@@ -6,6 +6,7 @@ import { db, auth } from "../firebase"; // Import your Firebase configuration
 import { Map } from "./Map"; // Ensure this import is correct
 import { useJsApiLoader } from "@react-google-maps/api";
 import Modal from "./Modal"; // Adjust the path as per your folder structure
+import { doc, updateDoc } from "firebase/firestore"; 
 
 export const MyRides = () => {
   const css = `
@@ -141,7 +142,7 @@ export const MyRides = () => {
     height: 60.1px;
   }
 
-  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .ViewMap, button ViewMap {
+  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .cancelRide, .ViewMap, button ViewMap {
     position: absolute;
     display: flex;
     align-items: center;
@@ -188,6 +189,10 @@ export const MyRides = () => {
   .price{
     left: 1000px; 
     width: 100px; 
+  }
+
+  .cancelRide {
+    left: 1160px; /* Adjust the left position to align with the last column */
   }
 
   .ViewMap 
@@ -324,6 +329,30 @@ export const MyRides = () => {
     setSearchQuery(event.target.value);
   };
 
+  const cancelRide = async (ride) => {
+    try {
+      // Reference to the specific ride in Firestore
+      const rideRef = doc(db, "users", auth.currentUser.uid, "rideRequests", ride.id);
+ 
+      // Update the ride in Firestore to indicate it's canceled
+      // You could also use deleteDoc(rideRef) if you prefer to delete the entry
+      await updateDoc(rideRef, {
+        status: "canceled" // or any other status flag you use in your application
+      });
+ 
+      // Update the local state to reflect the change
+      setRideRequests((prevRides) =>
+        prevRides.map((r) => (r.id === ride.id ? { ...r, status: "canceled" } : r))
+      );
+ 
+      // Optionally, you can provide user feedback here (like a success message)
+    } catch (error) {
+      // Handle any errors that occur during the update
+      console.error("Error canceling the ride: ", error);
+      // Optionally, provide user feedback here (like an error message)
+    }
+  };
+
   const handleViewMap = (ride) => {
     setSelectedRideForMap(ride);
     setIsModalOpen(true);
@@ -435,12 +464,17 @@ export const MyRides = () => {
               </div>
               <div className="data-item">
                 <div className="label"></div>
-                <div></div>
+ 
               </div>
               <div className="data-item viewMap">
                 <button onClick={() => setSelectedRide(request)}>
-                  View Map
-                </button>
+                Map
+                 </button>
+               </div>
+               <div className="data-item cancelRide">
+                 <button onClick={() => cancelRide(request)}>
+                   Cancel
+                 </button>
               </div>
             </div>
             {selectedRide && (
@@ -501,7 +535,6 @@ export const MyRides = () => {
               <div className="date">Date</div>
               <div className="time">Time</div>
               <div className="price">Price</div>
-              <b className="ViewMap">View Map</b>
             </div>
             <div className="myrides-box">
               <div className="scroll-frame">
