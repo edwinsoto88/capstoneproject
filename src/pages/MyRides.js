@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { collection, query, getDocs, where } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import your Firebase configuration
 import { Map } from "./Map"; // Ensure this import is correct
-import { useJsApiLoader } from '@react-google-maps/api';
-import Modal from './Modal'; // Adjust the path as per your folder structure
+import { useJsApiLoader } from "@react-google-maps/api";
+import Modal from "./Modal"; // Adjust the path as per your folder structure
 
 export const MyRides = () => {
-
   const css = `
   .footer-section-child {
     position: absolute;
@@ -270,59 +269,59 @@ export const MyRides = () => {
     height: 680px;
   }
 
-.scroll-frame {
-  width: 100%;
-  height: 685px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-}
+  .scroll-frame {
+    width: 100%;
+    height: 685px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+  }
 
-.data-box {
-  width: 100%;
-  height: 50px;
-  border: 1px solid #000;
-  margin-bottom: 3px;
-  background-color: #333; /* Background color for better contrast */
-  color: white; /* Text color */
-  position: relative;
-  align-items: flex-start; /* Center vertically */
-  justify-content: center;
-}
+  .data-box {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #000;
+    margin-bottom: 3px;
+    background-color: #333; /* Background color for better contrast */
+    color: white; /* Text color */
+    position: relative;
+    align-items: flex-start; /* Center vertically */
+    justify-content: center;
+  }
 
-.data-set {
-  display: flex;
-  flex-direction: row; /* Arrange data items horizontally */
-  flex-wrap: nowrap; /* Prevent wrapping to the next line */
-  align-items: center;
-  justify-content: space-between;
-  width: 100%; /* Expand to fill the available width */
-}
+  .data-set {
+    display: flex;
+    flex-direction: row; /* Arrange data items horizontally */
+    flex-wrap: nowrap; /* Prevent wrapping to the next line */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Expand to fill the available width */
+  }
 
-.data-item {
-  margin: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  transform: translateY(-10px); 
-}
+  .data-item {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    transform: translateY(-10px); 
+  }
 
-.label {
-  font-weight: bold;
-}
+  .label {
+    font-weight: bold;
+  }
 
-.value {
-  margin-top: 5px;
-}
+  .value {
+    margin-top: 5px;
+  }
 
-.data-box:hover {
-  background-color: none;
-  box-shadow: 0px 10px 20px 5px rgba(156, 100, 89, 0.8);
-}
+  .data-box:hover {
+    background-color: none;
+    box-shadow: 0px 10px 20px 5px rgba(156, 100, 89, 0.8);
+  }
 
   `;
-  const [mapData, setMapData] = useState({ terminal: '', destination: '' });
+  const [mapData, setMapData] = useState({ terminal: "", destination: "" });
 
   const [rideRequests, setRideRequests] = useState([]);
   const [selectedRide, setSelectedRide] = useState(null);
@@ -331,130 +330,138 @@ export const MyRides = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRideForMap, setSelectedRideForMap] = useState(null);
 
-const handleSearchChange = (event) => {
-  setSearchQuery(event.target.value);
-};
-
-const handleViewMap = (ride) => {
-  setSelectedRideForMap(ride);
-  setIsModalOpen(true);
-};
-
-const handleCloseModal = () => {
-  setIsModalOpen(false);
-  setSelectedRideForMap(null);
-};
-
-const createRideElements = () => {
-  // Assuming rides is an array of ride objects
-  return rideRequests.map((ride, index) => (
-    <Modal show={isModalOpen} handleClose={handleCloseModal}>
-        <Map 
-          terminal={selectedRideForMap?.terminal} 
-          destination={selectedRideForMap?.destination} 
-        />
-      </Modal>
-  ));
-};
-
-useEffect(() => {
-  const fetchData = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      const uid = user.uid;
-
-      // Fetch ride requests for the current user
-      const userRideRequestsRef = collection(db, 'users', uid, 'rideRequests');
-      const userPostedRidesQuery = query(userRideRequestsRef);
-      const userPostedRidesSnapshot = await getDocs(userPostedRidesQuery);
-      const userPostedRidesData = userPostedRidesSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      // Fetch accepted rides for the current user
-      const userAcceptedRidesRef = collection(db, 'users', uid, 'AcceptedRides');
-      const userAcceptedRidesSnapshot = await getDocs(userAcceptedRidesRef);
-      const userAcceptedRidesData = userAcceptedRidesSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      // Combine both ride requests and accepted rides
-      const combinedRides = [...userPostedRidesData, ...userAcceptedRidesData];
-      setRideRequests(combinedRides);
-    }
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
-  fetchData();
-}, []);
+  const handleViewMap = (ride) => {
+    setSelectedRideForMap(ride);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedRideForMap(null);
+  };
+
+  const createRideElements = () => {
+    // Assuming rides is an array of ride objects
+    return rideRequests.map((ride, index) => (
+      <Modal show={isModalOpen} handleClose={handleCloseModal}>
+        <Map
+          terminal={selectedRideForMap?.terminal}
+          destination={selectedRideForMap?.destination}
+        />
+      </Modal>
+    ));
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const uid = user.uid;
+
+        // Fetch ride requests for the current user
+        const userRideRequestsRef = collection(db, "users", uid, "rideRequests");
+        const userPostedRidesQuery = query(userRideRequestsRef);
+        const userPostedRidesSnapshot = await getDocs(userPostedRidesQuery);
+        const userPostedRidesData = userPostedRidesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        // Fetch accepted rides for the current user
+        const userAcceptedRidesRef = collection(db, "users", uid, "AcceptedRides");
+        const userAcceptedRidesSnapshot = await getDocs(userAcceptedRidesRef);
+        const userAcceptedRidesData = userAcceptedRidesSnapshot.docs.map(
+          (doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          })
+        );
+
+        // Combine both ride requests and accepted rides
+        const combinedRides = [
+          ...userPostedRidesData,
+          ...userAcceptedRidesData,
+        ];
+        setRideRequests(combinedRides);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const createRectangles = () => {
     return rideRequests
-    .filter((request) => {
-      // Filter logic: return true for items that match the search query
-      return Object.values(request).some(value =>
-        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    })
-    .map((request) => {
-      return (
-        <div className="data-box" key={request.id}>
-          <div className="data-set">
-          <div className="data-item name">
-            <div className="label"></div>
-            <div className="value">{request.name}</div>
-          </div>
-          <div className="data-item requestType">
-            <div className="label"></div>
-            <div className="value">{request.requestType}</div>
-          </div>
-          <div className="data-item terminal">
-            <div className="label"></div>
-            <div className="value">{request.terminal}</div>
-          </div>
-          <div className="map-container">
-        {/* Pass terminal and destination to Map component */}
-      </div>
-          <div className="data-item destination">
-            <div className="label"></div>
-            <div className="value">{request.destination}</div>
-          </div>
-          <div className="data-item available-seats">
-            <div className="label"></div>
-            <div className="value">{request.availableSeats}</div>
-          </div>
-          <div className="data-item date">
-            <div className="label"></div>
-            <div className="value">{request.date}</div>
-          </div>
-          <div className="data-item time">
-            <div className="label"></div>
-            <div className="value">{request.time}</div>
-          </div>
-          <div className="data-item price">
-              <div className="label"></div>
-              <div className="value">{request.price ? `$${request.price}` : 'N/A'}</div>
-          </div>
-            <div className="data-item">
-            <div className="label"></div>
-            <div>
+      .filter((request) => {
+        // Filter logic: return true for items that match the search query
+        return Object.values(request).some((value) =>
+          value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      })
+      .map((request) => {
+        return (
+          <div className="data-box" key={request.id}>
+            <div className="data-set">
+              <div className="data-item name">
+                <div className="label"></div>
+                <div className="value">{request.name}</div>
+              </div>
+              <div className="data-item requestType">
+                <div className="label"></div>
+                <div className="value">{request.requestType}</div>
+              </div>
+              <div className="data-item terminal">
+                <div className="label"></div>
+                <div className="value">{request.terminal}</div>
+              </div>
+              <div className="map-container">
+                {/* Pass terminal and destination to Map component */}
+              </div>
+              <div className="data-item destination">
+                <div className="label"></div>
+                <div className="value">{request.destination}</div>
+              </div>
+              <div className="data-item available-seats">
+                <div className="label"></div>
+                <div className="value">{request.availableSeats}</div>
+              </div>
+              <div className="data-item date">
+                <div className="label"></div>
+                <div className="value">{request.date}</div>
+              </div>
+              <div className="data-item time">
+                <div className="label"></div>
+                <div className="value">{request.time}</div>
+              </div>
+              <div className="data-item price">
+                <div className="label"></div>
+                <div className="value">
+                  {request.price ? `$${request.price}` : "N/A"}
+                </div>
+              </div>
+              <div className="data-item">
+                <div className="label"></div>
+                <div></div>
+              </div>
+              <div className="data-item viewMap">
+                <button onClick={() => setSelectedRide(request)}>
+                  View Map
+                </button>
+              </div>
             </div>
-      </div>
-      <div className="data-item viewMap">
-      <button onClick={() => setSelectedRide(request)}>View Map</button>
-</div>
+            {selectedRide && (
+              <Map
+                terminal={request.terminal}
+                destination={request.destination}
+              />
+            )}{" "}
           </div>
-          {selectedRide && (
-  <Map 
-    terminal={request.terminal} 
-    destination={request.destination} 
-  />
-)}        </div>
-      );
-    });
+        );
+      });
   };
-
 
   const generateRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -465,19 +472,11 @@ useEffect(() => {
     return color;
   };
 
-  
-  
-
-
   return (
     <div className="mask-group">
       <style>{css}</style>
       <img className="background-image-icon" alt="" />
       <div className="dashboard-create-ride-offer">
-        <div className="footer-section">
-          <div className="footer-section-child"></div>
-          <b className="unt-rides">© 2023 UNT Rides</b>
-        </div>
         <div className="dashboard-box">
           <div className="dashboard-border">
             <div className="dashboard-user-interaction"></div>
@@ -493,9 +492,9 @@ useEffect(() => {
             </Link>
             <div className="search-bar">
               <div className="search-bar-child"></div>
-              <input 
-                type="text" 
-                className="search-rides" 
+              <input
+                type="text"
+                className="search-rides"
                 placeholder="Search Rides"
                 value={searchQuery}
                 onChange={handleSearchChange} // Handle input changes
@@ -523,9 +522,13 @@ useEffect(() => {
           </div>
         </div>
       </div>
+      <div className="footer-section">
+        <div className="footer-section-child">
+          <b className="unt-rides">© 2023 UNT Rides</b>
+        </div>
+      </div>
     </div>
   );
-  };
-  
+};
 
 export default MyRides;

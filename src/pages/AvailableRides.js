@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { collection, query, onSnapshot, addDoc, getDoc, doc, getDocs, updateDoc} from "firebase/firestore";
+import { collection, query, onSnapshot, addDoc, getDoc, doc, getDocs, updateDoc, } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
-import { useJsApiLoader, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
-
+import { useJsApiLoader, GoogleMap, Marker, Polyline, } from "@react-google-maps/api";
 
 export const AvailableRides = () => {
   const css = `
-  .footer-section-child {
-    position: absolute;
-    top: 0;
-    left: -126px;
-    background-color: #333;
-    width: 1512px;
-    height: 64px;
-  }
   .mask-group {
     position: relative;
     width: 100%;
@@ -24,50 +15,19 @@ export const AvailableRides = () => {
     color: #fff;
     font-family: Inter;
   }
-  .dashboard-box {
-    position: relative;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    font-family: Inter;
-    left: 400px;
-    top: 120px;
-  }
-  
-  .background-image-icon {
-    position: absolute;
-    top: -43px;
-    width: 1512px;
-    height: 100%;
-    left: 250px;
-    object-fit: cover;
-    background-image: url("/Images/backgroundImage.png");
-    background-size: cover;
-    background-position: center;
-    opacity: 0.9;
-  }
-  
 
-  
-  .unt-rides {
+  .dashboard-box {
     position: absolute;
-    top: 20px;
-    left: 659px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 151px;
-    height: 24px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1257px;
+    height: 717px;
+    text-align: left;
+    font-size: 18px;
+    padding-bottom: 20px;
   }
-  
-  .footer-section {
-    position: absolute;
-    top: 1016px;
-    left: 0;
-    width: 1440px;
-    height: 64px;
-  }
-  
+
   .dashboard-user-interaction {
     position: absolute;
     top: 1.09px;
@@ -79,6 +39,19 @@ export const AvailableRides = () => {
     box-sizing: border-box;
     width: 1257px;
     height: 715.91px;
+  }
+  
+ .background-image-icon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/Images/backgroundImage.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.9;
+    z-index: -1;
   }
   
   .mini-nav-border {
@@ -158,6 +131,7 @@ export const AvailableRides = () => {
     height: 30.88px;
     background-color: transparent;
   }
+
   .rectangle-parent {
     position: relative;
     top: 95px;
@@ -172,8 +146,6 @@ export const AvailableRides = () => {
     display: grid;
     grid-template-columns: 1fr 1fr 1.5fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
   }
-  
-  /* ... other CSS ... */
 
   .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .accept-ride {
     display: flex;
@@ -196,11 +168,6 @@ export const AvailableRides = () => {
   .rectangle-parent {
     width: 1257px;
   }
-  
-  /* ... other CSS ... */
-  
-
-  
   
   .myrides-box {
     flex: 1;
@@ -307,179 +274,199 @@ export const AvailableRides = () => {
     top: 120px;
   }
 
-  
+  .footer-section {
+    position: absolute;
+    top: 1016px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background-color: #333;
+  }
+
+  .footer-section-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .unt-rides {
+    color: white;
+  }
   
 `;
 
-const [rideRequests, setRideRequests] = useState([]);
+  const [rideRequests, setRideRequests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [acceptedRides, setAcceptedRides] = useState([]); // State for accepted rides
   const navigate = useNavigate();
 
-
-{/* Search functionality started*/}
-const handleSearchChange = (event) => {
-  setSearchQuery(event.target.value);
-};
-
-{/* Search functionality ended*/}
-
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const usersRef = collection(db, 'users');
-      const usersQuery = query(usersRef);
-      const userSnapshots = await getDocs(usersQuery);
-
-      const promises = [];
-
-      userSnapshots.forEach((userDoc) => {
-        const rideRequestsRef = collection(userDoc.ref, 'rideRequests');
-        const rideRequestsQuery = query(rideRequestsRef);
-        const promise = getDocs(rideRequestsQuery).then((rideRequestsSnapshot) => {
-          const rideRequestsData = rideRequestsSnapshot.docs.map((rideRequestDoc) => ({
-            userId: userDoc.id, // Include the userId associated with this ride request
-            id: rideRequestDoc.id,
-            ...rideRequestDoc.data(),
-          }));
-          return rideRequestsData;
-        });
-
-        promises.push(promise);
-      });
-
-      const allRideRequests = await Promise.all(promises);
-      const flattenedRideRequests = allRideRequests.flat().map(request => {
-        const requestDateTime = new Date(`${request.date} ${request.time}`);
-        const expiryDateTime = new Date(requestDateTime.getTime() + 2 * 60 * 60 * 1000); // Adds 2 hours
-        return { ...request, expiryDateTime };
-      });
-
-
-      console.log('Fetched Ride Requests:', flattenedRideRequests);
-      setRideRequests(flattenedRideRequests);
-    } catch (error) {
-      console.error("Error fetching ride requests:", error);
-    }
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
   };
 
-  fetchData();
-}, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const usersRef = collection(db, "users");
+        const usersQuery = query(usersRef);
+        const userSnapshots = await getDocs(usersQuery);
 
-const createRectangles = () => {
-  const now = new Date();
-  return rideRequests
-    .filter(request => now < request.expiryDateTime)
-    .filter((request) => {
-      // Filter logic: return true for items that match the search query
-      return Object.values(request).some((value) => {
-        if (typeof value === 'string' || value instanceof String) {
-          return value.toLowerCase().includes(searchQuery.toLowerCase());
-        }
-        return false;
-      });
-    })
-    .map((request) => {
-    return (
-      <div className="data-box" key={request.id}>
-        <div className="data-set">
-          <div className="data-item name">
-            <div className="label"></div>
-            <div className="value">{request.name}</div>
-          </div>
-          <div className="data-item requestType">
-            <div className="label"></div>
-            <div className="value">{request.requestType}</div>
-          </div>
-          <div className="data-item terminal">
-            <div className="label"></div>
-            <div className="value">{request.terminal}</div>
-          </div>
-          <div className="data-item destination">
-            <div className="label"></div>
-            <div className="value">{request.destination}</div>
-          </div>
-          <div className="data-item available-seats">
-            <div className="label"></div>
-            <div className="value">{request.availableSeats}</div>
-          </div>
-          <div className="data-item date">
-            <div className="label"></div>
-            <div className="value">{request.date}</div>
-          </div>
-          <div className="data-item time">
-            <div className="label"></div>
-            <div className="value">{request.time}</div>
-          </div>
-          <div className="data-item price">
-              <div className="label"></div>
-              <div className="value">{request.price ? `$${request.price}` : 'N/A'}</div>
-          </div>
-          <div className="data-item accept-ride">
-  <button onClick={() => acceptRide(request.id)}>
-    Accept Ride
-  </button>
-</div>
-        </div>
-      </div>
-    );
-  });
-};
-const acceptRide = async (offerId) => {
-  try {
-    console.log('Received offerId:', offerId); // Log the received offerId
+        const promises = [];
 
-    // Fetch the current user
-    const user = auth.currentUser;
-    if (!user) {
-      console.log('User not logged in');
-      return;
-    }
+        userSnapshots.forEach((userDoc) => {
+          const rideRequestsRef = collection(userDoc.ref, "rideRequests");
+          const rideRequestsQuery = query(rideRequestsRef);
+          const promise = getDocs(rideRequestsQuery).then(
+            (rideRequestsSnapshot) => {
+              const rideRequestsData = rideRequestsSnapshot.docs.map(
+                (rideRequestDoc) => ({
+                  userId: userDoc.id, // Include the userId associated with this ride request
+                  id: rideRequestDoc.id,
+                  ...rideRequestDoc.data(),
+                })
+              );
+              return rideRequestsData;
+            }
+          );
 
-    const usersRef = collection(db, 'users');
-    const usersSnapshot = await getDocs(usersRef);
+          promises.push(promise);
+        });
 
-    for (const userDoc of usersSnapshot.docs) {
-      const rideRequestsRef = collection(userDoc.ref, 'rideRequests');
-      const rideRequestDoc = doc(rideRequestsRef, offerId);
-      const rideRequestSnapshot = await getDoc(rideRequestDoc);
+        const allRideRequests = await Promise.all(promises);
+        const flattenedRideRequests = allRideRequests.flat().map((request) => {
+          const requestDateTime = new Date(`${request.date} ${request.time}`);
+          const expiryDateTime = new Date(
+            requestDateTime.getTime() + 2 * 60 * 60 * 1000
+          ); // Adds 2 hours
+          return { ...request, expiryDateTime };
+        });
 
-      if (rideRequestSnapshot.exists()) {
-        // If the ride request exists, proceed to accept it
-        const rideRequestData = rideRequestSnapshot.data();
-
-        // Update the status to 'Accepted' in the ride request
-        await updateDoc(rideRequestDoc, { status: 'Accepted' });
-
-        // Store accepted ride details in the current user's AcceptedRides sub-collection
-        const acceptedRidesRef = collection(doc(db, 'users', user.uid), 'AcceptedRides');
-        await addDoc(acceptedRidesRef, rideRequestData);
-
-        console.log('Ride accepted and added to AcceptedRides of the current user:', user.uid);
-        navigate('/MyRides'); // Redirect to MyRides page after accepting the ride
-        return; // Exit the loop once the ride is accepted
+        console.log("Fetched Ride Requests:", flattenedRideRequests);
+        setRideRequests(flattenedRideRequests);
+      } catch (error) {
+        console.error("Error fetching ride requests:", error);
       }
+    };
+
+    fetchData();
+  }, []);
+
+  const createRectangles = () => {
+    const now = new Date();
+    return rideRequests
+      .filter((request) => now < request.expiryDateTime)
+      .filter((request) => {
+        // Filter logic: return true for items that match the search query
+        return Object.values(request).some((value) => {
+          if (typeof value === "string" || value instanceof String) {
+            return value.toLowerCase().includes(searchQuery.toLowerCase());
+          }
+          return false;
+        });
+      })
+      .map((request) => {
+        return (
+          <div className="data-box" key={request.id}>
+            <div className="data-set">
+              <div className="data-item name">
+                <div className="label"></div>
+                <div className="value">{request.name}</div>
+              </div>
+              <div className="data-item requestType">
+                <div className="label"></div>
+                <div className="value">{request.requestType}</div>
+              </div>
+              <div className="data-item terminal">
+                <div className="label"></div>
+                <div className="value">{request.terminal}</div>
+              </div>
+              <div className="data-item destination">
+                <div className="label"></div>
+                <div className="value">{request.destination}</div>
+              </div>
+              <div className="data-item available-seats">
+                <div className="label"></div>
+                <div className="value">{request.availableSeats}</div>
+              </div>
+              <div className="data-item date">
+                <div className="label"></div>
+                <div className="value">{request.date}</div>
+              </div>
+              <div className="data-item time">
+                <div className="label"></div>
+                <div className="value">{request.time}</div>
+              </div>
+              <div className="data-item price">
+                <div className="label"></div>
+                <div className="value">
+                  {request.price ? `$${request.price}` : "N/A"}
+                </div>
+              </div>
+              <div className="data-item accept-ride">
+                <button onClick={() => acceptRide(request.id)}>
+                  Accept Ride
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      });
+  };
+  const acceptRide = async (offerId) => {
+    try {
+      console.log("Received offerId:", offerId); // Log the received offerId
+
+      // Fetch the current user
+      const user = auth.currentUser;
+      if (!user) {
+        console.log("User not logged in");
+        return;
+      }
+
+      const usersRef = collection(db, "users");
+      const usersSnapshot = await getDocs(usersRef);
+
+      for (const userDoc of usersSnapshot.docs) {
+        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
+        const rideRequestDoc = doc(rideRequestsRef, offerId);
+        const rideRequestSnapshot = await getDoc(rideRequestDoc);
+
+        if (rideRequestSnapshot.exists()) {
+          // If the ride request exists, proceed to accept it
+          const rideRequestData = rideRequestSnapshot.data();
+
+          // Update the status to 'Accepted' in the ride request
+          await updateDoc(rideRequestDoc, { status: "Accepted" });
+
+          // Store accepted ride details in the current user's AcceptedRides sub-collection
+          const acceptedRidesRef = collection(
+            doc(db, "users", user.uid),
+            "AcceptedRides"
+          );
+          await addDoc(acceptedRidesRef, rideRequestData);
+
+          console.log("Ride accepted and added to AcceptedRides of the current user:", user.uid);
+          navigate("/MyRides"); // Redirect to MyRides page after accepting the ride
+          return; // Exit the loop once the ride is accepted
+        }
+      }
+      console.log("Ride not found.");
+    } catch (error) {
+      console.error("Error accepting ride:", error);
     }
-
-    console.log('Ride not found.');
-  } catch (error) {
-    console.error('Error accepting ride:', error);
-  }
-};
-
-
-
-
+  };
 
   return (
     <div className="mask-group">
       <style>{css}</style>
       <img className="background-image-icon" alt="" />
       <div className="dashboard-create-ride-offer">
-        <div className="footer-section">
-          <div className="footer-section-child"></div>
-          <b className="unt-rides">© 2023 UNT Rides</b>
-        </div>
         <div className="dashboard-box">
           <div className="dashboard-border">
             <div className="dashboard-user-interaction"></div>
@@ -495,9 +482,9 @@ const acceptRide = async (offerId) => {
             </Link>
             <div className="search-bar">
               <div className="search-bar-child"></div>
-              <input 
-                type="text" 
-                className="search-rides" 
+              <input
+                type="text"
+                className="search-rides"
                 placeholder="Search Rides"
                 value={searchQuery}
                 onChange={handleSearchChange} // Handle input changes
@@ -517,10 +504,15 @@ const acceptRide = async (offerId) => {
           <div className="myrides-box">
             <div className="scroll-frame">
               <div className="data-container" id="data-container">
-                {createRectangles(1000)} {/* Adjust the count as needed */}
+                {createRectangles(1000)}
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="footer-section">
+        <div className="footer-section-child">
+          <b className="unt-rides">© 2023 UNT Rides</b>
         </div>
       </div>
     </div>
