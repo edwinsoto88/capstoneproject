@@ -167,7 +167,7 @@ export const MyRides = () => {
     width: 1106.9px;
     height: 60.1px;
   }
-  .name, .terminal, .destination, .available-seats, .requestType, .date, .time, .ViewMap, button ViewMap {
+  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .ViewMap, button ViewMap {
     position: absolute;
     display: flex;
     align-items: center;
@@ -178,53 +178,54 @@ export const MyRides = () => {
   }
 
   .name { 
-    left: 50px; 
+    left: 25px; 
     width: 100px; 
   }
   
   .requestType { 
-    left: 198px; 
+    left: 150px; 
     width: 100px; 
   }
   
   .terminal { 
-    left: 323px; 
+    left: 325px; 
     width: 150px; /* More space for terminal */
   }
   
   .destination { 
-    left: 526px; 
+    left: 500px; 
     width: 150px; /* More space for destination */
   }
   
   .available-seats { 
-    left: 695px; 
+    left: 625px; 
     width: 100px; 
   }
   
   .date { 
-    left: 810px; 
+    left: 750px; 
     width: 100px; 
   }
   
   .time { 
-    left: 950px; 
+    left: 875px; 
+    width: 100px; 
+  }
+  .price{
+    left: 1000px; 
     width: 100px; 
   }
 
   .ViewMap 
   {
     position: absolute;
-    top: 8px; /* Align with the top position of other data items */
-    left: 1094px; /* Adjust the left position to align with the last column */
-    font-size: 12px;
-    color: #fff;
+    left: 1100px; /* Adjust the left position to align with the last column */
   } 
   
   .viewMap {
     position: absolute;
     top: 17px; /* Align with the top position of other data items */
-    left: 1090px; /* Adjust the left position to align with the last column */
+    left: 1100px; /* Adjust the left position to align with the last column */
     font-size: 12px;
     color: #fff;
   }
@@ -431,6 +432,10 @@ useEffect(() => {
             <div className="label"></div>
             <div className="value">{request.time}</div>
           </div>
+          <div className="data-item price">
+              <div className="label"></div>
+              <div className="value">{request.price ? `$${request.price}` : 'N/A'}</div>
+          </div>
             <div className="data-item">
             <div className="label"></div>
             <div>
@@ -498,7 +503,6 @@ useEffect(() => {
             </div>
             <div className="rectangle-parent">
               <div className="group-child"></div>
-              <b className="ViewMap">View Map</b>
               <div className="name">Name</div>
               <div className="requestType">Request Type</div>
               <div className="terminal">Terminal</div>
@@ -506,6 +510,8 @@ useEffect(() => {
               <div className="available-seats">Seats</div>
               <div className="date">Date</div>
               <div className="time">Time</div>
+              <div className="price">Price</div>
+              <b className="ViewMap">View Map</b>
             </div>
             <div className="myrides-box">
               <div className="scroll-frame">
