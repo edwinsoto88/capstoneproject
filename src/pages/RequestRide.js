@@ -114,6 +114,7 @@ export const RequestRide = () => {
     width: 250.77px;
     height: 37.16px;
   }
+  
   .search-rides {
     position: absolute;
     top: -5.0px;

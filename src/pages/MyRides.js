@@ -9,69 +9,46 @@ import Modal from "./Modal"; // Adjust the path as per your folder structure
 
 export const MyRides = () => {
   const css = `
-  .footer-section-child {
-    position: absolute;
+ .background-image-icon {
+    position: fixed;
     top: 0;
-    left: -126px;
-    background-color: #333;
-    width: 1512px;
-    height: 64px;
-  }
-  .mask-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    top: 100px;
-    left: -630px;
-    font-family: Inter;
-  }
-  
-  .dashboard-create-ride-offer{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    text-align: center;
-    font-size: 16px;
-    color: #000; /* You can change the color according to your design */
-    font-family: Inter;
-    left: 50%;
-  }
-  .unt-rides {
-    position: absolute;
-    top: 20px;
-    left: 539px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 151px;
-    height: 24px;
-    color: white;
-  }
-  .background-image-icon,
-  .footer-section {
-    position: absolute;
-    top: 1016px;
     left: 0;
-    width: 1512px;
-    height: 64px;
-  }
-  .background-image-icon {
+    width: 100%;
+    height: 100%;
     background-image: url("/Images/backgroundImage.png");
     background-size: cover;
     background-position: center;
-    position: absolute;
-    top: -100px;
-    left: -126px;
-    height: 1116px;
-    object-fit: cover;
     opacity: 0.9;
+    z-index: -1;
   }
+
+ .dashboard-create-ride-offer {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   min-height: 100vh;
+  }
+
+  .dashboard-box {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1257px;
+    height: 717px;
+    text-align: left;
+    font-size: 18px;
+    padding-bottom: 25px;
+  }
+
+  .dashboard-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1257px;
+    height: 717px;
+  }
+
   .dashboard-user-interaction {
     position: absolute;
     top: 1.09px;
@@ -84,6 +61,7 @@ export const MyRides = () => {
     width: 1257px;
     height: 715.91px;
   }
+
   .mini-nav-border {
     position: absolute;
     top: 0;
@@ -93,6 +71,7 @@ export const MyRides = () => {
     width: 1257px;
     height: 95.09px;
   }
+
   .available-rides,
   .create-ride-offer,
   .my-rides {
@@ -136,6 +115,7 @@ export const MyRides = () => {
     width: 250.77px;
     height: 37.16px;
   }
+
   .search-rides {
     position: absolute;
     top: -5.0px;
@@ -148,6 +128,7 @@ export const MyRides = () => {
     height: 30.88px;
     background-color: transparent;
   }
+
   .search-bar {
     position: absolute;
     top: 29.51px;
@@ -158,6 +139,7 @@ export const MyRides = () => {
     font-size: 16px;
     color: #7e7e7e;
   }
+
   .group-child {
     position: absolute;
     top: 3px;
@@ -166,6 +148,7 @@ export const MyRides = () => {
     width: 1106.9px;
     height: 60.1px;
   }
+
   .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .ViewMap, button ViewMap {
     position: absolute;
     display: flex;
@@ -246,16 +229,6 @@ export const MyRides = () => {
     height: 509px;
   }
 
-  .dashboard-box {
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    font-family: Inter;
-    left: 0px;
-    top: 40px;
-  }
-  
-  /* css for frame */
   .myrides-box {
     flex: 1;
     padding: 0px;
@@ -266,7 +239,7 @@ export const MyRides = () => {
     background-color: white;
     box-sizing: border-box;
     width: 1257px;
-    height: 680px;
+    height: 600px;
   }
 
   .scroll-frame {
@@ -318,6 +291,31 @@ export const MyRides = () => {
   .data-box:hover {
     background-color: none;
     box-shadow: 0px 10px 20px 5px rgba(156, 100, 89, 0.8);
+  }
+
+  .footer-section {
+    position: absolute;
+    top: 1016px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background-color: #333;
+  }
+
+  .footer-section-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .unt-rides {
+    color: white;
   }
 
   `;
