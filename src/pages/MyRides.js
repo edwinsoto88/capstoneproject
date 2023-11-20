@@ -6,30 +6,9 @@ import { db, auth } from "../firebase"; // Import your Firebase configuration
 import { Map } from "./Map"; // Ensure this import is correct
 import { useJsApiLoader } from "@react-google-maps/api";
 import Modal from "./Modal"; // Adjust the path as per your folder structure
-import { doc, updateDoc } from "firebase/firestore"; 
 
 export const MyRides = () => {
   const css = `
- .background-image-icon {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("/Images/backgroundImage.png");
-    background-size: cover;
-    background-position: center;
-    opacity: 0.9;
-    z-index: -1;
-  }
-
- .dashboard-create-ride-offer {
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   min-height: 100vh;
-  }
-
   .dashboard-box {
     position: absolute;
     top: 60%;
@@ -40,14 +19,6 @@ export const MyRides = () => {
     text-align: left;
     font-size: 18px;
     padding-bottom: 25px;
-  }
-
-  .dashboard-border {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1257px;
-    height: 717px;
   }
 
   .dashboard-user-interaction {
@@ -61,6 +32,26 @@ export const MyRides = () => {
     box-sizing: border-box;
     width: 1257px;
     height: 715.91px;
+  }
+
+  .dashboard-create-ride-offer {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   min-height: 100vh;
+  }
+
+  .background-image-icon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/Images/backgroundImage.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.9;
+    z-index: -1;
   }
 
   .mini-nav-border {
@@ -150,7 +141,7 @@ export const MyRides = () => {
     height: 60.1px;
   }
 
-  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .cancelRide, .ViewMap, button ViewMap {
+  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .ViewMap, button ViewMap {
     position: absolute;
     display: flex;
     align-items: center;
@@ -197,10 +188,6 @@ export const MyRides = () => {
   .price{
     left: 1000px; 
     width: 100px; 
-  }
-
-  .cancelRide {
-    left: 1160px; /* Adjust the left position to align with the last column */
   }
 
   .ViewMap 
@@ -336,29 +323,6 @@ export const MyRides = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-const cancelRide = async (ride) => {
-  try {
-    // Reference to the specific ride in Firestore
-    const rideRef = doc(db, "users", auth.currentUser.uid, "rideRequests", ride.id);
-
-    // Update the ride in Firestore to indicate it's canceled
-    // You could also use deleteDoc(rideRef) if you prefer to delete the entry
-    await updateDoc(rideRef, {
-      status: "canceled" // or any other status flag you use in your application
-    });
-
-    // Update the local state to reflect the change
-    setRideRequests((prevRides) =>
-      prevRides.map((r) => (r.id === ride.id ? { ...r, status: "canceled" } : r))
-    );
-
-    // Optionally, you can provide user feedback here (like a success message)
-  } catch (error) {
-    // Handle any errors that occur during the update
-    console.error("Error canceling the ride: ", error);
-    // Optionally, provide user feedback here (like an error message)
-  }
-};
 
   const handleViewMap = (ride) => {
     setSelectedRideForMap(ride);
@@ -475,12 +439,7 @@ const cancelRide = async (ride) => {
               </div>
               <div className="data-item viewMap">
                 <button onClick={() => setSelectedRide(request)}>
-                  Map
-                </button>
-              </div>
-              <div className="data-item cancelRide">
-                <button onClick={() => cancelRide(request)}>
-                  Cancel
+                  View Map
                 </button>
               </div>
             </div>
@@ -542,7 +501,7 @@ const cancelRide = async (ride) => {
               <div className="date">Date</div>
               <div className="time">Time</div>
               <div className="price">Price</div>
-
+              <b className="ViewMap">View Map</b>
             </div>
             <div className="myrides-box">
               <div className="scroll-frame">

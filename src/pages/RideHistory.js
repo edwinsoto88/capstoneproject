@@ -7,70 +7,18 @@ import { db, auth } from "../firebase"; // Import your Firebase configuration
 export const RideHistory = () => {
 
   const css = `
-
-  .footer-section-child {
+  .dashboard-box {
     position: absolute;
-    top: 0;
-    left: -126px;
-    background-color: #333;
-    width: 1512px;
-    height: 64px;
-  }
-  .mask-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    top: 100px;
-    left: -630px;
-    font-family: Inter;
-  }
-  
-  .dashboard-create-ride-offer{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    text-align: center;
-    font-size: 16px;
-    color: #000; /* You can change the color according to your design */
-    font-family: Inter;
+    top: 55%;
     left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1257px;
+    height: 717px;
+    text-align: left;
+    font-size: 18px;
+    padding-bottom: 25px;
   }
-  .unt-rides {
-    position: absolute;
-    top: 20px;
-    left: 539px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 151px;
-    height: 24px;
-    color: white;
-  }
-  .background-image-icon,
-  .footer-section {
-    position: absolute;
-    top: 1016px;
-    left: 0;
-    width: 1512px;
-    height: 64px;
-  }
-  .background-image-icon {
-    background-image: url("/Images/backgroundImage.png");
-    background-size: cover;
-    background-position: center;
-    position: absolute;
-    top: -100px;
-    left: -126px;
-    height: 1116px;
-    object-fit: cover;
-    opacity: 0.9;
-  }
+
   .dashboard-user-interaction {
     position: absolute;
     top: 1.09px;
@@ -83,6 +31,27 @@ export const RideHistory = () => {
     width: 1257px;
     height: 715.91px;
   }
+
+  .dashboard-create-ride-offer {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   min-height: 100vh;
+  }
+
+  .background-image-icon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/Images/backgroundImage.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.9;
+    z-index: -1;
+  }
+
   .mini-nav-border {
     position: absolute;
     top: 0;
@@ -91,6 +60,18 @@ export const RideHistory = () => {
     background-color: #333;
     width: 1257px;
     height: 95.09px;
+  }
+
+  .unt-rides {
+    position: absolute;
+    top: 20px;
+    left: 539px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 151px;
+    height: 24px;
+    color: white;
   }
   
   .search-bar-child {
@@ -102,6 +83,7 @@ export const RideHistory = () => {
     width: 250.77px;
     height: 37.16px;
   }
+
   .search-rides {
     position: absolute;
     top: -5.0px;
@@ -124,6 +106,7 @@ export const RideHistory = () => {
     font-size: 16px;
     color: #7e7e7e;
   }
+
   .rectangle-parent {
     position: absolute;
     top: 95px;
@@ -134,6 +117,7 @@ export const RideHistory = () => {
     color: var(--color-black);
     background: grey;
   }
+
   .group-child {
     position: absolute;
     top: 3px;
@@ -142,6 +126,7 @@ export const RideHistory = () => {
     width: 1256px;
     height: 63.1px;
   }
+
   .terminal, .destination, .available-seats, .requestType, .date, .time, .price {
     position: absolute;
     display: flex;
@@ -192,16 +177,6 @@ export const RideHistory = () => {
     height: 509px;
   }
 
-  .dashboard-box {
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    font-family: Inter;
-    left: 0px;
-    top: 40px;
-  }
-  
-  /* css for frame */
   .myrides-box {
     flex: 1;
     padding: 0px;
@@ -215,56 +190,56 @@ export const RideHistory = () => {
     height: 680px;
   }
 
-.scroll-frame {
-  width: 100%;
-  height: 685px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-}
+  .scroll-frame {
+    width: 100%;
+    height: 685px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+  }
 
-.data-box {
-  width: 100%;
-  height: 50px;
-  border: 1px solid #000;
-  margin-bottom: 3px;
-  background-color: #333; /* Background color for better contrast */
-  color: white; /* Text color */
-  position: relative;
-  align-items: flex-start; /* Center vertically */
-  justify-content: center;
-}
+  .data-box {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #000;
+    margin-bottom: 3px;
+    background-color: #333; /* Background color for better contrast */
+    color: white; /* Text color */
+    position: relative;
+    align-items: flex-start; /* Center vertically */
+    justify-content: center;
+  }
 
-.data-set {
-  display: flex;
-  flex-direction: row; /* Arrange data items horizontally */
-  flex-wrap: nowrap; /* Prevent wrapping to the next line */
-  align-items: center;
-  justify-content: space-between;
-  width: 100%; /* Expand to fill the available width */
-}
+  .data-set {
+    display: flex;
+    flex-direction: row; /* Arrange data items horizontally */
+    flex-wrap: nowrap; /* Prevent wrapping to the next line */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%; /* Expand to fill the available width */
+  }
 
-.data-item {
-  margin: 0px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  transform: translateY(-10px); 
-}
+  .data-item {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    transform: translateY(-10px); 
+  }
 
-.label {
-  font-weight: bold;
-}
+  .label {
+    font-weight: bold;
+  }
 
-.value {
-  margin-top: 5px;
-}
+  .value {
+    margin-top: 5px;
+  }
 
-.data-box:hover {
-  background-color: none;
-  box-shadow: 0px 10px 20px 5px rgba(156, 100, 89, 0.8);
-}
+  .data-box:hover {
+    background-color: none;
+    box-shadow: 0px 10px 20px 5px rgba(156, 100, 89, 0.8);
+  }
   
   /* Assigning specific flex-grow values */
   .data-item.name { flex-grow: 2; } /* More space for name */
@@ -272,6 +247,31 @@ export const RideHistory = () => {
   .data-item.destination { flex-grow: 1; }
   .data-item.available-seats { flex-grow: 1; }
   .data-item.departure-time { left: calc(0px + 5 * (128px + 98px)); } /* More space for date and time */
+
+  .footer-section {
+    position: absolute;
+    top: 1016px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background-color: #333;
+  }
+
+  .footer-section-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .unt-rides {
+    color: white;
+  }
   
   `;
   
@@ -382,25 +382,20 @@ export const RideHistory = () => {
     });
   };
 
-
   return (
     <div className="mask-group">
       <style>{css}</style>
       <img className="background-image-icon" alt="" />
       <div className="dashboard-create-ride-offer">
-        <div className="footer-section">
-          <div className="footer-section-child"></div>
-          <b className="unt-rides">© 2023 UNT Rides</b>
-        </div>
         <div className="dashboard-box">
           <div className="dashboard-border">
             <div className="dashboard-user-interaction"></div>
             <div className="mini-nav-border"></div>
             <div className="search-bar">
               <div className="search-bar-child"></div>
-              <input 
-                type="text" 
-                className="search-rides" 
+              <input
+                type="text"
+                className="search-rides"
                 placeholder="Search Rides"
                 value={searchQuery}
                 onChange={handleSearchChange} // Handle input changes
@@ -423,6 +418,11 @@ export const RideHistory = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="footer-section">
+          <div className="footer-section-child">
+            <b className="unt-rides">© 2023 UNT Rides</b>
           </div>
         </div>
       </div>
