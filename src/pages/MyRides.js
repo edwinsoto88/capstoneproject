@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, doc, updateDoc } from "react";
 import { collection, query, getDocs, where } from "firebase/firestore";
-import { db, auth } from "../firebase"; // Import your Firebase configuration
-import { Map } from "./Map"; // Ensure this import is correct
+import { db, auth } from "../firebase"; 
+import { Map } from "./Map"; 
 import { useJsApiLoader } from "@react-google-maps/api";
-import Modal from "./Modal"; // Adjust the path as per your folder structure
-import { doc, updateDoc } from "firebase/firestore"; 
+import Modal from "./Modal"; 
 
 export const MyRides = () => {
   const css = `
@@ -331,13 +330,10 @@ export const MyRides = () => {
 
   const cancelRide = async (ride) => {
     try {
-      // Reference to the specific ride in Firestore
       const rideRef = doc(db, "users", auth.currentUser.uid, "rideRequests", ride.id);
  
-      // Update the ride in Firestore to indicate it's canceled
-      // You could also use deleteDoc(rideRef) if you prefer to delete the entry
-      await updateDoc(rideRef, {
-        status: "canceled" // or any other status flag you use in your application
+        await updateDoc(rideRef, {
+        status: "canceled"
       });
  
       // Update the local state to reflect the change
@@ -345,7 +341,6 @@ export const MyRides = () => {
         prevRides.map((r) => (r.id === ride.id ? { ...r, status: "canceled" } : r))
       );
  
-      // Optionally, you can provide user feedback here (like a success message)
     } catch (error) {
       // Handle any errors that occur during the update
       console.error("Error canceling the ride: ", error);
@@ -358,7 +353,7 @@ export const MyRides = () => {
       terminal: ride.terminal,
       destination: ride.destination
     }));
-    window.open('/map-view', '_blank', 'width=600,height=400');
+    window.open('/ViewMap', '_blank', 'width=600,height=400');
   };
 
   const handleCloseModal = () => {
