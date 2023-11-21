@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../firebase";
 
+
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [isResetEmailSent, setIsResetEmailSent] = useState(false);

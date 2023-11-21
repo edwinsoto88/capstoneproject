@@ -4,6 +4,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
+import ForgotPassword from '../pages/ForgotPassword';
+
 
 const ErrorModal = ({ isOpen, onClose, errorMessage }) => {
   return (

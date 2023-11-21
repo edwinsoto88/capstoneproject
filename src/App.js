@@ -5,6 +5,7 @@ import "./styles.css"
 import { Home } from "./pages/Home"
 import { Registration } from "./pages/Registration"
 import { Login } from "./pages/Login"
+import ForgotPassword from "./pages/ForgotPassword";
 import { MyAccount } from "./pages/MyAccount"
 import { RequestRide } from "./pages/RequestRide"
 import { RideHistory } from "./pages/RideHistory"
@@ -32,6 +33,7 @@ function App() {
           <Route path="/map" element={<Map />} />
           <Route path="/ViewMap" element={<ViewMap />} />
           <Route path="/Modal" element={<Modal />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
         </Routes>
       </div>
     </>
