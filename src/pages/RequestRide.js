@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useJsApiLoader } from "@react-google-maps/api";
-import { collection, query, onSnapshot, addDoc, doc, getDoc, } from "firebase/firestore";
+import { collection, query, onSnapshot, addDoc, doc, getDoc } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -390,6 +390,10 @@ export const RequestRide = () => {
 
   `;
 
+  const generateUniqueID = () => {
+    return '_' + Math.random().toString(36).substr(2, 9);
+  };
+  const uniqueRequestId = generateUniqueID(); // Function to generate a unique ID
   const [rideRequestData, setRideRequestData] = useState({
     name: "",
     terminal: "",
@@ -398,6 +402,7 @@ export const RequestRide = () => {
     date: "",
     time: "", // Added time field
     requestType: "Offered",
+    uniqueID: uniqueRequestId,
   });
 
   const [message, setMessage] = useState("");
@@ -490,6 +495,7 @@ export const RequestRide = () => {
           requestType: rideRequestData.requestType,
           status: null,
           price: ridePrice,
+          uniqueID: uniqueRequestId,
         });
 
         console.log("Ride request saved successfully!");
@@ -506,6 +512,8 @@ export const RequestRide = () => {
           date: "",
           time: "", // Added time field
           requestType: "Offered",
+          uniqueID: rideRequestData.uniqueID, // Include the uniqueID field
+
         });
       } else {
         console.error("User document does not exist.");

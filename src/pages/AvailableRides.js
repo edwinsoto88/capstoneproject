@@ -426,9 +426,8 @@ export const AvailableRides = () => {
   };
   const acceptRide = async (offerId) => {
     try {
-      console.log("Received offerId:", offerId); // Log the received offerId
+      console.log("Received offerId:", offerId);
 
-      // Fetch the current user
       const user = auth.currentUser;
       if (!user) {
         console.log("User not logged in");
@@ -444,22 +443,22 @@ export const AvailableRides = () => {
         const rideRequestSnapshot = await getDoc(rideRequestDoc);
 
         if (rideRequestSnapshot.exists()) {
-          // If the ride request exists, proceed to accept it
           const rideRequestData = rideRequestSnapshot.data();
 
-          // Update the status to 'Accepted' in the ride request
           await updateDoc(rideRequestDoc, { status: "Accepted" });
 
-          // Store accepted ride details in the current user's AcceptedRides sub-collection
           const acceptedRidesRef = collection(
             doc(db, "users", user.uid),
             "AcceptedRides"
           );
-          await addDoc(acceptedRidesRef, rideRequestData);
+          await addDoc(acceptedRidesRef, {
+            ...rideRequestData,
+            acceptedByID: user.uid, // Include the user's ID in accepted rides
+          });
 
           console.log("Ride accepted and added to AcceptedRides of the current user:", user.uid);
-          navigate("/MyRides"); // Redirect to MyRides page after accepting the ride
-          return; // Exit the loop once the ride is accepted
+          navigate("/MyRides");
+          return;
         }
       }
       console.log("Ride not found.");
