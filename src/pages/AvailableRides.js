@@ -412,7 +412,9 @@ export const AvailableRides = () => {
               </div>
               <div className="data-item accept-ride">
               {isOwnRide ? (
-                <button disabled>Your Ride</button>
+                 <Link to="/MyRides">
+                 <button>Accept Ride</button>
+               </Link>
               ) : (
                 <button onClick={() => acceptRide(request.id)}>
                   Accept Ride
@@ -456,6 +458,7 @@ export const AvailableRides = () => {
             "AcceptedRides"
           );
           await addDoc(acceptedRidesRef, rideRequestData);
+          navigate("/MyRides"); // This line will trigger the navigation to MyRides page
 
           console.log("Ride accepted and added to AcceptedRides of the current user:", user.uid);
           navigate("/MyRides"); // Redirect to MyRides page after accepting the ride
