@@ -46,61 +46,47 @@ export const MyAccount = () => {
     } catch (error) {
       console.error("Error reauthenticating: ", error);
       // Handle re-authentication error here
-      if (error.code === 'auth/wrong-password') {
-        console.log('Invalid reauthentication: Wrong password entered.');
-      }
-      throw error; // Propagate the error for proper handling in the calling function
-    }
-  };
-
-  const isEmailVerified = (user) => {
-    try {
-      return user && user.emailVerified;
-    } catch (error) {
-      console.error('Error fetching email verification status:', error);
-      return false;
     }
   };
 
   const handleResetEmail = async () => {
-    try {
-      const password = prompt("Please enter your password to reset your email:");
-      if (!password) {
-        console.error("Password is required.");
-        return;
-      }
-    
-      await reauthenticate(password);
-    
-      const newEmail = prompt("Enter your new email:");
-      if (newEmail) {
+    const password = prompt("Please enter your password to reset your email:");
+
+    if (!password) {
+      console.error("Password is required.");
+      return;
+    }
+
+    await reauthenticate(password);
+
+    const newEmail = prompt("Enter your new email:");
+    if (newEmail) {
+      try {
         const user = auth.currentUser;
-        const emailVerified = isEmailVerified(user);
-    
-        if (emailVerified) {
-          try {
-            await updateEmail(user, newEmail);
-            console.log("Email updated successfully.");
-            await sendEmailVerification(user);
-            alert("A verification email has been sent to the new email address.");
-          } catch (error) {
-            console.error("Error updating email or sending verification: ", error);
-            // Handle error here
-            throw error; // Propagate the error for proper handling in calling function
-          }
-        } else {
-          alert("Please verify your new email address before updating.");
-        }
+        await updateEmail(user, newEmail);
+        await sendEmailVerification(user);
+        alert("A verification email has been sent to the new email address.");
+      } catch (error) {
+        console.error("Error updating email: ", error);
+        // Handle email update error here
       }
-    } catch (error) {
-      console.error("Error handling:", error);
-      // Handle prompt error or reauthentication error here
     }
   };
 
   const handleResetPhoneNumber = async () => {
-    // Logic for resetting phone number
-    // Add your implementation here
+    const password = prompt("Please enter your password to reset your phone number:");
+
+    if (!password) {
+      console.error("Password is required.");
+      return;
+    }
+
+    await reauthenticate(password);
+
+    const newPhoneNumber = prompt("Enter your new phone number:");
+    if (newPhoneNumber) {
+      // Update phone number logic here
+    }
   };
 
   if (!userData) {
