@@ -478,6 +478,16 @@ export const AvailableRides = () => {
   
             // Update ride status to "Accepted"
             await updateDoc(rideRequestDoc.ref, { status: "Accepted" });
+
+             // Decrement available seats by 1
+          const availableSeats = rideRequestData.availableSeats || 0; // Assuming 'availableSeats' field exists
+          if (availableSeats > 0) {
+            await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats - 1 });
+            console.log("Available seats decremented by 1.");
+          } else {
+            console.log("No available seats to decrement.");
+          }
+
   
             // Add the ride to the current user's accepted rides
             await addDoc(acceptedRidesRef, {
