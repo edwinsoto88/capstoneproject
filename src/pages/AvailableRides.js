@@ -414,9 +414,9 @@ export const AvailableRides = () => {
               {isOwnRide ? (
                 <button disabled>Your Ride</button>
               ) : (
-                <button onClick={() => acceptRide(request.id)}>
-                  Accept Ride
-                </button>
+                <button onClick={() => acceptRide(request.uniqueID)}>
+  Accept Ride
+</button>
               )}
             </div>
             </div>
@@ -424,49 +424,60 @@ export const AvailableRides = () => {
         );
       });
   };
-  const acceptRide = async (offerId) => {
+  const acceptRide = async (uniqueID) => {
     try {
-      console.log("Received offerId:", offerId);
-
+      console.log("Received uniqueID:", uniqueID);
+  
       const user = auth.currentUser;
       if (!user) {
         console.log("User not logged in");
         return;
       }
-
-      const usersRef = collection(db, "users");
-      const usersSnapshot = await getDocs(usersRef);
-
-      for (const userDoc of usersSnapshot.docs) {
-        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
-        const rideRequestDoc = doc(rideRequestsRef, offerId);
-        const rideRequestSnapshot = await getDoc(rideRequestDoc);
-
-        if (rideRequestSnapshot.exists()) {
-          const rideRequestData = rideRequestSnapshot.data();
-
-          await updateDoc(rideRequestDoc, { status: "Accepted" });
-
-          const acceptedRidesRef = collection(
-            doc(db, "users", user.uid),
-            "AcceptedRides"
-          );
-          await addDoc(acceptedRidesRef, {
-            ...rideRequestData,
-            acceptedByID: user.uid, // Include the user's ID in accepted rides
-          });
-
-          console.log("Ride accepted and added to AcceptedRides of the current user:", user.uid);
-          navigate("/MyRides");
-          return;
-        }
+  
+      const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
+      const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
+  
+      // Check if the ride's uniqueId is already in the user's accepted rides
+      const alreadyAccepted = acceptedRidesSnapshot.docs.some(
+        (doc) => doc.data().uniqueID === uniqueID
+      );
+  
+      if (alreadyAccepted) {
+        console.log("You have already accepted this ride.");
+        // Alert the user or handle the message as needed
+        return;
       }
-      console.log("Ride not found.");
+  
+      // Ride not found in accepted rides, proceed to accept the ride
+      console.log("Ride not found in accepted rides. Accepting the ride...");
+  
+      const rideRequestsRef = collection(db, "users", user.uid, "rideRequests");
+      const rideRequestDoc = doc(rideRequestsRef, uniqueID);
+      const rideRequestSnapshot = await getDoc(rideRequestDoc);
+  
+      if (rideRequestSnapshot.exists()) {
+        const rideRequestData = rideRequestSnapshot.data();
+  
+        await updateDoc(rideRequestDoc, { status: "Accepted" });
+  
+        await addDoc(acceptedRidesRef, {
+          ...rideRequestData,
+        });
+  
+        console.log(
+          "Ride accepted and added to AcceptedRides of the current user:",
+          user.uid
+        );
+        navigate("/MyRides");
+      } else {
+        console.log("Ride not found.");
+      }
     } catch (error) {
       console.error("Error accepting ride:", error);
     }
   };
-
+  
+  
   return (
     <div className="mask-group">
       <style>{css}</style>
