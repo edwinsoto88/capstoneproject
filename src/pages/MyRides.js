@@ -347,13 +347,9 @@ export const MyRides = () => {
       // Optionally, provide user feedback here (like an error message)
     }
   };
-
   const handleViewMap = (ride) => {
-    localStorage.setItem('mapData', JSON.stringify({ 
-      terminal: ride.terminal,
-      destination: ride.destination
-    }));
-    window.open('/ViewMap', '_blank', 'width=600,height=400');
+    setSelectedRideForMap(ride);
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
@@ -543,6 +539,12 @@ export const MyRides = () => {
           <b className="unt-rides">© 2023 UNT Rides</b>
         </div>
       </div>
+      <Modal show={isModalOpen} handleClose={handleCloseModal}>
+        <Map
+          terminal={selectedRideForMap?.terminal}
+          destination={selectedRideForMap?.destination}
+        />
+      </Modal>
     </div>
   );
 };
