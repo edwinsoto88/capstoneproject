@@ -393,7 +393,7 @@ export const RequestRide = () => {
   const generateUniqueID = () => {
     return '_' + Math.random().toString(36).substr(2, 9);
   };
-  const uniqueRequestId = generateUniqueID(); // Function to generate a unique ID
+  const uniqueId = generateUniqueID(); // Function to generate a unique ID
   const [rideRequestData, setRideRequestData] = useState({
     name: "",
     terminal: "",
@@ -402,7 +402,7 @@ export const RequestRide = () => {
     date: "",
     time: "", // Added time field
     requestType: "Offered",
-    uniqueID: uniqueRequestId,
+    uniqueID: uniqueId,
   });
 
   const [message, setMessage] = useState("");
@@ -448,6 +448,13 @@ export const RequestRide = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Submitting:", rideRequestData); // Debugging line
+
+    const newUniqueId = generateUniqueID(); // Generate a new unique ID
+    // Then use this new unique ID for the ride request data
+    setRideRequestData({
+      ...rideRequestData,
+      uniqueID: newUniqueId,
+    });
 
     const inputDate = rideRequestData.date;
     const inputTime = rideRequestData.time;
@@ -495,7 +502,7 @@ export const RequestRide = () => {
           requestType: rideRequestData.requestType,
           status: null,
           price: ridePrice,
-          uniqueID: uniqueRequestId,
+          uniqueID: uniqueId,
         });
 
         console.log("Ride request saved successfully!");

@@ -437,7 +437,6 @@ export const AvailableRides = () => {
       const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
       const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
   
-      // Check if the ride's uniqueId is already in the user's accepted rides
       const alreadyAccepted = acceptedRidesSnapshot.docs.some(
         (doc) => doc.data().uniqueID === uniqueID
       );
@@ -448,34 +447,59 @@ export const AvailableRides = () => {
         return;
       }
   
-      // Ride not found in accepted rides, proceed to accept the ride
-      console.log("Ride not found in accepted rides. Accepting the ride...");
+      // Ride not found in accepted rides of the current user
+      console.log("Ride not found in accepted rides. Checking all ride requests...");
   
-      const rideRequestsRef = collection(db, "users", user.uid, "rideRequests");
-      const rideRequestDoc = doc(rideRequestsRef, uniqueID);
-      const rideRequestSnapshot = await getDoc(rideRequestDoc);
+      // Check all ride requests across users
+      const allUsersRef = collection(db, "users");
+      const allUsersSnapshot = await getDocs(allUsersRef);
   
-      if (rideRequestSnapshot.exists()) {
-        const rideRequestData = rideRequestSnapshot.data();
+      for (const userDoc of allUsersSnapshot.docs) {
+        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
+        const rideRequestsSnapshot = await getDocs(rideRequestsRef);
+        const userId = userDoc.id;
   
-        await updateDoc(rideRequestDoc, { status: "Accepted" });
+        console.log(`Ride requests for user ${userId}:`);
   
-        await addDoc(acceptedRidesRef, {
-          ...rideRequestData,
-        });
+        for (const rideRequestDoc of rideRequestsSnapshot.docs) {
+          const rideRequestData = rideRequestDoc.data();
+          const rideRequestUniqueId = rideRequestData.uniqueID;
   
-        console.log(
-          "Ride accepted and added to AcceptedRides of the current user:",
-          user.uid
-        );
-        navigate("/MyRides");
-      } else {
-        console.log("Ride not found.");
+          if (rideRequestUniqueId === uniqueID) {
+            // Proceed to accept the ride request
+            // Update ride status, add to accepted rides, etc.
+  
+            console.log(
+              "Ride request found and accepted:",
+              rideRequestUniqueId,
+              "for user:",
+              userId
+            );
+  
+            // Update ride status to "Accepted"
+            await updateDoc(rideRequestDoc.ref, { status: "Accepted" });
+  
+            // Add the ride to the current user's accepted rides
+            await addDoc(acceptedRidesRef, {
+              ...rideRequestData,
+              uniqueID: uniqueID // Ensure uniqueID is added to the AcceptedRides collection
+            });
+  
+            // Exit the function after successful acceptance
+            navigate("/MyRides");
+            return;
+          }
+        }
       }
+  
+      // If the loop finishes and the ride wasn't found
+      console.log("Ride not found across all ride requests.");
     } catch (error) {
       console.error("Error accepting ride:", error);
     }
   };
+  
+  
   
   
   return (
