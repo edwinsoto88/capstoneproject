@@ -406,13 +406,23 @@ export const RequestRide = () => {
   });
 
   const [message, setMessage] = useState("");
-  useEffect(() => {
-    // Only initialize Autocomplete when Google Maps script has loaded
-    if (window.google) {
-      new window.google.maps.places.Autocomplete(terminalRef.current);
-      new window.google.maps.places.Autocomplete(destinationRef.current);
-    }
-  }, []);
+useEffect(() => {
+  if (!window.google) return;
+
+  const initializeAutocomplete = (ref) => {
+    const autocomplete = new window.google.maps.places.Autocomplete(ref.current);
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+      if (place && place.formatted_address) {
+        ref.current.value = place.formatted_address;
+      }
+    });
+  };
+
+  initializeAutocomplete(terminalRef);
+  initializeAutocomplete(destinationRef);
+}, []);
+
 
   useEffect(() => {
     // Check if the user is authenticated
