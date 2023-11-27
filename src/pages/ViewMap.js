@@ -1,3 +1,4 @@
+//This is the map that is displayed when clicking Rides > View Map
 import React, { useRef, useState, useEffect } from 'react';
 import { useJsApiLoader, GoogleMap, Marker, Polyline } from '@react-google-maps/api';
 import { collection, query, getDocs } from "firebase/firestore";
@@ -239,7 +240,7 @@ export const ViewMap = () => {
         </div>
 
         <div>
-          <p style={{ fontSize: '16px', }}>Distance: {distance}</p>
+          <p style={{ fontSize: '16px', }}>Dist: {distance}</p>
           <p style={{ fontSize: '16px' }}>Duration: {duration}</p>
         </div>
       </div>
