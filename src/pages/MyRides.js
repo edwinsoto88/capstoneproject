@@ -149,6 +149,7 @@ export const MyRides = () => {
     height: 52px;
     z-index: 2;
     top: 5px;
+    color: white;
   }
 
   .name { 
@@ -158,7 +159,7 @@ export const MyRides = () => {
   
   .requestType { 
     left: 150px; 
-    width: 100px; 
+    width: 150px; 
   }
   
   .terminal { 
