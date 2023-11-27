@@ -135,11 +135,12 @@ export const RideHistory = () => {
     height: 52px;
     z-index: 2;
     top: 5px;
+    color: white;
   }
 
   .requestType { 
     left: 90px; 
-    width: 100px; 
+    width: 150px; 
   }
   
   .terminal { 
