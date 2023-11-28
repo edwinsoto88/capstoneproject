@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useEffect, useState, doc, updateDoc } from "react";
-import { collection, query, getDocs, where } from "firebase/firestore";
+import { collection, query, getDocs, deleteDoc, where } from "firebase/firestore";
 import { db, auth } from "../firebase"; 
 import { Map } from "./Map"; 
 import { useJsApiLoader } from "@react-google-maps/api";
@@ -328,24 +328,20 @@ export const MyRides = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-
+  useEffect(() => {
+    console.log("rideRequests updated", rideRequests);
+  }, [rideRequests]);
+  
   const cancelRide = async (ride) => {
     try {
       const rideRef = doc(db, "users", auth.currentUser.uid, "rideRequests", ride.id);
- 
-        await updateDoc(rideRef, {
-        status: "canceled"
-      });
- 
-      // Update the local state to reflect the change
-      setRideRequests((prevRides) =>
-        prevRides.map((r) => (r.id === ride.id ? { ...r, status: "canceled" } : r))
-      );
- 
+      await deleteDoc(rideRef);
+  
+      // Remove the ride from local state
+      setRideRequests(prevRides => prevRides.filter(r => r.id !== ride.id));
     } catch (error) {
-      // Handle any errors that occur during the update
-      console.error("Error canceling the ride: ", error);
-      // Optionally, provide user feedback here (like an error message)
+      console.error("Error cancelling the ride: ", error);
+      // Handle errors here, such as displaying an error message to the user
     }
   };
   const handleViewMap = (ride) => {

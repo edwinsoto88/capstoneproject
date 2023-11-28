@@ -113,7 +113,7 @@ useEffect(() => {
     results.routes[0].overview_path.forEach((path) => {
       bounds.extend(path);
     });
-    map.fitBounds(bounds);
+ //   map.fitBounds(bounds);
   }
 
   function clearRoute() {
