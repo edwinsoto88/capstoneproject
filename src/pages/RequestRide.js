@@ -457,8 +457,15 @@ useEffect(() => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const user = auth.currentUser;
     console.log("Submitting:", rideRequestData); // Debugging line
 
+    if (!user) {
+      // User is not authenticated, handle accordingly (e.g., redirect to login page)
+      alert("User is not authenticated. Please log in."); // Set the error message
+      return; // Return early to prevent further execution
+    }
+    
     const newUniqueId = generateUniqueID(); // Generate a new unique ID
     // Then use this new unique ID for the ride request data
     setRideRequestData({
@@ -474,13 +481,6 @@ useEffect(() => {
       return;
     }
     // Check if the user is authenticated
-    const user = auth.currentUser;
-
-    if (!user) {
-      // User is not authenticated, handle accordingly (e.g., redirect to login page)
-      setMessage("User is not authenticated. Please log in."); // Set the error message
-      return; // Return early to prevent further execution
-    }
 
     let ridePrice = null;
     if (rideRequestData.requestType === "Offered") {
