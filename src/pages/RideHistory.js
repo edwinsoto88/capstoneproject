@@ -339,10 +339,10 @@ export const RideHistory = () => {
     return rideRequests
     .filter((request) => {
       // Filter logic: return true for items that match the search query
-      return Object.values(request).some(value =>
-        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    })
+      return Object.values(request).some((value) =>
+      value != null && value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      })
     .map((request) => {
       return (
         <div className="data-box" key={request.id}>
