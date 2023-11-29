@@ -387,8 +387,9 @@ export const MyRides = () => {
         const userAcceptedRidesData = userAcceptedRidesSnapshot.docs.map(
           (doc) => ({
             id: doc.id,
-            ...doc.data(),
-            requestType: "Accepted",
+        ...doc.data(),
+        // Set the requestType based on the original requestType of the ride
+        requestType: doc.data().requestType === "Offered" ? "Offer Accepted" : "Request Accepted",
           })
         );
 
