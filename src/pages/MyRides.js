@@ -141,7 +141,7 @@ export const MyRides = () => {
     height: 60.1px;
   }
 
-  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .cancelRide, .ViewMap, button ViewMap {
+  .name, .requestType, .terminal, .destination, .available-seats, .date, .time, .price, .cancelRide, .ViewMap, ViewMap {
     position: absolute;
     display: flex;
     align-items: center;
@@ -193,6 +193,7 @@ export const MyRides = () => {
 
   .cancelRide {
     left: 1160px; /* Adjust the left position to align with the last column */
+    top: 7px; /* Align with the top position of other data items */
   }
 
   .ViewMap 
@@ -460,7 +461,9 @@ export const MyRides = () => {
               {isOwnRide ? (
                 <button disabled>Your Ride</button>
               ) : (
-                <button onClick={() => cancelRide(request.uniqueID)}>  Cancel </button>
+                <button onClick={() => cancelRide(request.uniqueID)}
+                  style={{ backgroundColor: 'FF0000', color: 'black', border: 'none' }}>  {/* Inline styling added here */}
+                  Cancel </button>
               )}
               </div>
             </div>
