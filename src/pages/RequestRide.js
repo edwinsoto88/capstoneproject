@@ -702,9 +702,10 @@ useEffect(() => {
                       <select
                         className="dropdown-content"
                         name="requestType"
-                        value={rideRequestData.requestType} // Directly use requestType for the value
+                        value={rideRequestData.requestType || ''} // Directly use requestType for the value
                         onChange={handleInputChange}
                       >
+                        <option value="" disabled>Select Post Type</option>
                         <option value="Offered">Post as a Driver</option>
                         <option value="Requested">Post as a Passenger</option>
                       </select>

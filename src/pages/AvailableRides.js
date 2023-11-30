@@ -443,6 +443,7 @@ export const AvailableRides = () => {
   
       if (alreadyAccepted) {
         console.log("You have already accepted this ride.");
+        alert("You have already accepted this ride.")
         // Alert the user or handle the message as needed
         return;
       }
@@ -471,11 +472,14 @@ export const AvailableRides = () => {
   
             console.log(
               "Ride request found and accepted:",
+             
               rideRequestUniqueId,
               "for user:",
               userId
+             
             );
-  
+            alert("You have succesfully accepted this ride, view details in MyRides!")
+            
             // Update ride status to "Accepted"
             await updateDoc(rideRequestDoc.ref, { status: "Accepted" });
 
