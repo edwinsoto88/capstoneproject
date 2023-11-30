@@ -443,7 +443,7 @@ export const AvailableRides = () => {
   
       if (alreadyAccepted) {
         console.log("You have already accepted this ride.");
-        alert("You have already accepted this ride.")
+        alert("You have already accepted this ride.");
         // Alert the user or handle the message as needed
         return;
       }
@@ -467,36 +467,34 @@ export const AvailableRides = () => {
           const rideRequestUniqueId = rideRequestData.uniqueID;
   
           if (rideRequestUniqueId === uniqueID) {
-            // Proceed to accept the ride request
-            // Update ride status, add to accepted rides, etc.
+            // Check if available seats are greater than 0
+            const availableSeats = rideRequestData.availableSeats || 0;
+            if (availableSeats <= 0) {
+              console.log("No available seats for this ride. It won't be accepted.");
+              alert("No more available seats for this ride. This ride was not accepted. ")
+              return; // Skip further processing for this ride
+            }
   
+            // Proceed to accept the ride request
             console.log(
               "Ride request found and accepted:",
-             
               rideRequestUniqueId,
               "for user:",
               userId
-             
             );
-            alert("You have succesfully accepted this ride, view details in MyRides!")
-            
+            alert("You have successfully accepted this ride. View details in MyRides!");
+  
             // Update ride status to "Accepted"
             await updateDoc(rideRequestDoc.ref, { status: "Accepted" });
-
-             // Decrement available seats by 1
-          const availableSeats = rideRequestData.availableSeats || 0; // Assuming 'availableSeats' field exists
-          if (availableSeats > 0) {
+  
+            // Decrement available seats by 1
             await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats - 1 });
             console.log("Available seats decremented by 1.");
-          } else {
-            console.log("No available seats to decrement.");
-          }
-
   
             // Add the ride to the current user's accepted rides
             await addDoc(acceptedRidesRef, {
               ...rideRequestData,
-              uniqueID: uniqueID // Ensure uniqueID is added to the AcceptedRides collection
+              uniqueID: uniqueID, // Ensure uniqueID is added to the AcceptedRides collection
             });
   
             // Exit the function after successful acceptance
