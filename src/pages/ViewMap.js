@@ -240,7 +240,7 @@ export const ViewMap = () => {
         </div>
 
         <div>
-          <p style={{ fontSize: '16px', }}>Dist: {distance}</p>
+          <p style={{ fontSize: '16px', }}>Distance {distance}</p>
           <p style={{ fontSize: '16px' }}>Duration: {duration}</p>
         </div>
       </div>

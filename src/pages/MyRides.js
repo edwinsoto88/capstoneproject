@@ -1,10 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, doc, updateDoc } from "react";
-import { collection, query, getDocs, deleteDoc, where } from "firebase/firestore";
-import { db, auth } from "../firebase"; 
+import { collection, query, onSnapshot, addDoc, getDocs, deleteDoc } from "firebase/firestore";
+import { db, auth } from "../firebase"; // Import Firebase authentication and database
+import { useJsApiLoader, GoogleMap, Marker, Polyline, } from "@react-google-maps/api";
 import { Map } from "./Map"; 
-import { useJsApiLoader } from "@react-google-maps/api";
 import Modal from "./Modal"; 
 
 export const MyRides = () => {
@@ -324,6 +324,7 @@ export const MyRides = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRideForMap, setSelectedRideForMap] = useState(null);
+  const navigate = useNavigate();
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -332,18 +333,7 @@ export const MyRides = () => {
     console.log("rideRequests updated", rideRequests);
   }, [rideRequests]);
   
-  const cancelRide = async (ride) => {
-    try {
-      const rideRef = doc(db, "users", auth.currentUser.uid, "rideRequests", ride.id);
-      await deleteDoc(rideRef);
-  
-      // Remove the ride from local state
-      setRideRequests(prevRides => prevRides.filter(r => r.id !== ride.id));
-    } catch (error) {
-      console.error("Error cancelling the ride: ", error);
-      // Handle errors here, such as displaying an error message to the user
-    }
-  };
+
   const handleViewMap = (ride) => {
     setSelectedRideForMap(ride);
     setIsModalOpen(true);
@@ -406,6 +396,8 @@ export const MyRides = () => {
   }, []);
 
   const createRectangles = () => {
+        const currentUser = auth.currentUser;
+        const now = new Date();
     return rideRequests
         .filter((request) => {
           return Object.values(request).some((value) =>
@@ -414,6 +406,7 @@ export const MyRides = () => {
         })
     
       .map((request) => {
+        const isOwnRide = currentUser && request.userId === currentUser.uid;
         return (
           <div className="data-box" key={request.id}>
             <div className="data-set">
@@ -464,9 +457,11 @@ export const MyRides = () => {
                  </button>
                </div>
                <div className="data-item cancelRide">
-                 <button onClick={() => cancelRide(request)}>
-                   Cancel
-                 </button>
+              {isOwnRide ? (
+                <button disabled>Your Ride</button>
+              ) : (
+                <button onClick={() => cancelRide(request.uniqueID)}>  Cancel </button>
+              )}
               </div>
             </div>
           </div>
@@ -482,7 +477,94 @@ export const MyRides = () => {
     }
     return color;
   };
+  const cancelRide = async (uniqueID) => {
+    try {
+      console.log("Received uniqueID:", uniqueID);
+  
+      const user = auth.currentUser;
+      if (!user) {
+        console.log("User not logged in");
+        return;
+      }
+  
+      const canceledRidesRef = collection(db, "users", user.uid, "CanceledRides");
+      const canceledRidesSnapshot = await getDocs(canceledRidesRef);
+  
+      const alreadyCanceled = canceledRidesSnapshot.docs.some(
+        (doc) => doc.data().uniqueID === uniqueID
+      );
+  
+      if (alreadyCanceled) {
+        console.log("You have already canceled this ride.");
+        alert("You have already canceled this ride.")
+        // Alert the user or handle the message as needed
+        return;
+      }
+  
+      // Ride not found in canceled rides of the current user
+      console.log("Ride not found in canceled rides. Checking all ride requests...");
+  
+      // Check all ride requests across users
+      const allUsersRef = collection(db, "users");
+      const allUsersSnapshot = await getDocs(allUsersRef);
+  
+      for (const userDoc of allUsersSnapshot.docs) {
+        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
+        const rideRequestsSnapshot = await getDocs(rideRequestsRef);
+        const userId = userDoc.id;
+  
+        console.log(`Ride requests for user ${userId}:`);
+  
+        for (const rideRequestDoc of rideRequestsSnapshot.docs) {
+          const rideRequestData = rideRequestDoc.data();
+          const rideRequestUniqueId = rideRequestData.uniqueID;
+  
+          if (rideRequestUniqueId === uniqueID) {
+            // Proceed to cancel the ride request
+            // Update ride status, add to canceled rides, etc.
+  
+            console.log(
+              "Ride request found and canceled:",
+             
+              rideRequestUniqueId,
+              "for user:",
+              userId
+             
+            );
+            alert("You have succesfully canceled this ride!")
+            
+            // Update ride status to "Canceled"
+            await updateDoc(rideRequestDoc.ref, { status: "Canceled" });
 
+             // Decrement available seats by 1
+          const availableSeats = rideRequestData.availableSeats || 0; // Assuming 'availableSeats' field exists
+          if (availableSeats > 0) {
+            await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats + 1 });
+            console.log("Available seats incremented by 1.");
+          } else {
+            console.log("No available seats to increment.");
+          }
+
+  
+            // Add the ride to the current user's canceled rides
+            await addDoc(canceledRidesRef, {
+              ...rideRequestData,
+              uniqueID: uniqueID // Ensure uniqueID is added to the CanceledRides collection
+            });
+  
+            // Exit the function after successful cancelance
+            navigate("/MyRides");
+            return;
+          }
+        }
+      }
+  
+      // If the loop finishes and the ride wasn't found
+      console.log("Ride not found across all ride requests.");
+    } catch (error) {
+      console.error("Error canceling ride:", error);
+    }
+  };
   return (
     <div className="mask-group">
       <style>{css}</style>

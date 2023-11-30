@@ -389,6 +389,11 @@ export const RequestRide = () => {
   }
 
   `;
+  // Load the Google Maps API
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDlD2SNVYGDg40Bu4vE1Q930-wu_tWtX30", // Replace with your API key
+    libraries: ["places"],
+  });
 
   const generateUniqueID = () => {
     return '_' + Math.random().toString(36).substr(2, 9);
@@ -406,7 +411,7 @@ export const RequestRide = () => {
   });
 
   const [message, setMessage] = useState("");
-useEffect(() => {
+/*useEffect(() => {
   if (!window.google) return;
 
   const initializeAutocomplete = (ref) => {
@@ -422,7 +427,26 @@ useEffect(() => {
   initializeAutocomplete(terminalRef);
   initializeAutocomplete(destinationRef);
 }, []);
+*/
+useEffect(() => {
+    if (!isLoaded) return;
 
+    const initializeAutocomplete = (inputRef, field) => {
+      const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current);
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (place && place.formatted_address) {
+          setRideRequestData(prevData => ({
+            ...prevData,
+            [field]: place.formatted_address,
+          }));
+        }
+      });
+    };
+
+    initializeAutocomplete(terminalRef, "terminal");
+    initializeAutocomplete(destinationRef, "destination");
+  }, [isLoaded]);
 
   useEffect(() => {
     // Check if the user is authenticated
