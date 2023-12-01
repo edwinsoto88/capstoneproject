@@ -76,7 +76,7 @@ useEffect(() => {
       if (originRef.current.value === '' || destinationRef.current.value === '') {
           return;
       }
-      // Use the values from the refs
+/*
       const directionsService = new window.google.maps.DirectionsService();
       const results = await directionsService.route({
           origin: originRef.current.value,
@@ -114,7 +114,49 @@ useEffect(() => {
       bounds.extend(path);
     });
  //   map.fitBounds(bounds);
+  } */
+
+  try {
+    const directionsService = new window.google.maps.DirectionsService();
+    const results = await directionsService.route({
+      origin: originRef.current.value,
+      destination: destinationRef.current.value,
+      travelMode: window.google.maps.TravelMode.DRIVING,
+    });
+
+    setDirectionsResponse(results);
+    setDistance(results.routes[0].legs[0].distance.text);
+    setDuration(results.routes[0].legs[0].duration.text);
+    setRoute(results.routes[0].overview_path);
+
+    if (originMarker) originMarker.setMap(null);
+    if (destinationMarker) destinationMarker.setMap(null);
+
+    const newOriginMarker = new window.google.maps.Marker({
+      position: results.routes[0].legs[0].start_location,
+      map: map,
+      label: 'A',
+    });
+
+    const newDestinationMarker = new window.google.maps.Marker({
+      position: results.routes[0].legs[0].end_location,
+      map: map,
+      label: 'B',
+    });
+
+    setOriginMarker(newOriginMarker);
+    setDestinationMarker(newDestinationMarker);
+
+    // Center the map on the route
+    const bounds = new window.google.maps.LatLngBounds();
+    bounds.extend(newOriginMarker.getPosition());
+    bounds.extend(newDestinationMarker.getPosition());
+    map.fitBounds(bounds);
+  } catch (error) {
+    console.error("Error calculating route: ", error);
   }
+}
+
 
   function clearRoute() {
     setDirectionsResponse(null);
