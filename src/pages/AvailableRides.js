@@ -424,94 +424,116 @@ export const AvailableRides = () => {
         );
       });
   };
-  const acceptRide = async (uniqueID) => {
-    try {
-      console.log("Received uniqueID:", uniqueID);
-  
-      const user = auth.currentUser;
-      if (!user) {
-        console.log("User not logged in");
-        return;
-      }
-  
-      const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
-      const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
-  
-      const alreadyAccepted = acceptedRidesSnapshot.docs.some(
-        (doc) => doc.data().uniqueID === uniqueID
-      );
-  
-      if (alreadyAccepted) {
-        console.log("You have already accepted this ride.");
-        alert("You have already accepted this ride.");
-        // Alert the user or handle the message as needed
-        return;
-      }
-  
-      // Ride not found in accepted rides of the current user
-      console.log("Ride not found in accepted rides. Checking all ride requests...");
-  
-      // Check all ride requests across users
-      const allUsersRef = collection(db, "users");
-      const allUsersSnapshot = await getDocs(allUsersRef);
-  
-      for (const userDoc of allUsersSnapshot.docs) {
-        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
-        const rideRequestsSnapshot = await getDocs(rideRequestsRef);
-        const userId = userDoc.id;
-  
-        console.log(`Ride requests for user ${userId}:`);
-  
-        for (const rideRequestDoc of rideRequestsSnapshot.docs) {
-          const rideRequestData = rideRequestDoc.data();
-          const rideRequestUniqueId = rideRequestData.uniqueID;
-  
-          if (rideRequestUniqueId === uniqueID) {
-            // Check if available seats are greater than 0
-            const availableSeats = rideRequestData.availableSeats || 0;
-            if (availableSeats <= 0) {
-              console.log("No available seats for this ride. It won't be accepted.");
-              alert("No more available seats for this ride. This ride was not accepted. ")
-              return; // Skip further processing for this ride
-            }
-  
-            // Proceed to accept the ride request
-            console.log(
-              "Ride request found and accepted:",
-              rideRequestUniqueId,
-              "for user:",
-              userId
-            );
-            alert("You have successfully accepted this ride. View details in MyRides!");
-  
-            // Update ride status to "Accepted"
-            await updateDoc(rideRequestDoc.ref, { status: "Accepted" });
-  
-            // Decrement available seats by 1
-            await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats - 1 });
-            console.log("Available seats decremented by 1.");
-  
-            // Add the ride to the current user's accepted rides
-            await addDoc(acceptedRidesRef, {
-              ...rideRequestData,
-              uniqueID: uniqueID, // Ensure uniqueID is added to the AcceptedRides collection
-            });
-  
-            // Exit the function after successful acceptance
-            navigate("/MyRides");
-            return;
+
+const acceptRide = async (uniqueID) => {
+  try {
+    console.log("Received uniqueID:", uniqueID);
+
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("User not logged in");
+      return;
+    }
+
+    const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
+    const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
+
+    const alreadyAccepted = acceptedRidesSnapshot.docs.some(
+      (doc) => doc.data().uniqueID === uniqueID
+    );
+
+    if (alreadyAccepted) {
+      console.log("You have already accepted this ride.");
+      alert("You have already accepted this ride.");
+      // Alert the user or handle the message as needed
+      return;
+    }
+
+    // Ride not found in accepted rides of the current user
+    console.log("Ride not found in accepted rides. Checking all ride requests...");
+
+    // Check all ride requests across users
+    const allUsersRef = collection(db, "users");
+    const allUsersSnapshot = await getDocs(allUsersRef);
+
+    for (const userDoc of allUsersSnapshot.docs) {
+      const rideRequestsRef = collection(userDoc.ref, "rideRequests");
+      const rideRequestsSnapshot = await getDocs(rideRequestsRef);
+      const userId = userDoc.id;
+
+      console.log(`Ride requests for user ${userId}:`);
+
+      for (const rideRequestDoc of rideRequestsSnapshot.docs) {
+        const rideRequestData = rideRequestDoc.data();
+        const rideRequestUniqueId = rideRequestData.uniqueID;
+
+        if (rideRequestUniqueId === uniqueID) {
+          // Check if available seats are greater than 0
+          const availableSeats = rideRequestData.availableSeats || 0;
+          if (availableSeats <= 0) {
+            console.log("No available seats for this ride. It won't be accepted.");
+            alert("No more available seats for this ride. This ride was not accepted. ")
+            return; // Skip further processing for this ride
           }
+
+          // Proceed to accept the ride request
+          console.log(
+            "Ride request found and accepted:",
+            rideRequestUniqueId,
+            "for user:",
+            userId
+          );
+          alert("You have successfully accepted this ride. View details in MyRides!");
+
+          // Update ride status to "Accepted" in rideRequests
+          await updateDoc(rideRequestDoc.ref, { status: "Accepted" });
+
+          // Decrement available seats by 1 in rideRequests
+          await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats - 1 });
+          console.log("Available seats decremented by 1 in rideRequests.");
+
+          // Add the ride to the current user's accepted rides
+          await addDoc(acceptedRidesRef, {
+            ...rideRequestData,
+            uniqueID: uniqueID, // Ensure uniqueID is added to the AcceptedRides collection
+          });
+
+
+// Assuming rideRequestUniqueId is the ID of the document in "AcceptedRides"
+const acceptedRidesCollection = collection(db, "AcceptedRides");
+
+const acceptedRidesSnapshot = await getDocs(acceptedRidesCollection);
+
+acceptedRidesSnapshot.forEach(async (doc) => {
+  const acceptedRideData = doc.data();
+  const uniqueIDField = acceptedRideData.uniqueID || ''; // Update this based on your actual field name
+
+  if (uniqueIDField === rideRequestUniqueId) {
+    const acceptedAvailableSeats = acceptedRideData.availableSeats || 0;
+
+    // Update available seats in the matched document
+    await updateDoc(doc.ref, { availableSeats: acceptedAvailableSeats - 1 });
+    console.log("Available seats decremented by 1 in AcceptedRides.");
+    return;
+  }
+});
+
+console.log("Document does not exist in AcceptedRides.");
+
+          // Exit the function after successful acceptance
+          navigate("/MyRides");
+          return;
         }
       }
-  
-      // If the loop finishes and the ride wasn't found
-      console.log("Ride not found across all ride requests.");
-    } catch (error) {
-      console.error("Error accepting ride:", error);
     }
-  };
-  
-  
+
+    // If the loop finishes and the ride wasn't found
+    console.log("Ride not found across all ride requests.");
+  } catch (error) {
+    console.error("Error accepting ride:", error);
+  }
+};
+
   
   
   return (

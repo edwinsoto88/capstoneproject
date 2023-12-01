@@ -477,6 +477,7 @@ export const MyRides = () => {
     }
     return color;
   };
+
   const cancelRide = async (uniqueID) => {
     try {
       console.log("Received uniqueID:", uniqueID);
@@ -487,84 +488,70 @@ export const MyRides = () => {
         return;
       }
   
-      const canceledRidesRef = collection(db, "users", user.uid, "CanceledRides");
-      const canceledRidesSnapshot = await getDocs(canceledRidesRef);
+      // Remove the ride from the user's AcceptedRides
+      const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
+      const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
   
-      const alreadyCanceled = canceledRidesSnapshot.docs.some(
-        (doc) => doc.data().uniqueID === uniqueID
-      );
+      for (const acceptedRideDoc of acceptedRidesSnapshot.docs) {
+        const acceptedRideData = acceptedRideDoc.data();
   
-      if (alreadyCanceled) {
-        console.log("You have already canceled this ride.");
-        alert("You have already canceled this ride.")
-        // Alert the user or handle the message as needed
-        return;
+        if (acceptedRideData.uniqueID === uniqueID) {
+          await deleteDoc(acceptedRideDoc.ref);
+          console.log("Ride removed from AcceptedRides of the current user:", uniqueID);
+          break; // Found and removed, exit the loop
+        }
       }
   
-      // Ride not found in canceled rides of the current user
-      console.log("Ride not found in canceled rides. Checking all ride requests...");
-  
-      // Check all ride requests across users
+      // Increment available seats in AcceptedRides of other users
       const allUsersRef = collection(db, "users");
       const allUsersSnapshot = await getDocs(allUsersRef);
   
       for (const userDoc of allUsersSnapshot.docs) {
-        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
-        const rideRequestsSnapshot = await getDocs(rideRequestsRef);
-        const userId = userDoc.id;
+        if (userDoc.id !== user.uid) {
+          const otherUserAcceptedRidesRef = collection(userDoc.ref, "AcceptedRides");
+          const otherUserAcceptedRidesSnapshot = await getDocs(otherUserAcceptedRidesRef);
   
-        console.log(`Ride requests for user ${userId}:`);
+          for (const otherAcceptedRideDoc of otherUserAcceptedRidesSnapshot.docs) {
+            const otherAcceptedRideData = otherAcceptedRideDoc.data();
   
-        for (const rideRequestDoc of rideRequestsSnapshot.docs) {
-          const rideRequestData = rideRequestDoc.data();
-          const rideRequestUniqueId = rideRequestData.uniqueID;
-  
-          if (rideRequestUniqueId === uniqueID) {
-            // Proceed to cancel the ride request
-            // Update ride status, add to canceled rides, etc.
-  
-            console.log(
-              "Ride request found and canceled:",
-             
-              rideRequestUniqueId,
-              "for user:",
-              userId
-             
-            );
-            alert("You have succesfully canceled this ride!")
-            
-            // Update ride status to "Canceled"
-            await updateDoc(rideRequestDoc.ref, { status: "Canceled" });
-
-             // Decrement available seats by 1
-          const availableSeats = rideRequestData.availableSeats || 0; // Assuming 'availableSeats' field exists
-          if (availableSeats > 0) {
-            await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats + 1 });
-            console.log("Available seats incremented by 1.");
-          } else {
-            console.log("No available seats to increment.");
-          }
-
-  
-            // Add the ride to the current user's canceled rides
-            await addDoc(canceledRidesRef, {
-              ...rideRequestData,
-              uniqueID: uniqueID // Ensure uniqueID is added to the CanceledRides collection
-            });
-  
-            // Exit the function after successful cancelance
-            navigate("/MyRides");
-            return;
+            if (otherAcceptedRideData.uniqueID === uniqueID) {
+              const availableSeats = otherAcceptedRideData.availableSeats || 0;
+              await updateDoc(otherAcceptedRideDoc.ref, { availableSeats: availableSeats + 1 });
+              console.log("Available seats incremented by 1 in AcceptedRides of another user:", uniqueID);
+              break; // Found and updated, exit the loop
+            }
           }
         }
       }
   
-      // If the loop finishes and the ride wasn't found
-      console.log("Ride not found across all ride requests.");
+      // Increment available seats by 1 in rideRequests
+      const allUsersRequestsRef = collection(db, "users");
+      const allUsersRequestsSnapshot = await getDocs(allUsersRequestsRef);
+  
+      for (const userDoc of allUsersRequestsSnapshot.docs) {
+        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
+        const rideRequestsSnapshot = await getDocs(rideRequestsRef);
+  
+        for (const rideRequestDoc of rideRequestsSnapshot.docs) {
+          const rideRequestData = rideRequestDoc.data();
+  
+          if (rideRequestData.uniqueID === uniqueID) {
+            const availableSeats = rideRequestData.availableSeats || 0;
+            await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats + 1 });
+            console.log("Available seats incremented by 1 for ride in rideRequests:", uniqueID);
+            break; // Found and updated, exit the loop
+          }
+        }
+      }
+  
+      // Exit the function after successful removal and seat increments
+      navigate("/MyRides");
     } catch (error) {
       console.error("Error canceling ride:", error);
     }
   };
+  
+  
   return (
     <div className="mask-group">
       <style>{css}</style>
