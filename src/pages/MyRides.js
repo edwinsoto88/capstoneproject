@@ -461,7 +461,7 @@ export const MyRides = () => {
               {isOwnRide ? (
                 <button disabled>Your Ride</button>
               ) : (
-                <buttonc onClick={() => cancelRide(request.uniqueID)}>
+                <buttonc onClick={() => cancelRide(request.id, request.requestType)}>
                   Cancel </buttonc>
               )}
               </div>
@@ -479,7 +479,7 @@ export const MyRides = () => {
     }
     return color;
   };
-
+{/*
   const cancelRide = async (uniqueID) => {
     try {
       console.log("Received uniqueID:", uniqueID);
@@ -552,7 +552,54 @@ export const MyRides = () => {
       console.error("Error canceling ride:", error);
     }
   };
-  
+*/}
+
+const cancelRide = async (uniqueID) => {
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      console.log("User not logged in");
+      return;
+    }
+
+    // Assuming uniqueID is sufficient to uniquely identify a document in either collection
+    let foundInCollection = null;
+
+    // Try to find and delete the ride in rideRequests
+    const rideRequestsRef = collection(db, "users", user.uid, "rideRequests");
+    const rideRequestsSnapshot = await getDocs(rideRequestsRef);
+    for (const doc of rideRequestsSnapshot.docs) {
+      if (doc.id === uniqueID) {
+        await deleteDoc(doc.ref);
+        foundInCollection = "rideRequests";
+        break;
+      }
+    }
+
+    // If not found in rideRequests, try in AcceptedRides
+    if (!foundInCollection) {
+      const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
+      const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
+      for (const doc of acceptedRidesSnapshot.docs) {
+        if (doc.id === uniqueID) {
+          await deleteDoc(doc.ref);
+          foundInCollection = "AcceptedRides";
+          break;
+        }
+      }
+    }
+
+    // If the ride was found and deleted, update the local state
+    if (foundInCollection) {
+      const updatedRides = rideRequests.filter(ride => ride.id !== uniqueID);
+      setRideRequests(updatedRides);
+    }
+      alert("Your ride has been cancelled!")
+  } catch (error) {
+    console.error("Error canceling ride:", error);
+  }
+};
+
   
   return (
     <div className="mask-group">
