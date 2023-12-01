@@ -109,7 +109,7 @@ button {
 }
 buttonc {
   border: none;
-  background-color: rgb(255,0,0);
+  background-color: rgba(243, 25, 25, 0.665);
   padding: 2px;
   border-radius: 10px;
   cursor: pointer;
