@@ -107,6 +107,14 @@ button {
   border-radius: 10px;
   cursor: pointer;
 }
+buttonc {
+  border: none;
+  background-color: rgb(255,0,0);
+  padding: 2px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 
 .link-button {
   background: none;

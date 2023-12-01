@@ -461,9 +461,8 @@ export const MyRides = () => {
               {isOwnRide ? (
                 <button disabled>Your Ride</button>
               ) : (
-                <button onClick={() => cancelRide(request.uniqueID)}
-                  style={{ backgroundColor: 'FF0000', color: 'black', border: 'none' }}>  {/* Inline styling added here */}
-                  Cancel </button>
+                <buttonc onClick={() => cancelRide(request.uniqueID)}>
+                  Cancel </buttonc>
               )}
               </div>
             </div>
