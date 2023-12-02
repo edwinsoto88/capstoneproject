@@ -7,9 +7,19 @@ import { db, auth } from "../firebase"; // Import your Firebase configuration
 export const RideHistory = () => {
 
   const css = `
+  .mask-group {
+    position: relative;
+    width: 100%;
+    height: 1080px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    font-family: Inter;
+  }
+
   .dashboard-box {
     position: absolute;
-    top: 55%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1257px;

@@ -8,17 +8,14 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export const RequestRide = () => {
   const css = `
- .background-image-icon {
-    position: fixed;
-    top: 0;
-    left: 0;
+  .mask-group {
+    position: relative;
     width: 100%;
-    height: 100%;
-    background-image: url("/Images/backgroundImage.png");
-    background-size: cover;
-    background-position: center;
-    opacity: 0.9;
-    z-index: -1;
+    height: 1080px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    font-family: Inter;
   }
 
  .dashboard-create-ride-offer {
@@ -28,17 +25,6 @@ export const RequestRide = () => {
    min-height: 100vh;
   }
 
-  .dashboard-box {
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 1257px;
-    height: 717px;
-    text-align: left;
-    font-size: 18px;
-    padding-bottom: 20px;
-  }
 
   .dashboard-border {
     position: absolute;
@@ -48,6 +34,18 @@ export const RequestRide = () => {
     height: 717px;
   }
   
+  .dashboard-box {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1257px;
+    height: 717px;
+    text-align: left;
+    font-size: 18px;
+    padding-bottom: 20px;
+  }
+
   .dashboard-user-interaction {
     position: absolute;
     top: 1.09px;
@@ -59,6 +57,19 @@ export const RequestRide = () => {
     box-sizing: border-box;
     width: 1257px;
     height: 780.91px;
+  }
+
+   .background-image-icon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/Images/backgroundImage.png");
+    background-size: cover;
+    background-position: center;
+    opacity: 0.9;
+    z-index: -1;
   }
 
   .mini-nav-border {

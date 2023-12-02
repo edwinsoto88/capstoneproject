@@ -9,9 +9,19 @@ import Modal from "./Modal";
 
 export const MyRides = () => {
   const css = `
+  .mask-group {
+    position: relative;
+    width: 100%;
+    height: 1080px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    font-family: Inter;
+  }
+
   .dashboard-box {
     position: absolute;
-    top: 60%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1257px;
@@ -237,7 +247,7 @@ export const MyRides = () => {
     background-color: white;
     box-sizing: border-box;
     width: 1257px;
-    height: 600px;
+    height: 685px;
   }
 
   .scroll-frame {
@@ -249,7 +259,7 @@ export const MyRides = () => {
 
   .data-box {
     width: 100%;
-    height: 50px;
+    height: 100px;
     border: 1px solid #000;
     margin-bottom: 3px;
     background-color: #333; /* Background color for better contrast */

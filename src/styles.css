@@ -107,6 +107,13 @@ button {
   border-radius: 10px;
   cursor: pointer;
 }
+
+/* Change your disabled button text color*/
+button:disabled, button[disabled]{
+  color:white;
+  border-radius: 10px;
+}
+
 buttonc {
   border: none;
   background-color: rgba(243, 25, 25, 0.665);
