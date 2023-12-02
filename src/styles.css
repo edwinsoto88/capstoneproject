@@ -249,8 +249,14 @@ form .text h3 a:hover{
    display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content:  flex-end;
   text-align: center;
+}
+
+.element-panel-intro > * {
+  margin-bottom: 20px; /* Adjust as needed */
+  margin-top: 5%;
+  margin-left: 15%;
 }
 
 .element-panel-intro .overlap-group {
