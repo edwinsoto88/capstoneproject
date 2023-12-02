@@ -32,28 +32,37 @@ const SuccessModal = ({ isOpen, onClose }) => {
       ariaHideApp={false}
       style={{
         overlay: {
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
           top: 0,
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
         },
         content: {
-          width: 'auto',
-          maxWidth: '40%', // You can adjust the maximum width as needed
-          maxHeight: '30%',
-          padding: '20px',
-          textAlign: 'center',
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "auto",
+          maxWidth: "40%", // You can adjust the maximum width as needed
+          maxHeight: "30%",
+          padding: "20px",
+          textAlign: "center",
+          left: "30%", // Adjust this value to shift the box to the right
         },
       }}
     >
-      <div className="success-modal">
-        <h2>Success!</h2>
-        <p>You have successfully logged in! You will be redirected to the dashboard shortly.</p>
-        <button onClick={onClose}>Close</button>
+      <div className="success-modal-container">
+        <div className="success-modal-content">
+          <h2>Success!</h2>
+          <p>
+            You have successfully logged in! You will be redirected to the
+            dashboard shortly.
+          </p>
+          <button onClick={onClose}>Close</button>
+        </div>
       </div>
     </Modal>
   );

@@ -12,6 +12,19 @@ body{
   margin: 0;
 }
 
+.success-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.success-modal > div {
+  text-align: center;
+}
+
 .container {
   display: flex;
   flex-direction: column;
