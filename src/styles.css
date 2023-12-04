@@ -243,32 +243,54 @@ form .text h3 a:hover {
 .flex-container {
   background-image: url(/public/Images/fill-1.png);
   background-size: cover;
-  height: 110vh;
+  height: 100vh;
   width: 100%;
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   text-align: center;
+  padding-bottom: 64px;
+}
+
+.boxes>* {
+  margin-top: 5vw;
+  /* Adjust as needed */
 }
 
 .flex-container > * {
-  margin-bottom: 20px;
   margin-top: 5%;
 }
 
 .boxes > * {
-  margin-left: 15vw;
   margin-top: 5vw;
 }
 
 .flex-container .box1-container {
-  height: 431px;
   left: 602px;
   position: absolute;
   top: 174px;
   width: 317px;
+}
+
+.flex-container .box2-container {
+  left: 125px;
+  position: absolute;
+  top: 180px;
+  width: 316px;
+}
+
+.flex-container .box3-container {
+  left: 1072px;
+  position: absolute;
+  top: 180px;
+  width: 316px;
+}
+
+.flex-container .box1-container,
+.flex-container .box2-container,
+.flex-container .box3-container {
+  height: 30vh;
 }
 
 .flex-container .white-background-1 {
@@ -279,18 +301,20 @@ form .text h3 a:hover {
   width: 277px;
 }
 
-.flex-container .request-ride-p {
-  color: #262628;
-  font-family: "SF UI Display-Regular", Helvetica;
-  font-size: 17px;
-  font-weight: 400;
-  left: 19px;
-  letter-spacing: 0;
-  line-height: normal;
+.flex-container .white-background-2 {
+  height: 271px;
+  left: 15px;
   position: absolute;
-  text-align: center;
-  top: 385px;
-  width: 282px;
+  top: 0;
+  width: 277px;
+}
+
+.flex-container .white-background-3 {
+  height: 271px;
+  left: 21px;
+  position: absolute;
+  top: 0;
+  width: 277px;
 }
 
 .flex-container .request-ride-heading {
@@ -307,32 +331,7 @@ form .text h3 a:hover {
   width: 313px;
 }
 
-.flex-container .city-driver-img {
-  height: 277px;
-  left: 15px;
-  object-fit: cover;
-  position: absolute;
-  top: 0;
-  width: 283px;
-}
-
-.flex-container .box2-container {
-  height: 451px;
-  left: 125px;
-  position: absolute;
-  top: 180px;
-  width: 316px;
-}
-
-.flex-container .white-background-2 {
-  height: 271px;
-  left: 15px;
-  position: absolute;
-  top: 0;
-  width: 277px;
-}
-
-.flex-container .confirm-driver-p {
+.flex-container .request-ride-p {
   color: #262628;
   font-family: "SF UI Display-Regular", Helvetica;
   font-size: 17px;
@@ -342,8 +341,17 @@ form .text h3 a:hover {
   line-height: normal;
   position: absolute;
   text-align: center;
-  top: 392px;
+  top: 385px;
   width: 282px;
+}
+
+.flex-container .city-driver-img {
+  height: 277px;
+  left: 15px;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  width: 283px;
 }
 
 .flex-container .confirm-driver-heading {
@@ -361,6 +369,20 @@ form .text h3 a:hover {
   width: 312px;
 }
 
+.flex-container .confirm-driver-p {
+  color: #262628;
+  font-family: "SF UI Display-Regular", Helvetica;
+  font-size: 17px;
+  font-weight: 400;
+  left: 19px;
+  letter-spacing: 0;
+  line-height: normal;
+  position: absolute;
+  text-align: center;
+  top: 392px;
+  width: 282px;
+}
+
 .flex-container .city-skyline-img {
   height: 223px;
   left: 23px;
@@ -368,28 +390,6 @@ form .text h3 a:hover {
   position: absolute;
   top: 25px;
   width: 259px;
-}
-
-.flex-container .box3-container {
-  height: 424px;
-  left: 1072px;
-  position: absolute;
-  top: 180px;
-  width: 316px;
-}
-
-.flex-container .track-ride-p {
-  color: #262628;
-  font-family: "SF UI Display-Regular", Helvetica;
-  font-size: 17px;
-  font-weight: 400;
-  left: 22px;
-  letter-spacing: 0;
-  line-height: normal;
-  position: absolute;
-  text-align: center;
-  top: 384px;
-  width: 282px;
 }
 
 .flex-container .track-ride-heading {
@@ -407,12 +407,18 @@ form .text h3 a:hover {
   width: 312px;
 }
 
-.flex-container .white-background-3 {
-  height: 271px;
-  left: 21px;
+.flex-container .track-ride-p {
+  color: #262628;
+  font-family: "SF UI Display-Regular", Helvetica;
+  font-size: 17px;
+  font-weight: 400;
+  left: 22px;
+  letter-spacing: 0;
+  line-height: normal;
   position: absolute;
-  top: 0;
-  width: 277px;
+  text-align: center;
+  top: 384px;
+  width: 282px;
 }
 
 .flex-container .navigation-bro {
@@ -425,21 +431,17 @@ form .text h3 a:hover {
 }
 
 .footer-section {
-  position: absolute;
-  top: 1016px;
+  position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
   height: 64px;
   background-color: #333;
+  margin-top: auto;
 }
 
 .footer-section-child {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 64px;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
