@@ -7,7 +7,7 @@ export default function Navbar() {
     return (
         <nav className="nav">
             <Link to="/" className="site-logo">
-            <img src ="/images/logo.png" alt="windyroad"/>
+            <img src ="/Images/logo.png" alt="windyroad"/>
             </Link>
         <ul>
             <Authentication/>  
