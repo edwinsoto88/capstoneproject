@@ -65,7 +65,7 @@ export const RequestRide = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("/Images/backgroundImage.png");
+    background-image: url("./Assets/backgroundImage.png");
     background-size: cover;
     background-position: center;
     opacity: 0.9;
