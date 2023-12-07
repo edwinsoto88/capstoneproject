@@ -6,6 +6,7 @@ import { db, auth } from "../firebase"; // Import Firebase authentication and da
 import { useJsApiLoader, GoogleMap, Marker, Polyline, } from "@react-google-maps/api";
 import { Map } from "./Map"; 
 import Modal from "./Modal"; 
+import backgroundImg from "../Assets/backgroundImage.png";
 
 export const MyRides = () => {
   const css = `
@@ -489,80 +490,6 @@ export const MyRides = () => {
     }
     return color;
   };
-{/*
-  const cancelRide = async (uniqueID) => {
-    try {
-      console.log("Received uniqueID:", uniqueID);
-  
-      const user = auth.currentUser;
-      if (!user) {
-        console.log("User not logged in");
-        return;
-      }
-  
-      // Remove the ride from the user's AcceptedRides
-      const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
-      const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
-  
-      for (const acceptedRideDoc of acceptedRidesSnapshot.docs) {
-        const acceptedRideData = acceptedRideDoc.data();
-  
-        if (acceptedRideData.uniqueID === uniqueID) {
-          await deleteDoc(acceptedRideDoc.ref);
-          console.log("Ride removed from AcceptedRides of the current user:", uniqueID);
-          break; // Found and removed, exit the loop
-        }
-      }
-  
-      // Increment available seats in AcceptedRides of other users
-      const allUsersRef = collection(db, "users");
-      const allUsersSnapshot = await getDocs(allUsersRef);
-  
-      for (const userDoc of allUsersSnapshot.docs) {
-        if (userDoc.id !== user.uid) {
-          const otherUserAcceptedRidesRef = collection(userDoc.ref, "AcceptedRides");
-          const otherUserAcceptedRidesSnapshot = await getDocs(otherUserAcceptedRidesRef);
-  
-          for (const otherAcceptedRideDoc of otherUserAcceptedRidesSnapshot.docs) {
-            const otherAcceptedRideData = otherAcceptedRideDoc.data();
-  
-            if (otherAcceptedRideData.uniqueID === uniqueID) {
-              const availableSeats = otherAcceptedRideData.availableSeats || 0;
-              await updateDoc(otherAcceptedRideDoc.ref, { availableSeats: availableSeats + 1 });
-              console.log("Available seats incremented by 1 in AcceptedRides of another user:", uniqueID);
-              break; // Found and updated, exit the loop
-            }
-          }
-        }
-      }
-  
-      // Increment available seats by 1 in rideRequests
-      const allUsersRequestsRef = collection(db, "users");
-      const allUsersRequestsSnapshot = await getDocs(allUsersRequestsRef);
-  
-      for (const userDoc of allUsersRequestsSnapshot.docs) {
-        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
-        const rideRequestsSnapshot = await getDocs(rideRequestsRef);
-  
-        for (const rideRequestDoc of rideRequestsSnapshot.docs) {
-          const rideRequestData = rideRequestDoc.data();
-  
-          if (rideRequestData.uniqueID === uniqueID) {
-            const availableSeats = rideRequestData.availableSeats || 0;
-            await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats + 1 });
-            console.log("Available seats incremented by 1 for ride in rideRequests:", uniqueID);
-            break; // Found and updated, exit the loop
-          }
-        }
-      }
-  
-      // Exit the function after successful removal and seat increments
-      navigate("/MyRides");
-    } catch (error) {
-      console.error("Error canceling ride:", error);
-    }
-  };
-*/}
 
 const cancelRide = async (uniqueID) => {
   try {
@@ -614,7 +541,7 @@ const cancelRide = async (uniqueID) => {
   return (
     <div className="mask-group">
       <style>{css}</style>
-      <img className="background-image-icon" alt="" />
+      <img className="background-image-icon" alt="" style={{backgroundImage:`url(${backgroundImg})`}}/>
       <div className="dashboard-create-ride-offer">
         <div className="dashboard-box">
           <div className="dashboard-border">

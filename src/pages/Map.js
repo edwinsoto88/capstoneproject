@@ -76,46 +76,7 @@ useEffect(() => {
       if (originRef.current.value === '' || destinationRef.current.value === '') {
           return;
       }
-/*
-      const directionsService = new window.google.maps.DirectionsService();
-      const results = await directionsService.route({
-          origin: originRef.current.value,
-          destination: destinationRef.current.value,
-          travelMode: window.google.maps.TravelMode.DRIVING,
-      });
-
-    setDirectionsResponse(results);
-    setDistance(results.routes[0].legs[0].distance.text);
-    setDuration(results.routes[0].legs[0].duration.text);
-
-    // Set the route on the map
-    setRoute(results.routes[0].overview_path);
-
-    // Create markers for origin and destination
-    const originMarker = new window.google.maps.Marker({
-      position: results.routes[0].legs[0].start_location,
-      map: map,
-      label: 'A', // You can customize the label here
-    });
-
-    const destinationMarker = new window.google.maps.Marker({
-      position: results.routes[0].legs[0].end_location,
-      map: map,
-      label: 'B', // You can customize the label here
-    });
-
-    // Set origin and destination markers
-    setOriginMarker(originMarker);
-    setDestinationMarker(destinationMarker);
-
-    // Center the map on the route
-    const bounds = new window.google.maps.LatLngBounds();
-    results.routes[0].overview_path.forEach((path) => {
-      bounds.extend(path);
-    });
- //   map.fitBounds(bounds);
-  } */
-
+      
   try {
     const directionsService = new window.google.maps.DirectionsService();
     const results = await directionsService.route({

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { collection, query, onSnapshot, addDoc, getDoc, doc, getDocs, updateDoc, } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
 import { useJsApiLoader, GoogleMap, Marker, Polyline, } from "@react-google-maps/api";
+import backgroundImg from "../Assets/backgroundImage.png";
 
 export const AvailableRides = () => {
   const css = `
@@ -47,7 +48,6 @@ export const AvailableRides = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("https://github.com/edwinsoto88/capstoneproject/blob/main/src/Assets/backgroundImage.png");
     background-size: cover;
     background-position: center;
     opacity: 0.9;
@@ -539,56 +539,56 @@ console.log("Document does not exist in AcceptedRides.");
   return (
     <div className="mask-group">
       <style>{css}</style>
-      <img className="background-image-icon" alt="" />
-      <div className="dashboard-create-ride-offer">
-        <div className="dashboard-box">
-          <div className="dashboard-border">
-            <div className="dashboard-user-interaction"></div>
-            <div className="mini-nav-border"></div>
-            <Link to="/AvailableRides">
-              <button className="available-rides">Available Rides</button>
-            </Link>
-            <Link to="/RequestRide">
-              <button className="create-ride-offer">Create Ride Offer</button>
-            </Link>
-            <Link to="/MyRides">
-              <button className="my-rides">My Rides</button>
-            </Link>
-            <div className="search-bar">
-              <div className="search-bar-child"></div>
-              <input
-                type="text"
-                className="search-rides"
-                placeholder="Search Rides"
-                value={searchQuery}
-                onChange={handleSearchChange} // Handle input changes
-              />
+        <img className="background-image-icon" alt="" style={{backgroundImage:`url(${backgroundImg})`}}/>
+        <div className="dashboard-create-ride-offer">
+          <div className="dashboard-box">
+            <div className="dashboard-border">
+              <div className="dashboard-user-interaction"></div>
+              <div className="mini-nav-border"></div>
+              <Link to="/AvailableRides">
+                <button className="available-rides">Available Rides</button>
+              </Link>
+              <Link to="/RequestRide">
+                <button className="create-ride-offer">Create Ride Offer</button>
+              </Link>
+              <Link to="/MyRides">
+                <button className="my-rides">My Rides</button>
+              </Link>
+              <div className="search-bar">
+                <div className="search-bar-child"></div>
+                <input
+                  type="text"
+                  className="search-rides"
+                  placeholder="Search Rides"
+                  value={searchQuery}
+                  onChange={handleSearchChange} // Handle input changes
+                />
+              </div>
             </div>
-          </div>
-          <div className="rectangle-parent">
-            <div className="name">Name</div>
-            <div className="requestType">Request Type</div>
-            <div className="terminal">Terminal</div>
-            <div className="destination">Destination</div>
-            <div className="available-seats">Seats</div>
-            <div className="date">Date</div>
-            <div className="time">Time</div>
-            <div className="price">Price</div>
-          </div>
-          <div className="myrides-box">
-            <div className="scroll-frame">
-              <div className="data-container" id="data-container">
-                {createRectangles(1000)}
+            <div className="rectangle-parent">
+              <div className="name">Name</div>
+              <div className="requestType">Request Type</div>
+              <div className="terminal">Terminal</div>
+              <div className="destination">Destination</div>
+              <div className="available-seats">Seats</div>
+              <div className="date">Date</div>
+              <div className="time">Time</div>
+              <div className="price">Price</div>
+            </div>
+            <div className="myrides-box">
+              <div className="scroll-frame">
+                <div className="data-container" id="data-container">
+                  {createRectangles(1000)}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="footer-section">
-        <div className="footer-section-child">
-          <b className="unt-rides">© 2023 UNT Rides</b>
+        <div className="footer-section">
+          <div className="footer-section-child">
+            <b className="unt-rides">© 2023 UNT Rides</b>
+          </div>
         </div>
-      </div>
     </div>
   );
 };

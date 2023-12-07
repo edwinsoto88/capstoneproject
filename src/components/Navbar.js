@@ -1,17 +1,14 @@
 import React from "react"
 import Authentication from "./Authentication"
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
+import navImage from "../Assets/logo.png";
 
 
 export default function Navbar() {
     return (
         <nav className="nav">
             <Link to="/" className="site-logo">
-<<<<<<< HEAD
-            <img src ="../../Assets/logo.png" alt="windyroad"/>
-=======
-            <img src ="/Images/logo.png" alt="windyroad"/>
->>>>>>> 59bef173c9025859faec595edc91aa88da5b174e
+            <img src ={navImage} alt="windyroad"/>
             </Link>
         <ul>
             <Authentication/>  
