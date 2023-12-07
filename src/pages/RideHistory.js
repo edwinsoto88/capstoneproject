@@ -211,7 +211,7 @@ export const RideHistory = () => {
 
   .data-box {
     width: 100%;
-    height: 50px;
+    height: 90px;
     border: 1px solid #000;
     margin-bottom: 3px;
     background-color: #333; /* Background color for better contrast */
