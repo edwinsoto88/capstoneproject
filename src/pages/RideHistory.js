@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { collection, query, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase"; // Import your Firebase configuration
-import backgroundImg from "../Assets/backgroundImage.png";
 
 export const RideHistory = () => {
 
@@ -56,7 +55,7 @@ export const RideHistory = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("./Assets/backgroundImage.png");
+    background-image: url("/Images/backgroundImage.png");
     background-size: cover;
     background-position: center;
     opacity: 0.9;
@@ -211,7 +210,7 @@ export const RideHistory = () => {
 
   .data-box {
     width: 100%;
-    height: 90px;
+    height: 50px;
     border: 1px solid #000;
     margin-bottom: 3px;
     background-color: #333; /* Background color for better contrast */
@@ -397,7 +396,7 @@ export const RideHistory = () => {
   return (
     <div className="mask-group">
       <style>{css}</style>
-      <img className="background-image-icon" alt="" style={{backgroundImage:`url(${backgroundImg})`}}/>
+      <img className="background-image-icon" alt="" />
       <div className="dashboard-create-ride-offer">
         <div className="dashboard-box">
           <div className="dashboard-border">

@@ -1,37 +1,24 @@
 {
-  "homepage": "https://edwinsoto88.github.com/capstoneproject",
-  "name": "untrides",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@react-google-maps/api": "^2.19.2",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "firebase": "^10.7.0",
-    "functions": "^1.0.9",
-    "init": "^0.1.2",
-    "react": "^18.2.0",
-    "react-datepicker": "^4.23.0",
-    "react-dom": "^18.2.0",
-    "react-modal": "^3.16.1",
-    "react-router-dom": "^6.10.0",
-    "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
-  },
+  "name": "capstoneproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@react-google-maps/api": "^2.19.2",
+    "firebase": "^10.7.1",
+    "react-datepicker": "^4.24.0",
+    "react-modal": "^3.16.1",
+    "react-router-dom": "^6.20.1",
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^3.5.0"
   },
   "browserslist": {
     "production": [
@@ -44,9 +31,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "gh-pages": "^6.1.0"
   }
 }

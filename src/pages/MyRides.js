@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState, doc, updateDoc } from "react";
-import { collection, query, onSnapshot, addDoc, getDocs, deleteDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { collection, doc, query, where, getDocs, deleteDoc, getDoc, updateDoc, collectionGroup } from 'firebase/firestore';
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
+import { getAuth } from 'firebase/auth';
 import { useJsApiLoader, GoogleMap, Marker, Polyline, } from "@react-google-maps/api";
 import { Map } from "./Map"; 
 import Modal from "./Modal"; 
-import backgroundImg from "../Assets/backgroundImage.png";
 
 export const MyRides = () => {
   const css = `
@@ -58,7 +58,7 @@ export const MyRides = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("./Assets/backgroundImage.png");
+    background-image: url("/Images/backgroundImage.png");
     background-size: cover;
     background-position: center;
     opacity: 0.9;
@@ -490,58 +490,145 @@ export const MyRides = () => {
     }
     return color;
   };
+{
+  /*
+  const cancelRide = async (uniqueID) => {
+    try {
+      console.log("Received uniqueID:", uniqueID);
+  
+      const user = auth.currentUser;
+      if (!user) {
+        console.log("User not logged in");
+        return;
+      }
+  
+      // Remove the ride from the user's AcceptedRides
+      const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
+      const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
+  
+      for (const acceptedRideDoc of acceptedRidesSnapshot.docs) {
+        const acceptedRideData = acceptedRideDoc.data();
+  
+        if (acceptedRideData.uniqueID === uniqueID) {
+          await deleteDoc(acceptedRideDoc.ref);
+          console.log("Ride removed from AcceptedRides of the current user:", uniqueID);
+          break; // Found and removed, exit the loop
+        }
+      }
+  
+      // Increment available seats in AcceptedRides of other users
+      const allUsersRef = collection(db, "users");
+      const allUsersSnapshot = await getDocs(allUsersRef);
+  
+      for (const userDoc of allUsersSnapshot.docs) {
+        if (userDoc.id !== user.uid) {
+          const otherUserAcceptedRidesRef = collection(userDoc.ref, "AcceptedRides");
+          const otherUserAcceptedRidesSnapshot = await getDocs(otherUserAcceptedRidesRef);
+  
+          for (const otherAcceptedRideDoc of otherUserAcceptedRidesSnapshot.docs) {
+            const otherAcceptedRideData = otherAcceptedRideDoc.data();
+  
+            if (otherAcceptedRideData.uniqueID === uniqueID) {
+              const availableSeats = otherAcceptedRideData.availableSeats || 0;
+              await updateDoc(otherAcceptedRideDoc.ref, { availableSeats: availableSeats + 1 });
+              console.log("Available seats incremented by 1 in AcceptedRides of another user:", uniqueID);
+              break; // Found and updated, exit the loop
+            }
+          }
+        }
+      }
+  
+      // Increment available seats by 1 in rideRequests
+      const allUsersRequestsRef = collection(db, "users");
+      const allUsersRequestsSnapshot = await getDocs(allUsersRequestsRef);
+  
+      for (const userDoc of allUsersRequestsSnapshot.docs) {
+        const rideRequestsRef = collection(userDoc.ref, "rideRequests");
+        const rideRequestsSnapshot = await getDocs(rideRequestsRef);
+  
+        for (const rideRequestDoc of rideRequestsSnapshot.docs) {
+          const rideRequestData = rideRequestDoc.data();
+  
+          if (rideRequestData.uniqueID === uniqueID) {
+            const availableSeats = rideRequestData.availableSeats || 0;
+            await updateDoc(rideRequestDoc.ref, { availableSeats: availableSeats + 1 });
+            console.log("Available seats incremented by 1 for ride in rideRequests:", uniqueID);
+            break; // Found and updated, exit the loop
+          }
+        }
+      }
+  
+      // Exit the function after successful removal and seat increments
+      navigate("/MyRides");
+    } catch (error) {
+      console.error("Error canceling ride:", error);
+    }
+  };
+*/}
 
 const cancelRide = async (uniqueID) => {
   try {
+    const auth = getAuth();
     const user = auth.currentUser;
     if (!user) {
       console.log("User not logged in");
       return;
     }
 
-    // Assuming uniqueID is sufficient to uniquely identify a document in either collection
-    let foundInCollection = null;
 
-    // Try to find and delete the ride in rideRequests
-    const rideRequestsRef = collection(db, "users", user.uid, "rideRequests");
-    const rideRequestsSnapshot = await getDocs(rideRequestsRef);
-    for (const doc of rideRequestsSnapshot.docs) {
-      if (doc.id === uniqueID) {
-        await deleteDoc(doc.ref);
-        foundInCollection = "rideRequests";
-        break;
-      }
-    }
+    const userRef = doc(collection(db, "users"), user.uid);
+    const acceptedRidesRef = collection(userRef, "AcceptedRides");
 
-    // If not found in rideRequests, try in AcceptedRides
-    if (!foundInCollection) {
-      const acceptedRidesRef = collection(db, "users", user.uid, "AcceptedRides");
-      const acceptedRidesSnapshot = await getDocs(acceptedRidesRef);
-      for (const doc of acceptedRidesSnapshot.docs) {
-        if (doc.id === uniqueID) {
-          await deleteDoc(doc.ref);
-          foundInCollection = "AcceptedRides";
-          break;
+    // Directly access the document using the uniqueID
+    const docRef = doc(acceptedRidesRef, uniqueID);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const cancelledUniqueID = docSnap.data().uniqueID;
+      const cancelledRideData = docSnap.data();
+
+      console.log("Found ride in AcceptedRides:", cancelledUniqueID);
+      await deleteDoc(docRef);
+
+      alert("Your ride has been cancelled!");
+
+      // Update seats in all users' rideRequests subcollections
+      const allUsersRef = collection(db, "users");
+      const snapshot = await getDocs(allUsersRef);
+
+      snapshot.forEach(async (userDoc) => {
+        console.log("Checking user:", userDoc.id); // Log user ID for verification
+        const rideRequestsRef = collection(userDoc.ref, "RideRequests");
+        const rideRequestRef = doc(rideRequestsRef, cancelledUniqueID);
+        const rideRequestSnap = await getDoc(rideRequestRef);
+
+        if (rideRequestSnap.exists()) {
+          const rideRequestData = rideRequestSnap.data();
+          const updatedSeats = rideRequestData.seats + 1;
+
+          await updateDoc(rideRequestRef, { seats: updatedSeats });
+          console.log("Updated seats for ride request:", cancelledUniqueID);
+        } else {
+          console.log("Ride request not found for user:", userDoc.id);
         }
-      }
+      });
+    } else {
+      console.log("Ride not found in AcceptedRides.");
     }
-
-    // If the ride was found and deleted, update the local state
-    if (foundInCollection) {
-      const updatedRides = rideRequests.filter(ride => ride.id !== uniqueID);
-      setRideRequests(updatedRides);
-    }
-      alert("Your ride has been cancelled!")
   } catch (error) {
     console.error("Error canceling ride:", error);
   }
 };
 
+
+
+
+
   
   return (
     <div className="mask-group">
       <style>{css}</style>
-      <img className="background-image-icon" alt="" style={{backgroundImage:`url(${backgroundImg})`}}/>
+      <img className="background-image-icon" alt="" />
       <div className="dashboard-create-ride-offer">
         <div className="dashboard-box">
           <div className="dashboard-border">

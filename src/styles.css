@@ -78,7 +78,7 @@ body {
   box-sizing: border-box;
   height: 550px;
   width: 100%;
-  background-image: url("./Assets/header.png");
+  background-image: url("/public/Images/header.png");
   background-position: center;
   margin-top: 0;
   overflow: auto;
@@ -241,7 +241,7 @@ form .text h3 a:hover {
 }
 
 .flex-container {
-  background-image: url(./Assets/fill-1.png);
+  background-image: url(/public/Images/fill-1.png);
   background-size: cover;
   height: 100vh;
   width: 100%;

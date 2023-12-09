@@ -5,7 +5,6 @@ import { collection, query, onSnapshot, addDoc, doc, getDoc } from "firebase/fir
 import { db, auth } from "../firebase"; // Import Firebase authentication and database
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import backgroundImg from "../Assets/backgroundImage.png";
 
 export const RequestRide = () => {
   const css = `
@@ -66,7 +65,7 @@ export const RequestRide = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("./Assets/backgroundImage.png");
+    background-image: url("/Images/backgroundImage.png");
     background-size: cover;
     background-position: center;
     opacity: 0.9;
@@ -623,7 +622,7 @@ useEffect(() => {
   return (
     <div className="mask-group">
       <style>{css}</style>
-      <img className="background-image-icon" alt="" style={{backgroundImage:`url(${backgroundImg})`}}/>
+      <img className="background-image-icon" alt="" />
       <div className="dashboard-create-ride-offer">
         <div className="dashboard-box">
           <div className="dashboard-border">
