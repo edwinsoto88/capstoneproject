@@ -19,7 +19,7 @@ npm# Team Capstonians
     <a href="https://github.com/beion2000/capstoneproject"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/beion2000/capstoneproject">View Demo</a>
+    <a href="https://edwinsoto88.github.io/capstoneproject/">View Demo</a>
   </p>
 </div>
 
