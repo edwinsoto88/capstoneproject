@@ -1,17 +1,22 @@
 {
   "files": {
     "main.css": "/capstoneproject/static/css/main.454ab8fb.css",
-    "main.js": "/capstoneproject/static/js/main.084280ea.js",
-    "static/js/496.7daefe20.chunk.js": "/capstoneproject/static/js/496.7daefe20.chunk.js",
+    "main.js": "/capstoneproject/static/js/main.75461fb7.js",
+    "static/js/496.2c6bd2ff.chunk.js": "/capstoneproject/static/js/496.2c6bd2ff.chunk.js",
+    "static/media/backgroundImage.png": "/capstoneproject/static/media/backgroundImage.b63ef4338200f56f637f.png",
+    "static/media/logo.png": "/capstoneproject/static/media/logo.88702126d4e8acb81b49.png",
     "static/media/header.png": "/capstoneproject/static/media/header.165b5466f3bcc5e370f7.png",
+    "static/media/city-skyline-bro-1.png": "/capstoneproject/static/media/city-skyline-bro-1.ebe223727979991a4d45.png",
+    "static/media/navigation-bro-1.png": "/capstoneproject/static/media/navigation-bro-1.f3088354d1f035fe7cfa.png",
+    "static/media/city-driver-bro-1.png": "/capstoneproject/static/media/city-driver-bro-1.05c710e7891288d2d5c6.png",
     "static/media/fill-1.png": "/capstoneproject/static/media/fill-1.04b54ede75a0172c3cf7.png",
     "index.html": "/capstoneproject/index.html",
     "main.454ab8fb.css.map": "/capstoneproject/static/css/main.454ab8fb.css.map",
-    "main.084280ea.js.map": "/capstoneproject/static/js/main.084280ea.js.map",
-    "496.7daefe20.chunk.js.map": "/capstoneproject/static/js/496.7daefe20.chunk.js.map"
+    "main.75461fb7.js.map": "/capstoneproject/static/js/main.75461fb7.js.map",
+    "496.2c6bd2ff.chunk.js.map": "/capstoneproject/static/js/496.2c6bd2ff.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.454ab8fb.css",
-    "static/js/main.084280ea.js"
+    "static/js/main.75461fb7.js"
   ]
 }
